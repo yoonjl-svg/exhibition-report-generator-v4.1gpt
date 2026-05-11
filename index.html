@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>v4.1gpt Analysis Ledger Review</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Ilmin Exhibition Report v4.1gpt</p>
+        <h1 id="report-title">Analysis Ledger Review</h1>
+      </div>
+      <div class="toolbar" aria-label="report tools">
+        <button id="copy-markdown" type="button">Markdown</button>
+        <button id="toggle-evidence" type="button" aria-pressed="true">Evidence</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar" aria-label="ledger filters">
+        <section class="panel compact">
+          <h2>Filters</h2>
+          <label>
+            Section
+            <select id="section-filter"></select>
+          </label>
+          <label>
+            Importance
+            <select id="importance-filter">
+              <option value="all">All</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
+            </select>
+          </label>
+          <label>
+            Statement Kind
+            <select id="kind-filter">
+              <option value="all">All</option>
+              <option value="factual">Fact</option>
+              <option value="comparative">Comparison</option>
+              <option value="interpretive">Interpretation</option>
+              <option value="inference">Inference</option>
+              <option value="data_quality">Data Quality</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="panel compact">
+          <h2>Ledger Health</h2>
+          <dl id="health-list" class="health-list"></dl>
+        </section>
+      </aside>
+
+      <section class="content">
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Director View</p>
+              <h2>핵심 관찰 요약</h2>
+            </div>
+            <p id="scope-note" class="note"></p>
+          </div>
+          <div id="metric-strip" class="metric-strip"></div>
+          <div id="brief-observations" class="observation-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Ledger</p>
+              <h2>관찰 원장</h2>
+            </div>
+            <p id="observation-count" class="note"></p>
+          </div>
+          <div id="ledger-list" class="observation-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="data/sample-ledger.js"></script>
+    <script src="src/ledger.js"></script>
+    <script src="src/app.js"></script>
+  </body>
+</html>
