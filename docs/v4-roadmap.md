@@ -2,10 +2,10 @@
 
 ## Phase 1: Ledger Foundation
 
-- Define input schema for exhibition basics, budgets, audiences, programs, publicity, membership, and selected feedback.
-- Generate metrics from input data.
-- Generate evidence-backed observations.
-- Validate all references and caveats.
+- Define input schema for exhibition basics, budgets, audiences, programs, publicity, membership, and selected feedback. Done in draft form.
+- Generate metrics from input data. Done for the sample input.
+- Generate evidence-backed observations. Done for the sample input.
+- Validate all references and caveats. Done for generated Ledger validation.
 
 ## Phase 2: Director Review
 

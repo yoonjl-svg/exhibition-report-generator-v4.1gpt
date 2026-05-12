@@ -26,6 +26,16 @@ body {
   line-height: 1.5;
 }
 
+.load-error {
+  max-width: 720px;
+  margin: 80px auto;
+  padding: 24px;
+  color: #9f1239;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 8px;
+}
+
 button,
 select {
   font: inherit;

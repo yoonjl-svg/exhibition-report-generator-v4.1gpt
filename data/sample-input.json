@@ -1,0 +1,119 @@
+{
+  "schema_version": "0.2.0",
+  "exhibition": {
+    "id": "hyper-yellow-demo",
+    "title": "전시보고서 v4.2 - 《(가)하이퍼 옐로우》",
+    "subtitle": "Analysis Ledger 생성기 샘플",
+    "venue": "일민미술관",
+    "period": {
+      "start": "2025-06-13",
+      "end": "2025-08-17",
+      "display": "2025.06.13 - 2025.08.17"
+    },
+    "scope_note": "샘플 자동생성보고서의 수치를 v4.2 입력 형식으로 정규화한 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다."
+  },
+  "brief_metric_ids": [
+    "total_visitors",
+    "daily_visitors",
+    "total_budget",
+    "cost_per_visitor",
+    "program_participants",
+    "press_mentions"
+  ],
+  "audience": {
+    "total_visitors": 15200,
+    "operating_days": 66,
+    "daily_visitors": 230,
+    "paid_visitors": 8907,
+    "free_visitors": 6293
+  },
+  "budget": {
+    "total_budget": 210000000
+  },
+  "programs": {
+    "count": 8,
+    "sessions": 65,
+    "participants": 548,
+    "participation_rate": 3.6
+  },
+  "publicity": {
+    "press_mentions": 32,
+    "sns_posts": 24
+  },
+  "membership": {
+    "memberships_sold": 0,
+    "note": "v4.2 샘플에서는 멤버십 분석을 생성하지 않습니다."
+  },
+  "reference_groups": [
+    {
+      "id": "legacy_planned_exhibitions",
+      "label": "기존 기획전",
+      "selection_rule": "샘플 데이터에 포함된 이전 기획전 전체",
+      "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다.",
+      "metrics": {
+        "total_visitors_avg": 9413,
+        "daily_visitors_avg": 159.7,
+        "total_budget_avg": 140000000,
+        "cost_per_visitor_avg": 20000,
+        "program_participants_avg": 807.6,
+        "press_mentions_avg": 28.9,
+        "paid_audience_ratio_avg": 86.6
+      }
+    },
+    {
+      "id": "similar_theme_scale",
+      "label": "유사 규모/주제 전시",
+      "selection_rule": "관객 수, 예산, 프로그램 수가 유사한 전시 후보",
+      "caveat": "v4.2에서는 비교군 개념만 보존하며 자동 군집화는 구현하지 않습니다.",
+      "metrics": {}
+    }
+  ],
+  "selected_feedback": [
+    {
+      "id": "fb-color-materiality",
+      "source": "SNS 인용",
+      "theme": "색채 경험과 공간 몰입",
+      "polarity": "positive",
+      "quote": "색의 물질성이 느껴졌습니다."
+    },
+    {
+      "id": "fb-family-workshop",
+      "source": "설문 인용",
+      "theme": "색채 경험과 공간 몰입",
+      "polarity": "positive",
+      "quote": "아이와 함께 왔는데 색채 워크숍이 좋았습니다."
+    },
+    {
+      "id": "fb-crowding",
+      "source": "SNS 인용",
+      "theme": "혼잡도와 감상 동선",
+      "polarity": "critical",
+      "quote": "인파가 많아 작품 감상이 쉽지 않았습니다."
+    },
+    {
+      "id": "fb-reservation",
+      "source": "설문 인용",
+      "theme": "혼잡도와 감상 동선",
+      "polarity": "suggestion",
+      "quote": "사전예약제가 필요해 보입니다."
+    }
+  ],
+  "data_quality_checks": [
+    {
+      "id": "program-count-conflict",
+      "claim": "본문 내 프로그램 수와 표의 프로그램 수가 일치하지 않을 가능성이 있음",
+      "importance": "high",
+      "caveat": "자동 보고서 생성 전 검수자가 원자료의 프로그램 총수, 회차, 참여 인원을 확인해야 합니다.",
+      "sources": [
+        {
+          "label": "개요 표기",
+          "value": "총 8개(65회) 프로그램 진행, 548명 참여"
+        },
+        {
+          "label": "전시 구성 표기",
+          "value": "총 7개 프로그램 진행, 453명 참여"
+        }
+      ]
+    }
+  ]
+}

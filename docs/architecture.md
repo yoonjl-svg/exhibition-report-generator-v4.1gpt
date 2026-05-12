@@ -12,11 +12,23 @@ input data -> insight sentence -> wording pass -> Word report
 
 That model makes the sentence the unit of analysis. It is convenient for document automation, but difficult to audit. A director or curator needs to know what each claim is based on, how representative it is, and whether it is fact, comparison, interpretation, or inference.
 
-v4.1gpt changes the unit of analysis from prose to observation.
+v4.1gpt changes the unit of analysis from prose to observation. v4.2 adds the first generation path from normalized exhibition input to the Ledger.
 
 ```text
-input data -> Analysis Ledger -> section arrangement -> editorial wording -> web review -> output
+normalized input -> metric derivation -> Analysis Ledger -> section arrangement -> editorial wording -> web review -> output
 ```
+
+## Current Pipeline
+
+```text
+data/sample-input.json
+-> scripts/build_ledger.py
+-> data/generated-ledger.json
+-> data/generated-ledger.js
+-> index.html review UI
+```
+
+The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback.
 
 ## Core Objects
 
@@ -51,6 +63,10 @@ Each observation carries:
 ### Report Placement
 
 The same observation can appear in a compressed director view and in a detailed report section. This avoids creating two unrelated narratives.
+
+### Input Record
+
+The normalized input is not the same as the Ledger. It is a curator-authored source record that keeps factual data, selected feedback, and comparison groups separate before analysis rules run.
 
 ## LLM Role
 

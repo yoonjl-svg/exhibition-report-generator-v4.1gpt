@@ -24,8 +24,12 @@ The important shift is that every analytic sentence is backed by a traceable obs
 ## What Is Implemented
 
 - A dependency-free web preview in `index.html`
-- A sample Analysis Ledger in `data/sample-ledger.json`
-- A browser copy of the same sample in `data/sample-ledger.js`
+- A normalized exhibition input sample in `data/sample-input.json`
+- A draft input schema in `schemas/exhibition-input.schema.json`
+- A Python Ledger builder in `scripts/build_ledger.py`
+- A generated Analysis Ledger in `data/generated-ledger.json`
+- A browser copy of the generated Ledger in `data/generated-ledger.js`
+- A fallback sample Ledger in `data/sample-ledger.json`
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
 - A Node validation script in `scripts/validate-ledger.mjs`
@@ -52,8 +56,16 @@ http://127.0.0.1:4173
 To validate the sample ledger:
 
 ```powershell
-node scripts/validate-ledger.mjs data/sample-ledger.json
+node scripts/validate-ledger.mjs data/generated-ledger.json
 ```
+
+To rebuild the Ledger from the normalized input:
+
+```powershell
+python scripts/build_ledger.py data/sample-input.json --json data/generated-ledger.json --js data/generated-ledger.js
+```
+
+The builder uses only the Python standard library. Python 3.10 or newer is recommended.
 
 ## v4 Design Principles
 
@@ -66,6 +78,6 @@ node scripts/validate-ledger.mjs data/sample-ledger.json
 
 ## Current Scope
 
-This is a first working foundation for v4.1gpt. It proves the new internal model and review experience, but does not yet generate `.docx` files.
+This is a working foundation for v4.2 planning. It proves the new internal model, the review experience, and the first input-to-Ledger generation path, but does not yet generate `.docx` files.
 
-The next implementation step is to connect real exhibition input data to the Analysis Ledger builder.
+The next implementation step is to connect real exhibition input data and then render approved observations into Word.

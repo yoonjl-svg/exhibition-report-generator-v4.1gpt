@@ -1,5 +1,5 @@
 (function () {
-  const ledger = window.SAMPLE_LEDGER;
+  const ledger = window.GENERATED_LEDGER || window.SAMPLE_LEDGER;
   const tools = window.LedgerTools;
   let showEvidence = true;
 
@@ -20,6 +20,10 @@
   };
 
   function init() {
+    if (!ledger) {
+      document.body.innerHTML = "<main class=\"load-error\">Analysis Ledger data could not be loaded.</main>";
+      return;
+    }
     els.title.textContent = ledger.report.title;
     els.scopeNote.textContent = ledger.report.scope_note;
     renderFilters();

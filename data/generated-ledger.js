@@ -1,0 +1,391 @@
+window.GENERATED_LEDGER = {
+  "schema_version": "0.2.0",
+  "report": {
+    "id": "hyper-yellow-demo",
+    "title": "전시보고서 v4.2 - 《(가)하이퍼 옐로우》",
+    "period": "2025.06.13 - 2025.08.17",
+    "venue": "일민미술관",
+    "generated_at": "2026-05-12T11:46:11+09:00",
+    "scope_note": "샘플 자동생성보고서의 수치를 v4.2 입력 형식으로 정규화한 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
+    "brief_metric_ids": [
+      "total_visitors",
+      "daily_visitors",
+      "total_budget",
+      "cost_per_visitor",
+      "program_participants",
+      "press_mentions"
+    ]
+  },
+  "reference_groups": [
+    {
+      "id": "legacy_planned_exhibitions",
+      "label": "기존 기획전",
+      "selection_rule": "샘플 데이터에 포함된 이전 기획전 전체",
+      "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다."
+    },
+    {
+      "id": "similar_theme_scale",
+      "label": "유사 규모/주제 전시",
+      "selection_rule": "관객 수, 예산, 프로그램 수가 유사한 전시 후보",
+      "caveat": "v4.2에서는 비교군 개념만 보존하며 자동 군집화는 구현하지 않습니다."
+    }
+  ],
+  "metrics": [
+    {
+      "id": "total_visitors",
+      "label": "총 관객 수",
+      "value": 15200,
+      "unit": "people",
+      "context": "기존 기획전 평균 9,413명 대비 상회"
+    },
+    {
+      "id": "daily_visitors",
+      "label": "일평균 관객",
+      "value": 230,
+      "unit": "people",
+      "context": "기존 기획전 평균 159.7명 대비 상회"
+    },
+    {
+      "id": "total_budget",
+      "label": "총 사용 예산",
+      "value": 210000000,
+      "unit": "krw",
+      "context": "기존 기획전 평균 140,000,000원 대비 상회"
+    },
+    {
+      "id": "cost_per_visitor",
+      "label": "관객당 비용",
+      "value": 13816,
+      "unit": "krw_per_person",
+      "context": "총 사용 예산 / 총 관객 수"
+    },
+    {
+      "id": "program_participants",
+      "label": "프로그램 참여 인원",
+      "value": 548,
+      "unit": "people",
+      "context": "기존 기획전 평균 807.6명 대비 하회"
+    },
+    {
+      "id": "press_mentions",
+      "label": "언론 보도 건수",
+      "value": 32,
+      "unit": "count",
+      "context": "기존 기획전 평균 28.9건 대비 상회"
+    },
+    {
+      "id": "paid_audience_ratio",
+      "label": "유료 관객 비율",
+      "value": 58.6,
+      "unit": "percent",
+      "context": "기존 기획전 평균 86.6% 대비 하회"
+    }
+  ],
+  "observations": [
+    {
+      "id": "obs-total-visitors-comparison",
+      "type": "comparison",
+      "section": "results",
+      "claim": "총 관객 수와 일평균 관객 수가 기존 기획전 평균을 상회함",
+      "metric": "total_visitors",
+      "current_value": 15200,
+      "unit": "people",
+      "reference_group": "legacy_planned_exhibitions",
+      "reference_avg": 9413,
+      "difference_pct": 61.5,
+      "importance": "high",
+      "statement_kind": "comparative",
+      "tone": "neutral",
+      "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다. 성과 판정이 아니라 수치상 특이점으로 기록합니다.",
+      "recommended_wording": "총 관객 수 15,200명, 일평균 230명으로 기존 기획전 평균 대비 높은 관객 규모가 확인됨.",
+      "evidence": [
+        {
+          "kind": "metric",
+          "label": "총 관객 수",
+          "value": "15,200명"
+        },
+        {
+          "kind": "metric",
+          "label": "기존 기획전 평균",
+          "value": "9,413명"
+        },
+        {
+          "kind": "calculation",
+          "label": "평균 대비 차이",
+          "value": "+61.5%"
+        },
+        {
+          "kind": "metric",
+          "label": "일평균 관객",
+          "value": "230명"
+        },
+        {
+          "kind": "metric",
+          "label": "일평균 기준값",
+          "value": "159.7명"
+        }
+      ],
+      "report_placement": {
+        "director_brief": true,
+        "detailed_section": "IV. 전시 결과"
+      }
+    },
+    {
+      "id": "obs-cost-per-visitor",
+      "type": "derived_metric",
+      "section": "results",
+      "claim": "관객당 비용이 비교 기준 대비 산출됨",
+      "metric": "cost_per_visitor",
+      "current_value": 13816,
+      "unit": "krw_per_person",
+      "reference_group": "legacy_planned_exhibitions",
+      "reference_avg": 20000,
+      "difference_pct": -30.9,
+      "importance": "high",
+      "statement_kind": "comparative",
+      "tone": "neutral",
+      "caveat": "관객당 비용은 예산 총액과 관객 수만 반영하므로 전시의 질적 완성도나 제작 난이도를 직접 평가하지 않습니다.",
+      "recommended_wording": "총 사용 예산은 높은 편이나, 관객당 비용은 13,816원/명으로 기존 기획전 기준값과 비교해 검토할 수 있음.",
+      "evidence": [
+        {
+          "kind": "metric",
+          "label": "총 사용 예산",
+          "value": "210,000,000원"
+        },
+        {
+          "kind": "metric",
+          "label": "총 관객 수",
+          "value": "15,200명"
+        },
+        {
+          "kind": "calculation",
+          "label": "관객당 비용",
+          "value": "13,816원/명"
+        },
+        {
+          "kind": "metric",
+          "label": "기존 기획전 기준값",
+          "value": "20,000원/명"
+        }
+      ],
+      "report_placement": {
+        "director_brief": true,
+        "detailed_section": "IV. 전시 결과"
+      }
+    },
+    {
+      "id": "obs-paid-audience-ratio",
+      "type": "comparison",
+      "section": "results",
+      "claim": "유료 관객 비율은 기존 기획전 평균보다 낮게 나타남",
+      "metric": "paid_audience_ratio",
+      "current_value": 58.6,
+      "unit": "percent",
+      "reference_group": "legacy_planned_exhibitions",
+      "reference_avg": 86.6,
+      "difference_abs": -28.0,
+      "importance": "high",
+      "statement_kind": "comparative",
+      "tone": "neutral",
+      "caveat": "초대, 제휴, 패스, 단체 관람 정책의 영향을 함께 확인해야 하며 수입 성과와 단순히 동일시할 수 없습니다.",
+      "recommended_wording": "유료 관객 비율은 58.6%로 기존 기획전 평균과 차이를 보이며, 관객 확대와 수입 구조를 분리해 검토할 필요가 있음.",
+      "evidence": [
+        {
+          "kind": "metric",
+          "label": "유료 관객 비율",
+          "value": "58.6%"
+        },
+        {
+          "kind": "metric",
+          "label": "기존 기획전 평균",
+          "value": "86.6%"
+        },
+        {
+          "kind": "calculation",
+          "label": "차이",
+          "value": "-28%p"
+        },
+        {
+          "kind": "metric",
+          "label": "유료 관객 수",
+          "value": "8,907명"
+        }
+      ],
+      "report_placement": {
+        "director_brief": true,
+        "detailed_section": "IV. 전시 결과"
+      }
+    },
+    {
+      "id": "obs-program-participation",
+      "type": "comparison",
+      "section": "composition",
+      "claim": "프로그램 참여 인원은 기존 기획전 평균을 하회함",
+      "metric": "program_participants",
+      "current_value": 548,
+      "unit": "people",
+      "reference_group": "legacy_planned_exhibitions",
+      "reference_avg": 807.6,
+      "difference_pct": -32.1,
+      "importance": "high",
+      "statement_kind": "comparative",
+      "tone": "neutral",
+      "caveat": "프로그램 유형, 정원, 사전예약 방식이 다르면 단순 참여 인원 비교의 의미가 제한됩니다.",
+      "recommended_wording": "프로그램 8개 65회차가 운영되었고, 참여 인원은 548명으로 비교 기준 대비 낮은 수준임.",
+      "evidence": [
+        {
+          "kind": "metric",
+          "label": "프로그램 참여 인원",
+          "value": "548명"
+        },
+        {
+          "kind": "metric",
+          "label": "기존 기획전 평균",
+          "value": "807.6명"
+        },
+        {
+          "kind": "metric",
+          "label": "프로그램 참여율",
+          "value": "3.6%"
+        },
+        {
+          "kind": "calculation",
+          "label": "평균 대비 차이",
+          "value": "-32.1%"
+        }
+      ],
+      "report_placement": {
+        "director_brief": true,
+        "detailed_section": "III. 전시 구성"
+      }
+    },
+    {
+      "id": "obs-publicity-reference",
+      "type": "interpretive_note",
+      "section": "publicity",
+      "claim": "언론 보도와 자체 채널 지표는 관객 유입 가능성과 함께 참고할 만함",
+      "metric": "press_mentions",
+      "current_value": 32,
+      "unit": "count",
+      "reference_group": "legacy_planned_exhibitions",
+      "reference_avg": 28.9,
+      "difference_pct": 10.7,
+      "importance": "medium",
+      "statement_kind": "interpretive",
+      "tone": "restrained",
+      "caveat": "언론 보도 건수와 SNS 게시 수만으로 관객 유입의 인과관계를 확정할 수 없습니다.",
+      "recommended_wording": "언론 보도 32건과 SNS 게시 24건은 관객 유입과의 직접 인과가 아니라 홍보 활동의 참고 지표로 다루는 것이 적절함.",
+      "evidence": [
+        {
+          "kind": "metric",
+          "label": "언론 보도 건수",
+          "value": "32건"
+        },
+        {
+          "kind": "metric",
+          "label": "SNS 게시 건수",
+          "value": "24건"
+        },
+        {
+          "kind": "metric",
+          "label": "기존 기획전 보도 평균",
+          "value": "28.9건"
+        },
+        {
+          "kind": "calculation",
+          "label": "보도 1건당 관객 수",
+          "value": "475명"
+        }
+      ],
+      "report_placement": {
+        "director_brief": false,
+        "detailed_section": "V. 홍보 방식 및 언론 보도"
+      }
+    },
+    {
+      "id": "obs-feedback-1",
+      "type": "qualitative_observation",
+      "section": "audience_response",
+      "claim": "선별된 관객 후기에서 색채 경험과 공간 몰입에 대한 긍정 반응이 확인됨",
+      "source_type": "curated_social_feedback",
+      "representativeness": "selected_not_representative",
+      "importance": "medium",
+      "statement_kind": "interpretive",
+      "tone": "restrained",
+      "caveat": "아래 반응은 전체 관객 의견의 통계적 표본이 아니라 보고서 작성자가 선별 입력한 후기입니다.",
+      "recommended_wording": "선별 입력된 관객 후기에서는 색채 경험과 공간 몰입에 관한 언급이 확인됨.",
+      "evidence": [
+        {
+          "kind": "quote",
+          "label": "SNS 인용",
+          "value": "색의 물질성이 느껴졌습니다."
+        },
+        {
+          "kind": "quote",
+          "label": "설문 인용",
+          "value": "아이와 함께 왔는데 색채 워크숍이 좋았습니다."
+        }
+      ],
+      "report_placement": {
+        "director_brief": false,
+        "detailed_section": "VI. 종합 기록"
+      }
+    },
+    {
+      "id": "obs-feedback-2",
+      "type": "qualitative_observation",
+      "section": "audience_response",
+      "claim": "선별된 부정/건의 반응에서 혼잡도와 감상 동선에 대한 언급이 확인됨",
+      "source_type": "curated_social_feedback",
+      "representativeness": "selected_not_representative",
+      "importance": "medium",
+      "statement_kind": "interpretive",
+      "tone": "restrained",
+      "caveat": "아래 반응은 전체 관객 의견의 통계적 표본이 아니라 보고서 작성자가 선별 입력한 후기입니다.",
+      "recommended_wording": "선별된 부정 및 건의 반응에서는 혼잡도와 감상 동선에 관한 의견이 확인됨.",
+      "evidence": [
+        {
+          "kind": "quote",
+          "label": "SNS 인용",
+          "value": "인파가 많아 작품 감상이 쉽지 않았습니다."
+        },
+        {
+          "kind": "quote",
+          "label": "설문 인용",
+          "value": "사전예약제가 필요해 보입니다."
+        }
+      ],
+      "report_placement": {
+        "director_brief": true,
+        "detailed_section": "VI. 종합 기록"
+      }
+    },
+    {
+      "id": "obs-data-program-count-conflict",
+      "type": "data_quality",
+      "section": "data_quality",
+      "claim": "본문 내 프로그램 수와 표의 프로그램 수가 일치하지 않을 가능성이 있음",
+      "importance": "high",
+      "statement_kind": "data_quality",
+      "tone": "neutral",
+      "caveat": "자동 보고서 생성 전 검수자가 원자료의 프로그램 총수, 회차, 참여 인원을 확인해야 합니다.",
+      "recommended_wording": "데이터 검증 필요: 본문 내 프로그램 수와 표의 프로그램 수가 일치하지 않을 가능성이 있음",
+      "evidence": [
+        {
+          "kind": "source",
+          "label": "개요 표기",
+          "value": "총 8개(65회) 프로그램 진행, 548명 참여"
+        },
+        {
+          "kind": "source",
+          "label": "전시 구성 표기",
+          "value": "총 7개 프로그램 진행, 453명 참여"
+        }
+      ],
+      "report_placement": {
+        "director_brief": true,
+        "detailed_section": "데이터 검증 로그"
+      }
+    }
+  ]
+};

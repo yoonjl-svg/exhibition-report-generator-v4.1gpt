@@ -1,12 +1,12 @@
 # Analysis Ledger Schema
 
-This is the draft schema used by `data/sample-ledger.json`.
+This is the draft schema used by `data/generated-ledger.json` and the fallback `data/sample-ledger.json`.
 
 ## Ledger
 
 ```json
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "report": {},
   "reference_groups": [],
   "metrics": [],
@@ -110,3 +110,14 @@ Audience feedback should be treated as selected feedback unless a proper samplin
 ```
 
 The system should not turn selected feedback into percentages or general audience sentiment.
+
+## Input Schema
+
+The Ledger is generated from normalized exhibition input.
+
+See:
+
+- `schemas/exhibition-input.schema.json`
+- `data/sample-input.json`
+
+The input schema keeps original data separated from the generated observations. This separation is important because v4 should make the source of each claim auditable.
