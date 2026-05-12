@@ -6,6 +6,7 @@
 - Generate metrics from input data. Done for the sample input.
 - Generate evidence-backed observations. Done for the sample input.
 - Validate all references and caveats. Done for generated Ledger validation.
+- Add Excel-editable CSV input templates. Done in v4.3.
 
 ## Phase 2: Director Review
 
@@ -13,6 +14,7 @@
 - Allow curator toggles for director summary inclusion.
 - Show evidence and caveats beside every claim.
 - Flag data conflicts before report export.
+- Show a rendered Markdown report draft from the generated Ledger. Done in v4.3.
 
 ## Phase 3: Editorial Rendering
 

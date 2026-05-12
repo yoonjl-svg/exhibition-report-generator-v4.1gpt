@@ -14,6 +14,7 @@
       </div>
       <div class="toolbar" aria-label="report tools">
         <button id="copy-markdown" type="button">Markdown</button>
+        <button id="copy-report" type="button">Report Draft</button>
         <button id="toggle-evidence" type="button" aria-pressed="true">Evidence</button>
       </div>
     </header>
@@ -70,6 +71,17 @@
         <section class="panel">
           <div class="section-heading">
             <div>
+              <p class="eyebrow">Rendered Report</p>
+              <h2>보고서 초안</h2>
+            </div>
+            <p id="report-draft-note" class="note"></p>
+          </div>
+          <pre id="report-draft" class="report-draft"></pre>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <div>
               <p class="eyebrow">Ledger</p>
               <h2>관찰 원장</h2>
             </div>
@@ -83,6 +95,7 @@
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script src="data/generated-ledger.js"></script>
+    <script src="data/generated-report.js"></script>
     <script src="data/sample-ledger.js"></script>
     <script src="src/ledger.js"></script>
     <script src="src/app.js"></script>

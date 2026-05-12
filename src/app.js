@@ -9,6 +9,8 @@
     metricStrip: document.querySelector("#metric-strip"),
     brief: document.querySelector("#brief-observations"),
     ledgerList: document.querySelector("#ledger-list"),
+    reportDraft: document.querySelector("#report-draft"),
+    reportDraftNote: document.querySelector("#report-draft-note"),
     count: document.querySelector("#observation-count"),
     health: document.querySelector("#health-list"),
     sectionFilter: document.querySelector("#section-filter"),
@@ -16,6 +18,7 @@
     kindFilter: document.querySelector("#kind-filter"),
     toggleEvidence: document.querySelector("#toggle-evidence"),
     copyMarkdown: document.querySelector("#copy-markdown"),
+    copyReport: document.querySelector("#copy-report"),
     toast: document.querySelector("#toast")
   };
 
@@ -30,6 +33,7 @@
     renderHealth();
     renderMetrics();
     renderBrief();
+    renderReportDraft();
     renderLedger();
     bindEvents();
   }
@@ -83,6 +87,12 @@
     els.brief.innerHTML = tools.getDirectorObservations(ledger).map(renderObservation).join("");
   }
 
+  function renderReportDraft() {
+    const markdown = getReportMarkdown();
+    els.reportDraft.textContent = markdown;
+    els.reportDraftNote.textContent = `${markdown.length.toLocaleString("ko-KR")} characters`;
+  }
+
   function renderLedger() {
     const filters = {
       section: els.sectionFilter.value,
@@ -133,14 +143,26 @@
 
     els.copyMarkdown.addEventListener("click", async () => {
       const markdown = tools.makeMarkdownReport(ledger);
+      await copyText(markdown, "Markdown copied.");
+    });
+
+    els.copyReport.addEventListener("click", async () => {
+      await copyText(getReportMarkdown(), "Report draft copied.");
+    });
+  }
+
+  async function copyText(text, successMessage) {
       try {
-        await navigator.clipboard.writeText(markdown);
-        showToast("Markdown copied.");
+        await navigator.clipboard.writeText(text);
+        showToast(successMessage);
       } catch {
         showToast("Clipboard unavailable. Select generated text from console.");
-        console.log(markdown);
+        console.log(text);
       }
-    });
+  }
+
+  function getReportMarkdown() {
+    return window.GENERATED_REPORT_MARKDOWN || tools.makeMarkdownReport(ledger);
   }
 
   function showToast(message) {

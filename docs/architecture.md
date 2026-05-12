@@ -21,14 +21,26 @@ normalized input -> metric derivation -> Analysis Ledger -> section arrangement 
 ## Current Pipeline
 
 ```text
-data/sample-input.json
+templates/sample-input/*.csv
+-> scripts/csv_input_to_json.py
+-> data/sample-input.json
 -> scripts/build_ledger.py
 -> data/generated-ledger.json
 -> data/generated-ledger.js
 -> index.html review UI
 ```
 
-The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback.
+The report draft path is:
+
+```text
+data/generated-ledger.json
+-> scripts/render_report.py
+-> output/report-draft.md
+-> data/generated-report.js
+-> index.html report draft panel
+```
+
+The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback. It also loads `data/generated-report.js` when a rendered report draft exists.
 
 ## Core Objects
 

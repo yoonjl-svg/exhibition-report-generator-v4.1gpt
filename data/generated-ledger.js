@@ -2,11 +2,11 @@ window.GENERATED_LEDGER = {
   "schema_version": "0.2.0",
   "report": {
     "id": "hyper-yellow-demo",
-    "title": "전시보고서 v4.2 - 《(가)하이퍼 옐로우》",
+    "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
     "period": "2025.06.13 - 2025.08.17",
     "venue": "일민미술관",
-    "generated_at": "2026-05-12T11:46:11+09:00",
-    "scope_note": "샘플 자동생성보고서의 수치를 v4.2 입력 형식으로 정규화한 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
+    "generated_at": "2026-05-12T12:24:57+09:00",
+    "scope_note": "CSV 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
     "brief_metric_ids": [
       "total_visitors",
       "daily_visitors",
@@ -27,7 +27,7 @@ window.GENERATED_LEDGER = {
       "id": "similar_theme_scale",
       "label": "유사 규모/주제 전시",
       "selection_rule": "관객 수, 예산, 프로그램 수가 유사한 전시 후보",
-      "caveat": "v4.2에서는 비교군 개념만 보존하며 자동 군집화는 구현하지 않습니다."
+      "caveat": "v4.3에서는 비교군 개념만 보존하며 자동 군집화는 구현하지 않습니다."
     }
   ],
   "metrics": [
@@ -368,18 +368,18 @@ window.GENERATED_LEDGER = {
       "importance": "high",
       "statement_kind": "data_quality",
       "tone": "neutral",
-      "caveat": "자동 보고서 생성 전 검수자가 원자료의 프로그램 총수, 회차, 참여 인원을 확인해야 합니다.",
+      "caveat": "자동 보고서 생성 전 검수자가 원자료의 프로그램 총수·회차·참여 인원을 확인해야 합니다.",
       "recommended_wording": "데이터 검증 필요: 본문 내 프로그램 수와 표의 프로그램 수가 일치하지 않을 가능성이 있음",
       "evidence": [
         {
           "kind": "source",
           "label": "개요 표기",
-          "value": "총 8개(65회) 프로그램 진행, 548명 참여"
+          "value": "총 8개(65회) 프로그램 진행·548명 참여"
         },
         {
           "kind": "source",
           "label": "전시 구성 표기",
-          "value": "총 7개 프로그램 진행, 453명 참여"
+          "value": "총 7개 프로그램 진행·453명 참여"
         }
       ],
       "report_placement": {

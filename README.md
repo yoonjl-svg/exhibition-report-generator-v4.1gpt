@@ -25,10 +25,14 @@ The important shift is that every analytic sentence is backed by a traceable obs
 
 - A dependency-free web preview in `index.html`
 - A normalized exhibition input sample in `data/sample-input.json`
+- Excel-editable CSV input templates in `templates/sample-input/`
+- A CSV-to-JSON input converter in `scripts/csv_input_to_json.py`
 - A draft input schema in `schemas/exhibition-input.schema.json`
 - A Python Ledger builder in `scripts/build_ledger.py`
 - A generated Analysis Ledger in `data/generated-ledger.json`
 - A browser copy of the generated Ledger in `data/generated-ledger.js`
+- A Markdown report renderer in `scripts/render_report.py`
+- A generated report draft in `output/report-draft.md`
 - A fallback sample Ledger in `data/sample-ledger.json`
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
@@ -65,6 +69,14 @@ To rebuild the Ledger from the normalized input:
 python scripts/build_ledger.py data/sample-input.json --json data/generated-ledger.json --js data/generated-ledger.js
 ```
 
+To rebuild the full CSV-input-to-report flow:
+
+```powershell
+python scripts/csv_input_to_json.py templates/sample-input --output data/sample-input.json
+python scripts/build_ledger.py data/sample-input.json --json data/generated-ledger.json --js data/generated-ledger.js
+python scripts/render_report.py data/generated-ledger.json --markdown output/report-draft.md --js data/generated-report.js
+```
+
 The builder uses only the Python standard library. Python 3.10 or newer is recommended.
 
 ## v4 Design Principles
@@ -78,6 +90,6 @@ The builder uses only the Python standard library. Python 3.10 or newer is recom
 
 ## Current Scope
 
-This is a working foundation for v4.2 planning. It proves the new internal model, the review experience, and the first input-to-Ledger generation path, but does not yet generate `.docx` files.
+This is a working foundation for v4.3 planning. It proves CSV input, the new internal model, the review experience, the first input-to-Ledger generation path, and Markdown report draft rendering. It does not yet generate `.docx` files.
 
-The next implementation step is to connect real exhibition input data and then render approved observations into Word.
+The next implementation step is to add approval controls and then render approved observations into Word.

@@ -222,6 +222,19 @@ select {
   gap: 10px;
 }
 
+.report-draft {
+  max-height: 520px;
+  margin: 0;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #fbfcf9;
+  color: var(--ink);
+  font: 14px/1.6 "Noto Sans KR", "Segoe UI", Arial, sans-serif;
+  white-space: pre-wrap;
+}
+
 .observation {
   border: 1px solid var(--line);
   border-radius: 8px;

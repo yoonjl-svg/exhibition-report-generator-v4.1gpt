@@ -6,6 +6,17 @@ This protocol defines how v4 should move from raw exhibition records to a direct
 
 Curator-authored input is stored as `data/sample-input.json` and validated against the draft shape in `schemas/exhibition-input.schema.json`.
 
+For practical entry, v4.3 adds Excel-editable CSV files under `templates/sample-input/`.
+
+```text
+templates/sample-input/core.csv
+templates/sample-input/reference-groups.csv
+templates/sample-input/selected-feedback.csv
+templates/sample-input/data-quality.csv
+-> scripts/csv_input_to_json.py
+-> data/sample-input.json
+```
+
 The input should separate:
 
 - exhibition basics
@@ -80,6 +91,16 @@ The UI is for reviewing observations, not for reading a polished report. A curat
 - omitted or lower-priority observations
 
 ## 6. Render Report
+
+Markdown report rendering is now available as the first report-generation layer.
+
+```text
+data/generated-ledger.json
+-> scripts/render_report.py
+-> output/report-draft.md
+-> data/generated-report.js
+-> web report draft panel
+```
 
 Word export is the next layer, not the source of truth.
 
