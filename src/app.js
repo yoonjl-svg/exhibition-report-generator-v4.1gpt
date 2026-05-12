@@ -48,6 +48,8 @@
   function renderHealth() {
     const result = tools.validateLedger(ledger);
     const values = [
+      ["Schema", ledger.schema_version || "-"],
+      ["Data", window.GENERATED_LEDGER ? "Generated" : "Fallback"],
       ["Observations", ledger.observations.length],
       ["Metrics", ledger.metrics.length],
       ["Errors", result.errors.length],
