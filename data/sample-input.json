@@ -12,6 +12,11 @@
     "venue": "일민미술관",
     "scope_note": "CSV 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다."
   },
+  "narrative": {
+    "theme_and_content": "이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.",
+    "composition_note": "전시 구성 항목에는 전시실별 구성·작품 수·공간 연출·연계 프로그램 운영 내역을 입력합니다. 현재 샘플은 프로그램 참여 지표를 중심으로 구성됩니다.",
+    "evaluation_note": "평가 및 개선방안 항목은 성공/실패 판정이 아니라 수치상 특이점"
+  },
   "audience": {
     "total_visitors": 15200,
     "operating_days": 66,
@@ -43,13 +48,13 @@
       "selection_rule": "샘플 데이터에 포함된 이전 기획전 전체",
       "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다.",
       "metrics": {
-        "total_visitors_avg": 9413,
-        "paid_audience_ratio_avg": 86.6,
-        "total_budget_avg": 140000000,
         "press_mentions_avg": 28.9,
+        "paid_audience_ratio_avg": 86.6,
+        "program_participants_avg": 807.6,
         "daily_visitors_avg": 159.7,
         "cost_per_visitor_avg": 20000,
-        "program_participants_avg": 807.6
+        "total_budget_avg": 140000000,
+        "total_visitors_avg": 9413
       }
     },
     {

@@ -15,6 +15,7 @@
 - Show evidence and caveats beside every claim.
 - Flag data conflicts before report export.
 - Show a rendered Markdown report draft from the generated Ledger. Done in v4.3.
+- Add print/PDF-ready HTML and DOCX report draft outputs. Done in v4.3.
 
 ## Phase 3: Editorial Rendering
 

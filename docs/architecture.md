@@ -36,11 +36,20 @@ The report draft path is:
 data/generated-ledger.json
 -> scripts/render_report.py
 -> output/report-draft.md
+-> output/report-draft.html
 -> data/generated-report.js
 -> index.html report draft panel
 ```
 
-The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback. It also loads `data/generated-report.js` when a rendered report draft exists.
+The Word output path is:
+
+```text
+data/generated-ledger.json
+-> scripts/render_docx.py
+-> output/report-draft.docx
+```
+
+The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback. It also loads `data/generated-report.js` when a rendered report draft exists. The report layout references the old Ilmin report's page and table style, but the content order follows the v4 analysis protocol.
 
 ## Core Objects
 

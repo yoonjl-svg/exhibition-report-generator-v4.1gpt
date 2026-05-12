@@ -38,10 +38,21 @@ This produces the Analysis Ledger and the browser-readable copy.
 Run:
 
 ```powershell
-python scripts/render_report.py data/generated-ledger.json --markdown output/report-draft.md --js data/generated-report.js
+python scripts/render_report.py data/generated-ledger.json --markdown output/report-draft.md --html output/report-draft.html --js data/generated-report.js
+python scripts/render_docx.py data/generated-ledger.json --output output/report-draft.docx
 ```
 
-This produces a Markdown report draft and the browser-readable copy.
+This produces Markdown, print/PDF-ready HTML, DOCX, and the browser-readable copy.
+
+## Download Template
+
+The web app links to:
+
+```text
+templates/ilmin-report-input-template.zip
+```
+
+This ZIP contains the CSV files under `templates/sample-input/`.
 
 ## Validate
 

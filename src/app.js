@@ -18,7 +18,6 @@
     kindFilter: document.querySelector("#kind-filter"),
     toggleEvidence: document.querySelector("#toggle-evidence"),
     copyMarkdown: document.querySelector("#copy-markdown"),
-    copyReport: document.querySelector("#copy-report"),
     toast: document.querySelector("#toast")
   };
 
@@ -142,11 +141,6 @@
     });
 
     els.copyMarkdown.addEventListener("click", async () => {
-      const markdown = tools.makeMarkdownReport(ledger);
-      await copyText(markdown, "Markdown copied.");
-    });
-
-    els.copyReport.addEventListener("click", async () => {
       await copyText(getReportMarkdown(), "Report draft copied.");
     });
   }
@@ -162,7 +156,7 @@
   }
 
   function getReportMarkdown() {
-    return window.GENERATED_REPORT_MARKDOWN || tools.makeMarkdownReport(ledger);
+    return window.GENERATED_REPORT?.markdown || window.GENERATED_REPORT_MARKDOWN || tools.makeMarkdownReport(ledger);
   }
 
   function showToast(message) {

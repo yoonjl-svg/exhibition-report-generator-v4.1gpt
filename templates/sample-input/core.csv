@@ -7,6 +7,9 @@ period,start,2025-06-13,YYYY-MM-DD
 period,end,2025-08-17,YYYY-MM-DD
 period,display,2025.06.13 - 2025.08.17,report display
 exhibition,scope_note,CSV 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.,
+narrative,theme_and_content,이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.,
+narrative,composition_note,전시 구성 항목에는 전시실별 구성·작품 수·공간 연출·연계 프로그램 운영 내역을 입력합니다. 현재 샘플은 프로그램 참여 지표를 중심으로 구성됩니다.,
+narrative,evaluation_note,평가 및 개선방안 항목은 성공/실패 판정이 아니라 수치상 특이점, 관객 반응, 데이터 검증 필요 사항을 후속 참고사항으로 정리합니다.,
 audience,total_visitors,15200,
 audience,operating_days,66,
 audience,daily_visitors,230,blank allowed if operating_days exists

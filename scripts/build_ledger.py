@@ -114,6 +114,7 @@ def build_ledger(source: dict[str, Any]) -> dict[str, Any]:
                 "scope_note",
                 "정규화된 전시 입력 데이터를 바탕으로 생성된 Analysis Ledger입니다.",
             ),
+            "narrative": source.get("narrative", {}),
             "brief_metric_ids": source.get("brief_metric_ids") or BRIEF_METRIC_IDS,
         },
         "reference_groups": [

@@ -53,6 +53,15 @@
         "press_mentions"
       ]
     },
+    "narrative": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "theme_and_content": { "type": "string" },
+        "composition_note": { "type": "string" },
+        "evaluation_note": { "type": "string" }
+      }
+    },
     "audience": {
       "type": "object",
       "additionalProperties": true,

@@ -37,7 +37,8 @@ body {
 }
 
 button,
-select {
+select,
+.button-link {
   font: inherit;
 }
 
@@ -96,7 +97,8 @@ h3 {
 }
 
 button,
-select {
+select,
+.button-link {
   min-height: 34px;
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -104,13 +106,19 @@ select {
   color: var(--ink);
 }
 
-button {
+button,
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 12px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 button:hover,
-select:hover {
+select:hover,
+.button-link:hover {
   border-color: var(--accent);
 }
 

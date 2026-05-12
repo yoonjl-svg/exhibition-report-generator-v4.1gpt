@@ -65,6 +65,7 @@ def build_input(template_dir: Path) -> dict[str, Any]:
         "exhibition": {
             "period": {},
         },
+        "narrative": {},
         "audience": {},
         "budget": {},
         "programs": {},
@@ -97,6 +98,8 @@ def read_core(path: Path, source: dict[str, Any]) -> None:
             source["brief_metric_ids"] = [item.strip() for item in value.split(",") if item.strip()]
         elif section in {"audience", "budget", "programs", "publicity", "membership"}:
             source[section][key] = coerce_value(key, value)
+        elif section == "narrative":
+            source["narrative"][key] = value
         elif section == "exhibition":
             source["exhibition"][key] = value
         else:

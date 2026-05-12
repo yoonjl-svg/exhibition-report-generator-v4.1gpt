@@ -33,6 +33,9 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - A browser copy of the generated Ledger in `data/generated-ledger.js`
 - A Markdown report renderer in `scripts/render_report.py`
 - A generated report draft in `output/report-draft.md`
+- A print/PDF-ready report layout in `output/report-draft.html`
+- A Word report draft in `output/report-draft.docx`
+- A downloadable CSV input template package in `templates/ilmin-report-input-template.zip`
 - A fallback sample Ledger in `data/sample-ledger.json`
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
@@ -74,7 +77,8 @@ To rebuild the full CSV-input-to-report flow:
 ```powershell
 python scripts/csv_input_to_json.py templates/sample-input --output data/sample-input.json
 python scripts/build_ledger.py data/sample-input.json --json data/generated-ledger.json --js data/generated-ledger.js
-python scripts/render_report.py data/generated-ledger.json --markdown output/report-draft.md --js data/generated-report.js
+python scripts/render_report.py data/generated-ledger.json --markdown output/report-draft.md --html output/report-draft.html --js data/generated-report.js
+python scripts/render_docx.py data/generated-ledger.json --output output/report-draft.docx
 ```
 
 The builder uses only the Python standard library. Python 3.10 or newer is recommended.
@@ -90,6 +94,6 @@ The builder uses only the Python standard library. Python 3.10 or newer is recom
 
 ## Current Scope
 
-This is a working foundation for v4.3 planning. It proves CSV input, the new internal model, the review experience, the first input-to-Ledger generation path, and Markdown report draft rendering. It does not yet generate `.docx` files.
+This is a working foundation for v4.3 planning. It proves CSV input, the new internal model, the review experience, the first input-to-Ledger generation path, print-ready HTML report rendering, and `.docx` draft generation.
 
-The next implementation step is to add approval controls and then render approved observations into Word.
+The next implementation step is to add approval controls so only reviewed observations are included in the final report output.

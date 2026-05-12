@@ -98,11 +98,22 @@ Markdown report rendering is now available as the first report-generation layer.
 data/generated-ledger.json
 -> scripts/render_report.py
 -> output/report-draft.md
+-> output/report-draft.html
 -> data/generated-report.js
 -> web report draft panel
 ```
 
-Word export is the next layer, not the source of truth.
+The HTML output uses the old Ilmin report as a layout reference only: A4 page rhythm, title page, table treatment, typography, and print/PDF behavior. It does not copy the old report's content sequence.
+
+Word export is also available as a draft layer:
+
+```text
+data/generated-ledger.json
+-> scripts/render_docx.py
+-> output/report-draft.docx
+```
+
+Word export is a rendering target, not the source of truth.
 
 The approved Ledger should render into:
 
