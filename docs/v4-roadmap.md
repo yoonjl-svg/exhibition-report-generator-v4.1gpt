@@ -78,3 +78,10 @@
 - Show the six director metric cards in a single desktop row. Done in v4.12.
 - Use the same reference-comparison hover wording across the full metric set. Done in v4.12.
 - Read `SNS 피드백 합계` from historical exhibition data for reference averages. Done in v4.12.
+
+## Phase 13: Browser Input State
+
+- Start the browser app with no loaded report. Done in v4.13.
+- Add Excel upload as the primary data input path. Done in v4.13.
+- Add temporary sample fill for testing before final publishing. Done in v4.13.
+- Remove caveat blocks from rendered report drafts while keeping them in the underlying observation data. Done in v4.13.

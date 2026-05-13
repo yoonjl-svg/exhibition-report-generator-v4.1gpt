@@ -1,11 +1,19 @@
 (function () {
-  const ledger = window.GENERATED_LEDGER || window.SAMPLE_LEDGER;
+  let ledger = null;
+  const sampleLedger = window.GENERATED_LEDGER || window.SAMPLE_LEDGER;
   const tools = window.LedgerTools;
   let showEvidence = true;
   let reviewState = {};
 
   const els = {
+    emptyState: document.querySelector("#empty-state"),
+    workspace: document.querySelector("#workspace"),
     title: document.querySelector("#report-title"),
+    excelUpload: document.querySelector("#excel-upload"),
+    uploadExcelButton: document.querySelector("#upload-excel-button"),
+    emptyUploadButton: document.querySelector("#empty-upload-button"),
+    loadSampleButton: document.querySelector("#load-sample-button"),
+    emptySampleButton: document.querySelector("#empty-sample-button"),
     scopeNote: document.querySelector("#scope-note"),
     metricStrip: document.querySelector("#metric-strip"),
     brief: document.querySelector("#brief-observations"),
@@ -31,13 +39,28 @@
   };
 
   function init() {
-    if (!ledger) {
-      document.body.innerHTML = "<main class=\"load-error\">분석 데이터를 불러올 수 없습니다.</main>";
-      return;
-    }
+    bindEvents();
+    renderEmptyState();
+  }
+
+  function renderEmptyState() {
+    ledger = null;
+    reviewState = {};
+    els.title.textContent = "전시보고서 데이터 입력";
+    els.emptyState.hidden = false;
+    els.workspace.hidden = true;
+    setReportActionsEnabled(false);
+    setExportMenuOpen(false);
+  }
+
+  function setLedger(nextLedger, sourceLabel) {
+    ledger = nextLedger;
     reviewState = loadReviewState();
     els.title.textContent = ledger.report.title;
-    els.scopeNote.textContent = ledger.report.scope_note;
+    els.scopeNote.textContent = ledger.report.scope_note || "";
+    els.emptyState.hidden = true;
+    els.workspace.hidden = false;
+    setReportActionsEnabled(true);
     renderFilters();
     renderHealth();
     renderReviewSummary();
@@ -45,7 +68,13 @@
     renderBrief();
     renderReportDraft();
     renderLedger();
-    bindEvents();
+    showToast(sourceLabel ? `${sourceLabel} 데이터를 불러왔습니다.` : "전시 데이터를 불러왔습니다.");
+  }
+
+  function setReportActionsEnabled(enabled) {
+    for (const item of [els.exportMenuButton, els.downloadReportDoc, els.printReportPdf]) {
+      item.disabled = !enabled;
+    }
   }
 
   function renderFilters() {
@@ -199,14 +228,22 @@
   }
 
   function bindEvents() {
+    els.uploadExcelButton.addEventListener("click", () => els.excelUpload.click());
+    els.emptyUploadButton.addEventListener("click", () => els.excelUpload.click());
+    els.loadSampleButton.addEventListener("click", loadSampleLedger);
+    els.emptySampleButton.addEventListener("click", loadSampleLedger);
+    els.excelUpload.addEventListener("change", handleExcelUpload);
+
     for (const el of [els.sectionFilter, els.importanceFilter, els.kindFilter]) {
       el.addEventListener("change", () => {
+        if (!ledger) return;
         renderLedger();
         showToast(ledgerFilterToast());
       });
     }
 
     els.clearFilters.addEventListener("click", () => {
+      if (!ledger) return;
       els.sectionFilter.value = "all";
       els.importanceFilter.value = "all";
       els.kindFilter.value = "all";
@@ -216,6 +253,7 @@
 
     for (const reviewContainer of [els.brief, els.ledgerList]) {
       reviewContainer.addEventListener("change", (event) => {
+        if (!ledger) return;
         const target = event.target;
         if (!target.dataset.reviewField) return;
         updateObservationReview(target.dataset.id, target.dataset.reviewField, target);
@@ -223,6 +261,7 @@
     }
 
     els.toggleEvidence.addEventListener("click", () => {
+      if (!ledger) return;
       showEvidence = !showEvidence;
       els.toggleEvidence.setAttribute("aria-pressed", String(showEvidence));
       renderBrief();
@@ -230,10 +269,12 @@
     });
 
     els.exportMenuButton.addEventListener("click", () => {
+      if (!ledger) return;
       setExportMenuOpen(els.exportMenu.hidden);
     });
 
     els.downloadReportDoc.addEventListener("click", () => {
+      if (!ledger) return;
       setExportMenuOpen(false);
       if (!window.DocxExport) {
         downloadText("approved-report.doc", makeReportHtml(makeApprovedLedger()), "application/msword");
@@ -246,11 +287,13 @@
     });
 
     els.printReportPdf.addEventListener("click", () => {
+      if (!ledger) return;
       setExportMenuOpen(false);
       openPrintReport(makeApprovedLedger());
     });
 
     els.approveAll.addEventListener("click", () => {
+      if (!ledger) return;
       for (const observation of ledger.observations) {
         reviewState[observation.id] = {
           ...defaultObservationState(observation),
@@ -264,6 +307,7 @@
     });
 
     els.resetReview.addEventListener("click", () => {
+      if (!ledger) return;
       reviewState = makeDefaultReviewState();
       persistReviewState();
       renderAll();
@@ -278,6 +322,31 @@
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") setExportMenuOpen(false);
     });
+  }
+
+  function loadSampleLedger() {
+    if (!sampleLedger) {
+      showToast("샘플 데이터를 찾을 수 없습니다.");
+      return;
+    }
+    setLedger(clone(sampleLedger), "샘플");
+  }
+
+  async function handleExcelUpload(event) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    if (!window.InputLoader) {
+      showToast("엑셀 입력 모듈을 불러오지 못했습니다.");
+      return;
+    }
+    try {
+      showToast("엑셀 파일을 읽는 중입니다.");
+      const uploadedLedger = await window.InputLoader.loadWorkbook(file);
+      setLedger(uploadedLedger, file.name);
+    } catch (error) {
+      showToast(error.message || "엑셀 파일을 읽지 못했습니다.");
+    }
   }
 
   function updateObservationReview(id, field, target) {
@@ -419,7 +488,6 @@
     } else {
       for (const observation of director) {
         lines.push(`- ${observation.recommended_wording || observation.claim}`);
-        if (observation.caveat) lines.push(`  - 한계: ${observation.caveat}`);
       }
     }
     lines.push("");
@@ -431,10 +499,6 @@
         lines.push(`### ${observation.claim}`);
         lines.push("");
         lines.push(observation.recommended_wording || observation.claim);
-        if (observation.caveat) {
-          lines.push("");
-          lines.push(`한계: ${observation.caveat}`);
-        }
         if (observation.evidence?.length) {
           lines.push("");
           lines.push("근거:");
@@ -558,7 +622,6 @@
     const evidence = observation.evidence?.length ? tools.evidenceText(observation.evidence[0]) : "";
     return `<li>
       <p>${escapeHtml(observation.recommended_wording || observation.claim)}</p>
-      ${observation.caveat ? `<p class="caveat">한계: ${escapeHtml(observation.caveat)}</p>` : ""}
       ${evidence ? `<p class="source">근거: ${escapeHtml(evidence)}</p>` : ""}
     </li>`;
   }
@@ -572,7 +635,6 @@
         <dt>진술 성격</dt><dd>${escapeHtml(tools.kindLabel(observation.statement_kind))}</dd>
         <dt>관찰 ID</dt><dd>${escapeHtml(observation.id || "")}</dd>
       </dl>
-      ${observation.caveat ? `<p class="caveat">한계: ${escapeHtml(observation.caveat)}</p>` : ""}
       ${evidenceListHtml(observation)}
     </article>`;
   }
@@ -644,6 +706,10 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+  }
+
+  function clone(value) {
+    return JSON.parse(JSON.stringify(value));
   }
 
   init();

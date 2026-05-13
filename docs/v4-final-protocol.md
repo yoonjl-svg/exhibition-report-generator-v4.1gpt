@@ -1,4 +1,4 @@
-# v4.12 Final Operating Protocol
+# v4.13 Final Operating Protocol
 
 This protocol describes the complete v4 flow after the planning spike.
 
@@ -16,18 +16,19 @@ This protocol describes the complete v4 flow after the planning spike.
 - v4.10: compact paired metric cards in the director view
 - v4.11: six fixed paired director cards with budget execution, group audience ratio, program sessions, and workbook SNS feedback total
 - v4.12: desktop single-row director metric strip and full reference comparisons for all director metrics
+- v4.13: empty initial browser state, Excel upload, temporary sample fill, and report draft caveat removal
 
 ## Operating Flow
 
-1. Edit `templates/ilmin-report-input-template.xlsx`.
-2. Run the full local rebuild:
+1. Open the GitHub Pages app.
+2. Upload a completed `templates/ilmin-report-input-template.xlsx`, or use the temporary sample fill button during testing.
+3. For repository maintenance, run the full local rebuild:
 
 ```powershell
 python scripts/build_all.py --xlsx-input templates/ilmin-report-input-template.xlsx
 ```
 
-3. Commit and push the regenerated files.
-4. Open the GitHub Pages app.
+4. Commit and push the regenerated files.
 5. Review each observation:
    - `보고서 포함`: controls whether the observation enters the report.
    - `핵심 지표`: controls whether it appears in the director-facing summary.
@@ -53,7 +54,7 @@ No observation should appear in the final report unless it has:
 
 ## Boundary
 
-The current v4.12 system does not yet automate:
+The current v4.13 system does not yet automate:
 
 - automatic collection of audience feedback from the web
 - LLM rewriting inside the browser

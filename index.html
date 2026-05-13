@@ -13,6 +13,9 @@
         <h1 id="report-title">전시보고서 데이터 검토</h1>
       </div>
       <div class="toolbar" aria-label="report tools">
+        <input id="excel-upload" class="visually-hidden" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+        <button id="upload-excel-button" type="button">Excel 업로드</button>
+        <button id="load-sample-button" type="button">샘플 채우기</button>
         <div class="export-menu">
           <button id="export-menu-button" class="primary-button" type="button" aria-expanded="false" aria-controls="export-menu">보고서 내보내기</button>
           <div id="export-menu" class="export-menu-panel" hidden>
@@ -24,7 +27,19 @@
       </div>
     </header>
 
-    <main class="layout">
+    <main id="empty-state" class="empty-state">
+      <section class="empty-card">
+        <p class="eyebrow">Data Input</p>
+        <h2>생성된 전시보고서가 없습니다</h2>
+        <p>Excel Template를 작성한 뒤 업로드하면 핵심 지표, 관찰 데이터, 보고서 초안이 생성됩니다.</p>
+        <div class="empty-actions">
+          <button id="empty-upload-button" class="primary-button" type="button">Excel 업로드</button>
+          <button id="empty-sample-button" type="button">샘플 채우기</button>
+        </div>
+      </section>
+    </main>
+
+    <main id="workspace" class="layout" hidden>
       <aside class="sidebar" aria-label="data filters">
         <section class="panel compact">
           <h2>관찰 데이터 필터</h2>
@@ -118,11 +133,12 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <script src="data/generated-ledger.js?v=20260513-17"></script>
-    <script src="data/generated-report.js?v=20260513-17"></script>
-    <script src="data/sample-ledger.js?v=20260513-17"></script>
-    <script src="src/ledger.js?v=20260513-17"></script>
-    <script src="src/docx-export.js?v=20260513-17"></script>
-    <script src="src/app.js?v=20260513-17"></script>
+    <script src="data/generated-ledger.js?v=20260513-18"></script>
+    <script src="data/generated-report.js?v=20260513-18"></script>
+    <script src="data/sample-ledger.js?v=20260513-18"></script>
+    <script src="src/ledger.js?v=20260513-18"></script>
+    <script src="src/docx-export.js?v=20260513-18"></script>
+    <script src="src/input-loader.js?v=20260513-18"></script>
+    <script src="src/app.js?v=20260513-18"></script>
   </body>
 </html>

@@ -46,7 +46,6 @@
     if (director.length) {
       for (const observation of director) {
         body.push(paragraph(`• ${observation.recommended_wording || observation.claim}`, "Bullet"));
-        if (observation.caveat) body.push(paragraph(`한계: ${observation.caveat}`, "Caveat"));
         if (observation.evidence?.length) {
           body.push(paragraph(`근거: ${evidenceText(observation.evidence[0], tools)}`, "Evidence"));
         }
@@ -70,7 +69,6 @@
             false
           )
         );
-        if (observation.caveat) body.push(paragraph(`한계: ${observation.caveat}`, "Caveat"));
         if (observation.evidence?.length) {
           body.push(paragraph("근거", "EvidenceLabel"));
           for (const item of observation.evidence) {

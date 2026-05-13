@@ -228,9 +228,6 @@ def render_markdown_block(lines: list[str], block: dict[str, Any]) -> None:
         lines.append("")
         lines.append(block["wording"])
         lines.append("")
-        if block.get("caveat"):
-            lines.append(f"한계: {block['caveat']}")
-            lines.append("")
         if block.get("evidence"):
             lines.append("근거:")
             for item in block["evidence"]:
@@ -238,8 +235,6 @@ def render_markdown_block(lines: list[str], block: dict[str, Any]) -> None:
             lines.append("")
     elif block_type == "bullet":
         lines.append(f"- {block['text']}")
-        if block.get("caveat"):
-            lines.append(f"  - 한계: {block['caveat']}")
     elif block_type == "data_quality":
         lines.append(f"- {block['text']}")
         if block.get("caveat"):
@@ -317,17 +312,15 @@ def render_html_block(block: dict[str, Any]) -> str:
         )
     if block_type == "observation":
         evidence = "".join(f"<li>{escape(evidence_text(item))}</li>" for item in block.get("evidence", []))
-        caveat = f'<p class="caveat">한계: {escape(block["caveat"])}</p>' if block.get("caveat") else ""
         evidence_html = f"<p class=\"evidence-label\">근거</p><ul>{evidence}</ul>" if evidence else ""
         return (
             '<article class="observation">'
             f"<h3>{escape(block['claim'])}</h3>"
             f"<p>{escape(block['wording'])}</p>"
-            f"{caveat}{evidence_html}</article>"
+            f"{evidence_html}</article>"
         )
     if block_type == "bullet":
-        caveat = f"<span>한계: {escape(block['caveat'])}</span>" if block.get("caveat") else ""
-        return f'<div class="bullet">• {escape(block["text"])}{caveat}</div>'
+        return f'<div class="bullet">• {escape(block["text"])}</div>'
     if block_type == "data_quality":
         evidence = "".join(f"<li>{escape(evidence_text(item))}</li>" for item in block.get("evidence", []))
         caveat = f'<p class="caveat">확인 필요: {escape(block["caveat"])}</p>' if block.get("caveat") else ""

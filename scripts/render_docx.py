@@ -80,16 +80,12 @@ def block_xml(block: dict[str, Any]) -> list[str]:
     elif block_type == "observation":
         parts.append(paragraph(block["claim"], "Heading2"))
         parts.append(paragraph(block["wording"], "BodyText"))
-        if block.get("caveat"):
-            parts.append(paragraph(f"한계: {block['caveat']}", "Caveat"))
         if block.get("evidence"):
             parts.append(paragraph("근거", "EvidenceLabel"))
             for item in block["evidence"]:
                 parts.append(paragraph(f"• {evidence_text(item)}", "Evidence"))
     elif block_type == "bullet":
         parts.append(paragraph(f"• {block['text']}", "Bullet"))
-        if block.get("caveat"):
-            parts.append(paragraph(f"한계: {block['caveat']}", "Caveat"))
     elif block_type == "data_quality":
         parts.append(paragraph(f"• {block['text']}", "Bullet"))
         if block.get("caveat"):
