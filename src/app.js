@@ -188,7 +188,7 @@
     els.count.textContent = active ? `${summary} 표시 중` : `전체 ${ledger.observations.length}개 관찰`;
     els.filterSummary.textContent = active
       ? `${summary} 표시 중. 출력물은 바뀌지 않습니다.`
-      : `전체 ${ledger.observations.length}개 관찰을 표시합니다.`;
+      : `총 ${ledger.observations.length}개 관찰을 표시합니다.`;
     els.filterSummary.classList.toggle("is-active", active);
     els.ledgerList.innerHTML = observations.map(renderObservation).join("");
   }
