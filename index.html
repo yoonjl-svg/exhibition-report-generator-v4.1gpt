@@ -3,20 +3,20 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>v4.1gpt Analysis Ledger Review</title>
+    <title>v4.1gpt Exhibition Report Data Review</title>
     <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
     <header class="topbar">
       <div>
         <p class="eyebrow">Ilmin Exhibition Report v4.1gpt</p>
-        <h1 id="report-title">Analysis Ledger Review</h1>
+        <h1 id="report-title">전시보고서 데이터 검토</h1>
       </div>
       <div class="toolbar" aria-label="report tools">
         <button id="copy-markdown" type="button">Copy Report</button>
         <button id="download-report-html" type="button">HTML</button>
         <button id="download-report-doc" type="button">DOCX</button>
-        <button id="download-approved-ledger" type="button">Approved Ledger</button>
+        <button id="download-approved-ledger" type="button">검토 데이터</button>
         <a class="button-link" href="output/report-draft.docx" download>Sample DOCX</a>
         <a class="button-link" href="templates/ilmin-report-input-template.zip" download>CSV Template</a>
         <button id="toggle-evidence" type="button" aria-pressed="true">Evidence</button>
@@ -24,10 +24,10 @@
     </header>
 
     <main class="layout">
-      <aside class="sidebar" aria-label="ledger filters">
+      <aside class="sidebar" aria-label="data filters">
         <section class="panel compact">
-          <h2>관찰 원장 필터</h2>
-          <p class="panel-note">아래 관찰 원장 목록만 좁혀 봅니다. 보고서 출력 여부는 Include와 Director 설정으로 결정됩니다.</p>
+          <h2>관찰 데이터 필터</h2>
+          <p class="panel-note">아래 관찰 데이터 목록만 좁혀 봅니다. 보고서 출력 여부는 보고서 포함과 요약 포함 설정으로 결정됩니다.</p>
           <p id="filter-summary" class="filter-summary"></p>
           <label>
             섹션
@@ -57,16 +57,16 @@
         </section>
 
         <section class="panel compact">
-          <h2>Ledger Health</h2>
+          <h2>데이터 상태</h2>
           <dl id="health-list" class="health-list"></dl>
         </section>
 
         <section class="panel compact">
-          <h2>Review</h2>
+          <h2>출력 설정</h2>
           <dl id="review-list" class="health-list"></dl>
           <div class="sidebar-actions">
-            <button id="approve-all" type="button">Approve All</button>
-            <button id="reset-review" type="button">Reset</button>
+            <button id="approve-all" type="button">모두 포함</button>
+            <button id="reset-review" type="button">초기화</button>
           </div>
         </section>
       </aside>
@@ -98,8 +98,8 @@
         <section class="panel">
           <div class="section-heading">
             <div>
-              <p class="eyebrow">Ledger</p>
-              <h2>관찰 원장</h2>
+              <p class="eyebrow">Data</p>
+              <h2>관찰 데이터</h2>
             </div>
             <p id="observation-count" class="note"></p>
           </div>

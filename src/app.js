@@ -32,7 +32,7 @@
 
   function init() {
     if (!ledger) {
-      document.body.innerHTML = "<main class=\"load-error\">Analysis Ledger data could not be loaded.</main>";
+      document.body.innerHTML = "<main class=\"load-error\">분석 데이터를 불러올 수 없습니다.</main>";
       return;
     }
     reviewState = loadReviewState();
@@ -62,17 +62,14 @@
   function renderHealth() {
     const result = tools.validateLedger(ledger);
     const values = [
-      ["Schema", ledger.schema_version || "-"],
-      ["Data", window.GENERATED_LEDGER ? "Generated" : "Fallback"],
-      ["Observations", ledger.observations.length],
-      ["Metrics", ledger.metrics.length],
-      ["Errors", result.errors.length],
-      ["Warnings", result.warnings.length]
+      ["관찰 항목", ledger.observations.length],
+      ["수치 지표", ledger.metrics.length],
+      ["오류", result.errors.length, result.errors.length > 0 ? "danger" : ""],
+      ["주의 항목", result.warnings.length, result.warnings.length > 0 ? "warn" : ""]
     ];
 
     els.health.innerHTML = values
-      .map(([label, value]) => {
-        const className = label === "Errors" && value > 0 ? "danger" : label === "Warnings" && value > 0 ? "warn" : "";
+      .map(([label, value, className = ""]) => {
         return `<dt>${label}</dt><dd class="${className}">${value}</dd>`;
       })
       .join("");
@@ -81,14 +78,12 @@
   function renderReviewSummary() {
     const states = Object.values(reviewState);
     const included = states.filter((item) => item.included).length;
-    const approved = states.filter((item) => item.included && item.status === "approved").length;
-    const reviewed = states.filter((item) => item.included && item.status === "reviewed").length;
+    const director = states.filter((item) => item.included && item.directorBrief).length;
     const excluded = states.filter((item) => !item.included).length;
     const values = [
-      ["Included", `${included}/${states.length}`],
-      ["Approved", approved],
-      ["Reviewed", reviewed],
-      ["Excluded", excluded]
+      ["보고서 포함", `${included}/${states.length}`],
+      ["요약 포함", director],
+      ["제외", excluded]
     ];
 
     els.review.innerHTML = values.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("");
@@ -137,9 +132,6 @@
     const caveat = observation.caveat ? `<p class="caveat">${escapeHtml(observation.caveat)}</p>` : "";
     const wording = observation.recommended_wording || observation.claim;
     const state = reviewState[observation.id] || defaultObservationState(observation);
-    const statusOptions = ["draft", "reviewed", "approved"]
-      .map((value) => `<option value="${value}" ${state.status === value ? "selected" : ""}>${value}</option>`)
-      .join("");
 
     return `
       <article class="observation ${state.included ? "" : "is-excluded"}" data-id="${observation.id}">
@@ -154,15 +146,11 @@
         <div class="review-controls" aria-label="review controls for ${escapeHtml(observation.id)}">
           <label class="inline-control">
             <input type="checkbox" data-review-field="included" data-id="${escapeHtml(observation.id)}" ${state.included ? "checked" : ""} />
-            Include
+            보고서 포함
           </label>
           <label class="inline-control">
             <input type="checkbox" data-review-field="directorBrief" data-id="${escapeHtml(observation.id)}" ${state.directorBrief ? "checked" : ""} />
-            Director
-          </label>
-          <label class="inline-control">
-            Status
-            <select data-review-field="status" data-id="${escapeHtml(observation.id)}">${statusOptions}</select>
+            요약 포함
           </label>
         </div>
         <p class="wording">${escapeHtml(wording)}</p>
@@ -188,7 +176,7 @@
       els.importanceFilter.value = "all";
       els.kindFilter.value = "all";
       renderLedger();
-      showToast("관찰 원장 필터를 해제했습니다.");
+      showToast("관찰 데이터 필터를 해제했습니다.");
     });
 
     for (const reviewContainer of [els.brief, els.ledgerList]) {
@@ -212,7 +200,7 @@
 
     els.downloadApprovedLedger.addEventListener("click", () => {
       const approvedLedger = makeApprovedLedger();
-      downloadText("approved-ledger.json", JSON.stringify(approvedLedger, null, 2), "application/json");
+      downloadText("reviewed-data.json", JSON.stringify(approvedLedger, null, 2), "application/json");
     });
 
     els.downloadReportHtml.addEventListener("click", () => {
@@ -222,12 +210,12 @@
     els.downloadReportDoc.addEventListener("click", () => {
       if (!window.DocxExport) {
         downloadText("approved-report.doc", makeReportHtml(makeApprovedLedger()), "application/msword");
-        showToast("DOCX exporter unavailable. Word-readable .doc downloaded.");
+        showToast("DOCX 생성기를 불러오지 못해 Word 호환 .doc 파일을 다운로드했습니다.");
         return;
       }
       const blob = window.DocxExport.createDocxBlob(makeApprovedLedger(), tools);
       downloadBlob("approved-report.docx", blob);
-      showToast("Approved DOCX downloaded.");
+      showToast("DOCX를 다운로드했습니다.");
     });
 
     els.approveAll.addEventListener("click", () => {
@@ -235,20 +223,19 @@
         reviewState[observation.id] = {
           ...defaultObservationState(observation),
           ...reviewState[observation.id],
-          included: true,
-          status: "approved"
+          included: true
         };
       }
       persistReviewState();
       renderAll();
-      showToast("All observations marked approved.");
+      showToast("모든 관찰 항목을 보고서에 포함했습니다.");
     });
 
     els.resetReview.addEventListener("click", () => {
       reviewState = makeDefaultReviewState();
       persistReviewState();
       renderAll();
-      showToast("Review state reset.");
+      showToast("출력 설정을 초기화했습니다.");
     });
   }
 
@@ -258,7 +245,7 @@
       ...defaultObservationState(observation),
       ...reviewState[id]
     };
-    reviewState[id][field] = field === "status" ? target.value : target.checked;
+    reviewState[id][field] = target.checked;
     persistReviewState();
     renderAll();
   }
@@ -286,7 +273,7 @@
     const filters = getLedgerFilters();
     const count = tools.filterObservations(ledger, filters).length;
     if (!hasActiveLedgerFilters(filters)) return "전체 관찰을 표시합니다.";
-    return `관찰 원장 필터: ${ledger.observations.length}개 중 ${count}개 표시`;
+    return `관찰 데이터 필터: ${ledger.observations.length}개 중 ${count}개 표시`;
   }
 
   async function copyText(text, successMessage) {
@@ -315,7 +302,6 @@
     return {
       included: true,
       directorBrief: Boolean(observation?.report_placement?.director_brief),
-      status: "draft"
     };
   }
 
@@ -344,7 +330,7 @@
     const approved = JSON.parse(JSON.stringify(ledger));
     approved.report = {
       ...approved.report,
-      review_note: "웹 검토 UI에서 선택된 관찰만 포함한 승인 Ledger입니다.",
+      review_note: "웹 검토 화면에서 보고서 포함으로 선택된 관찰만 담은 데이터입니다.",
       review_generated_at: new Date().toISOString()
     };
     approved.observations = approved.observations
@@ -356,8 +342,8 @@
           director_brief: Boolean(state.directorBrief)
         };
         observation.review = {
-          status: state.status,
-          included: Boolean(state.included)
+          included: Boolean(state.included),
+          director_brief: Boolean(state.directorBrief)
         };
         return observation;
       });
@@ -393,7 +379,7 @@
     lines.push("## III. 주요 관찰");
     lines.push("");
     if (director.length === 0) {
-      lines.push("- 승인된 주요 관찰이 없습니다.");
+      lines.push("- 요약에 포함된 주요 관찰이 없습니다.");
     } else {
       for (const observation of director) {
         lines.push(`- ${observation.recommended_wording || observation.claim}`);
@@ -452,7 +438,7 @@
       .join("");
     const directorBody = director.length
       ? `<ol class="summary-list">${director.map(observationSummaryHtml).join("")}</ol>`
-      : `<p>승인된 주요 관찰이 없습니다.</p>`;
+      : `<p>요약에 포함된 주요 관찰이 없습니다.</p>`;
     const sectionBlocks = groupDetailSections(observations)
       .map(([heading, items]) => {
         return `<section class="report-section"><h2>${escapeHtml(heading)}</h2>${items.map(observationDetailHtml).join("")}</section>`;
@@ -548,7 +534,6 @@
       <dl class="meta-grid">
         <dt>중요도</dt><dd>${escapeHtml(observation.importance || "")}</dd>
         <dt>진술 성격</dt><dd>${escapeHtml(tools.kindLabel(observation.statement_kind))}</dd>
-        <dt>검토 상태</dt><dd>${escapeHtml(observation.review?.status || "draft")}</dd>
         <dt>관찰 ID</dt><dd>${escapeHtml(observation.id || "")}</dd>
       </dl>
       ${observation.caveat ? `<p class="caveat">한계: ${escapeHtml(observation.caveat)}</p>` : ""}

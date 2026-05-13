@@ -23,11 +23,10 @@ python scripts/build_all.py
 3. Commit and push the regenerated files.
 4. Open the GitHub Pages app.
 5. Review each observation:
-   - `Include`: controls whether the observation enters the report.
-   - `Director`: controls whether it appears in the director-facing summary.
-   - `Status`: records draft, reviewed, or approved state.
+   - `보고서 포함`: controls whether the observation enters the report.
+   - `요약 포함`: controls whether it appears in the director-facing summary.
 6. Download final outputs from the web app:
-   - `Approved Ledger`: review-filtered source of truth
+   - `검토 데이터`: review-filtered source data
    - `HTML`: print/PDF-ready report
    - `DOCX`: approved Word report generated in the browser
 
@@ -55,4 +54,4 @@ The current v4.6 system does not yet automate:
 - LLM rewriting inside the browser
 - institutional cross-year dashboards
 
-Those should be treated as future modules built on top of the approved Ledger structure.
+Those should be treated as future modules built on top of the approved data structure.

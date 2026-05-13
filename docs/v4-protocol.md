@@ -92,11 +92,10 @@ The UI is for reviewing observations before they become a polished report. A cur
 
 v4.4 adds browser-side approval controls:
 
-- `Include`: whether the observation is allowed into the generated report
-- `Director`: whether the observation appears in the director-facing summary
-- `Status`: draft, reviewed, or approved
+- `보고서 포함`: whether the observation is allowed into the generated report
+- `요약 포함`: whether the observation appears in the director-facing summary
 
-The review state is saved in the browser's local storage for the current report id and schema version. The approved Ledger download includes only included observations and records each observation's review status.
+The review state is saved in the browser's local storage for the current report id and schema version. The reviewed data download includes only included observations and records summary inclusion.
 
 ## 6. Render Report
 
@@ -131,7 +130,7 @@ The web UI can also export review-aware report files directly from the browser:
 
 The static `output/report-draft.docx` remains a sample generated from the full Ledger. The browser `DOCX` button is the review-aware final export path.
 
-The approved Ledger should render into:
+The reviewed data should render into:
 
 - director summary or synthesis record
 - existing report sections

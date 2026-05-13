@@ -52,7 +52,7 @@
         }
       }
     } else {
-      body.push(paragraph("승인된 주요 관찰이 없습니다.", "BodyText"));
+      body.push(paragraph("요약에 포함된 주요 관찰이 없습니다.", "BodyText"));
     }
 
     for (const [heading, items] of groupDetailSections(observations)) {
@@ -65,7 +65,6 @@
             [
               ["중요도", observation.importance || ""],
               ["진술 성격", kindLabel(observation.statement_kind, tools)],
-              ["검토 상태", observation.review?.status || "draft"],
               ["관찰 ID", observation.id || ""]
             ],
             false
