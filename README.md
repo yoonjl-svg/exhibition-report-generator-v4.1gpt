@@ -40,7 +40,7 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
 - Approval controls for including/excluding observations from the browser-rendered report
-- Browser downloads for reviewed data JSON, print-ready HTML, and approved `.docx` output
+- Browser exports for reviewed data JSON, PDF print flow, and approved `.docx` output
 - A one-command rebuild script in `scripts/build_all.py`
 - A Node validation script in `scripts/validate-ledger.mjs`
 - Architecture and schema notes in `docs/`
@@ -95,7 +95,7 @@ The builder uses only the Python standard library. Python 3.10 or newer is recom
 In the web app, use the review controls and then download:
 
 - `검토 데이터` for the review-filtered source data
-- `HTML` for print/PDF output
+- `PDF` to open the print-ready report and save as PDF
 - `DOCX` for the approved Word report generated directly in the browser
 
 ## v4 Design Principles

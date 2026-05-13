@@ -27,7 +27,7 @@ python scripts/build_all.py
    - `요약 포함`: controls whether it appears in the director-facing summary.
 6. Download final outputs from the web app:
    - `검토 데이터`: review-filtered source data
-   - `HTML`: print/PDF-ready report
+   - `PDF`: print-ready report opened for saving as PDF
    - `DOCX`: approved Word report generated in the browser
 
 ## Source Of Truth

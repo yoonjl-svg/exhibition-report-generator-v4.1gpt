@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>v4.1gpt Exhibition Report Data Review</title>
-    <link rel="stylesheet" href="src/styles.css?v=20260513-3" />
+    <link rel="stylesheet" href="src/styles.css?v=20260513-4" />
   </head>
   <body>
     <header class="topbar">
@@ -13,13 +13,14 @@
         <h1 id="report-title">전시보고서 데이터 검토</h1>
       </div>
       <div class="toolbar" aria-label="report tools">
-        <button id="copy-markdown" type="button">Copy Report</button>
-        <button id="download-report-html" type="button">HTML</button>
-        <button id="download-report-doc" type="button">DOCX</button>
-        <button id="download-approved-ledger" type="button">검토 데이터</button>
-        <a class="button-link" href="output/report-draft.docx" download>Sample DOCX</a>
+        <div class="export-menu">
+          <button id="export-menu-button" type="button" aria-expanded="false" aria-controls="export-menu">보고서 내보내기</button>
+          <div id="export-menu" class="export-menu-panel" hidden>
+            <button id="download-report-doc" type="button">DOCX</button>
+            <button id="print-report-pdf" type="button">PDF</button>
+          </div>
+        </div>
         <a class="button-link" href="templates/ilmin-report-input-template.zip" download>CSV Template</a>
-        <button id="toggle-evidence" type="button" aria-pressed="true">Evidence</button>
       </div>
     </header>
 
@@ -101,7 +102,13 @@
               <p class="eyebrow">Data</p>
               <h2>관찰 데이터</h2>
             </div>
-            <p id="observation-count" class="note"></p>
+            <div class="section-actions">
+              <p id="observation-count" class="note"></p>
+              <div class="local-actions" aria-label="data tools">
+                <button id="toggle-evidence" type="button" aria-pressed="true">근거</button>
+                <button id="download-approved-ledger" type="button">검토 데이터</button>
+              </div>
+            </div>
           </div>
           <div id="ledger-list" class="observation-list"></div>
         </section>
@@ -110,11 +117,11 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <script src="data/generated-ledger.js?v=20260513-3"></script>
-    <script src="data/generated-report.js?v=20260513-3"></script>
-    <script src="data/sample-ledger.js?v=20260513-3"></script>
-    <script src="src/ledger.js?v=20260513-3"></script>
-    <script src="src/docx-export.js?v=20260513-3"></script>
-    <script src="src/app.js?v=20260513-3"></script>
+    <script src="data/generated-ledger.js?v=20260513-4"></script>
+    <script src="data/generated-report.js?v=20260513-4"></script>
+    <script src="data/sample-ledger.js?v=20260513-4"></script>
+    <script src="src/ledger.js?v=20260513-4"></script>
+    <script src="src/docx-export.js?v=20260513-4"></script>
+    <script src="src/app.js?v=20260513-4"></script>
   </body>
 </html>

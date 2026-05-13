@@ -124,8 +124,8 @@ Word export is a rendering target, not the source of truth.
 
 The web UI can also export review-aware report files directly from the browser:
 
-- `approved-ledger.json`: included observations only
-- `approved-report.html`: print/PDF-ready A4 report
+- `reviewed-data.json`: included observations only
+- `PDF`: print-ready A4 report opened for saving as PDF
 - `approved-report.docx`: approved Word document generated as an OpenXML package in the browser
 
 The static `output/report-draft.docx` remains a sample generated from the full Ledger. The browser `DOCX` button is the review-aware final export path.

@@ -20,10 +20,11 @@
     importanceFilter: document.querySelector("#importance-filter"),
     kindFilter: document.querySelector("#kind-filter"),
     clearFilters: document.querySelector("#clear-filters"),
+    exportMenuButton: document.querySelector("#export-menu-button"),
+    exportMenu: document.querySelector("#export-menu"),
     toggleEvidence: document.querySelector("#toggle-evidence"),
-    copyMarkdown: document.querySelector("#copy-markdown"),
-    downloadReportHtml: document.querySelector("#download-report-html"),
     downloadReportDoc: document.querySelector("#download-report-doc"),
+    printReportPdf: document.querySelector("#print-report-pdf"),
     downloadApprovedLedger: document.querySelector("#download-approved-ledger"),
     approveAll: document.querySelector("#approve-all"),
     resetReview: document.querySelector("#reset-review"),
@@ -192,8 +193,8 @@
       renderLedger();
     });
 
-    els.copyMarkdown.addEventListener("click", async () => {
-      await copyText(getReportMarkdown(), "Report draft copied.");
+    els.exportMenuButton.addEventListener("click", () => {
+      setExportMenuOpen(els.exportMenu.hidden);
     });
 
     els.downloadApprovedLedger.addEventListener("click", () => {
@@ -201,11 +202,8 @@
       downloadText("reviewed-data.json", JSON.stringify(approvedLedger, null, 2), "application/json");
     });
 
-    els.downloadReportHtml.addEventListener("click", () => {
-      downloadText("approved-report.html", makeReportHtml(makeApprovedLedger()), "text/html");
-    });
-
     els.downloadReportDoc.addEventListener("click", () => {
+      setExportMenuOpen(false);
       if (!window.DocxExport) {
         downloadText("approved-report.doc", makeReportHtml(makeApprovedLedger()), "application/msword");
         showToast("DOCX 생성기를 불러오지 못해 Word 호환 .doc 파일을 다운로드했습니다.");
@@ -214,6 +212,11 @@
       const blob = window.DocxExport.createDocxBlob(makeApprovedLedger(), tools);
       downloadBlob("approved-report.docx", blob);
       showToast("DOCX를 다운로드했습니다.");
+    });
+
+    els.printReportPdf.addEventListener("click", () => {
+      setExportMenuOpen(false);
+      openPrintReport(makeApprovedLedger());
     });
 
     els.approveAll.addEventListener("click", () => {
@@ -234,6 +237,15 @@
       persistReviewState();
       renderAll();
       showToast("출력 설정을 초기화했습니다.");
+    });
+
+    document.addEventListener("click", (event) => {
+      const isExportClick = event.target === els.exportMenuButton || els.exportMenu.contains(event.target);
+      if (!isExportClick) setExportMenuOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setExportMenuOpen(false);
     });
   }
 
@@ -274,14 +286,9 @@
     return `관찰 데이터 필터: ${ledger.observations.length}개 중 ${count}개 표시`;
   }
 
-  async function copyText(text, successMessage) {
-      try {
-        await navigator.clipboard.writeText(text);
-        showToast(successMessage);
-      } catch {
-        showToast("Clipboard unavailable. Select generated text from console.");
-        console.log(text);
-      }
+  function setExportMenuOpen(open) {
+    els.exportMenu.hidden = !open;
+    els.exportMenuButton.setAttribute("aria-expanded", String(open));
   }
 
   function getReportMarkdown() {
@@ -574,6 +581,23 @@
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
+  }
+
+  function openPrintReport(sourceLedger) {
+    const html = makeReportHtml(sourceLedger).replace(
+      "</body>",
+      "<script>window.addEventListener('load', function () { setTimeout(function () { window.print(); }, 250); });</script></body>"
+    );
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const printWindow = window.open(url, "_blank");
+    if (!printWindow) {
+      downloadBlob("approved-report-print.html", blob);
+      showToast("팝업이 차단되어 PDF용 HTML을 다운로드했습니다.");
+      return;
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+    showToast("인쇄 창에서 PDF로 저장할 수 있습니다.");
   }
 
   function showToast(message) {
