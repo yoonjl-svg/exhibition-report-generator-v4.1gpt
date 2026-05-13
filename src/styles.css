@@ -33,6 +33,7 @@
   --font-xs: 11px;
   --font-sm: 12px;
   --font-note: 13px;
+  --font-secondary-command: 12.5px;
   --font-command: 14px;
   --font-base: 15px;
   --font-section: 18px;
@@ -127,10 +128,13 @@ h3 {
 }
 
 .toolbar button,
-.toolbar .button-link,
+.toolbar .button-link {
+  font-size: var(--font-command);
+}
+
 .local-actions button,
 #clear-filters {
-  font-size: var(--font-command);
+  font-size: var(--font-secondary-command);
 }
 
 .export-menu {
@@ -272,13 +276,6 @@ button[aria-pressed="true"] {
 .panel.compact h2 {
   margin-bottom: 12px;
   font-size: var(--font-base);
-}
-
-.panel-note {
-  margin-bottom: 12px;
-  color: var(--muted);
-  font-size: var(--font-sm);
-  line-height: 1.45;
 }
 
 .filter-summary {
@@ -878,7 +875,7 @@ select {
 .sidebar-actions button {
   width: 100%;
   padding: 0 6px;
-  font-size: var(--font-note);
+  font-size: var(--font-secondary-command);
 }
 
 .toast {
