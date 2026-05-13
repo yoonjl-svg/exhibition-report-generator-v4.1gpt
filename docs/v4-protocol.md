@@ -42,6 +42,7 @@ Examples:
 - total visitors
 - daily visitors
 - total budget
+- total income
 - cost per visitor
 - program participants
 - press mentions
@@ -50,6 +51,8 @@ Examples:
 Each metric carries a context string when a reference value exists.
 
 When the input includes `reference-exhibitions`, the converter calculates reference averages from existing exhibition records grouped by `type`. The current exhibition's `type` in the `core` sheet is used to choose the primary comparison group. Manual `reference-groups` remain available as fallback comparison groups.
+
+The director-facing metric strip is generated as five fixed indicators plus one recommendation. The fixed indicators are total visitors, daily visitors, total budget, total income, and cost per visitor. The final slot is chosen automatically from the remaining metrics by the strongest deviation from the current type-specific reference baseline.
 
 ## 3. Generate Observations
 

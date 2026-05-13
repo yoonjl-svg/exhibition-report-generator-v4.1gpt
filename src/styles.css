@@ -309,10 +309,22 @@ select {
 .metric .label {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 6px;
   color: var(--muted);
   font-size: 12px;
+}
+
+.metric-badge {
+  border: 1px solid rgba(37, 92, 74, 0.22);
+  border-radius: 999px;
+  padding: 1px 6px;
+  background: rgba(37, 92, 74, 0.08);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .metric .value {

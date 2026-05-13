@@ -10,13 +10,19 @@ from typing import Any
 
 KST = timezone(timedelta(hours=9))
 
-BRIEF_METRIC_IDS = [
+FIXED_BRIEF_METRIC_IDS = [
     "total_visitors",
     "daily_visitors",
     "total_budget",
+    "total_income",
     "cost_per_visitor",
+]
+
+AUTO_BRIEF_TOKENS = {"auto", "auto_recommended", "recommended"}
+
+BRIEF_METRIC_IDS = [
+    *FIXED_BRIEF_METRIC_IDS,
     "program_participants",
-    "press_mentions",
 ]
 
 UNIT_SUFFIX = {
@@ -106,6 +112,8 @@ def build_ledger(source: dict[str, Any]) -> dict[str, Any]:
     observations.extend(build_quantitative_observations(source, primary_ref, metrics))
     observations.extend(build_feedback_observations(source))
     observations.extend(build_data_quality_observations(source))
+    brief_selection = build_brief_metric_selection(source, metrics)
+    annotate_brief_metrics(metrics, brief_selection)
 
     return {
         "schema_version": "0.2.0",
@@ -120,7 +128,13 @@ def build_ledger(source: dict[str, Any]) -> dict[str, Any]:
                 "정규화된 전시 입력 데이터를 바탕으로 생성된 Analysis Ledger입니다.",
             ),
             "narrative": source.get("narrative", {}),
-            "brief_metric_ids": source.get("brief_metric_ids") or BRIEF_METRIC_IDS,
+            "brief_metric_ids": brief_selection["ids"],
+            "brief_metric_strategy": {
+                "fixed_ids": brief_selection["fixed_ids"],
+                "recommended_metric_id": brief_selection.get("recommended_id"),
+                "recommendation_basis": "type_specific_reference_deviation",
+                "recommendation_reason": brief_selection.get("recommendation_reason"),
+            },
         },
         "reference_groups": [
             {
@@ -147,74 +161,89 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
     operating_days = number(audience.get("operating_days"))
     daily_visitors = number(audience.get("daily_visitors")) or round(total_visitors / operating_days, 1)
     total_budget = number(budget["total_budget"])
+    total_income = optional_number(budget.get("income"))
     cost_per_visitor = round(total_budget / total_visitors)
     program_participants = number(programs.get("participants", 0))
     press_mentions = number(publicity.get("press_mentions", 0))
     paid_audience_ratio = derive_paid_ratio(audience)
 
     metrics = [
-        metric(
+        metric_against_reference(
             "total_visitors",
             "총 관객 수",
             total_visitors,
             "people",
-            context_against_reference(total_visitors, ref.get("total_visitors_avg"), "people", reference_group),
+            ref.get("total_visitors_avg"),
+            reference_group,
         ),
-        metric(
+        metric_against_reference(
             "daily_visitors",
             "일평균 관객",
             daily_visitors,
             "people",
-            context_against_reference(daily_visitors, ref.get("daily_visitors_avg"), "people", reference_group),
+            ref.get("daily_visitors_avg"),
+            reference_group,
         ),
-        metric(
+        metric_against_reference(
             "total_budget",
             "총 사용 예산",
             total_budget,
             "krw",
-            context_against_reference(total_budget, ref.get("total_budget_avg"), "krw", reference_group),
+            ref.get("total_budget_avg"),
+            reference_group,
+        ),
+        metric_against_reference(
+            "total_income",
+            "총 수입",
+            total_income,
+            "krw",
+            ref.get("income_avg"),
+            reference_group,
         ),
         metric(
             "cost_per_visitor",
             "관객당 비용",
             cost_per_visitor,
             "krw_per_person",
-            "총 사용 예산 / 총 관객 수",
+            cost_context(cost_per_visitor, ref.get("cost_per_visitor_avg"), reference_group),
+            reference_group=reference_group["id"],
+            reference_label=reference_group["label"],
+            reference_value=clean_number(ref.get("cost_per_visitor_avg")),
+            difference_pct=pct_diff(cost_per_visitor, ref["cost_per_visitor_avg"])
+            if ref.get("cost_per_visitor_avg")
+            else None,
+            recommendation_score=abs(pct_diff(cost_per_visitor, ref["cost_per_visitor_avg"]))
+            if ref.get("cost_per_visitor_avg")
+            else 0,
         ),
-        metric(
+        metric_against_reference(
             "program_participants",
             "프로그램 참여 인원",
             program_participants,
             "people",
-            context_against_reference(
-                program_participants,
-                ref.get("program_participants_avg"),
-                "people",
-                reference_group,
-            ),
+            ref.get("program_participants_avg"),
+            reference_group,
         ),
-        metric(
+        metric_against_reference(
             "press_mentions",
             "언론 보도 건수",
             press_mentions,
             "count",
-            context_against_reference(press_mentions, ref.get("press_mentions_avg"), "count", reference_group),
+            ref.get("press_mentions_avg"),
+            reference_group,
         ),
     ]
 
     if paid_audience_ratio is not None:
         metrics.append(
-            metric(
+            metric_against_reference(
                 "paid_audience_ratio",
                 "유료 관객 비율",
                 paid_audience_ratio,
                 "percent",
-                context_against_reference(
-                    paid_audience_ratio,
-                    ref.get("paid_audience_ratio_avg"),
-                    "percent",
-                    reference_group,
-                ),
+                ref.get("paid_audience_ratio_avg"),
+                reference_group,
+                score_kind="absolute",
             )
         )
 
@@ -501,14 +530,122 @@ def build_data_quality_observations(source: dict[str, Any]) -> list[dict[str, An
     return observations
 
 
-def metric(id: str, label: str, value: float, unit: str, context: str) -> dict[str, Any]:
+def build_brief_metric_selection(source: dict[str, Any], metrics: list[dict[str, Any]]) -> dict[str, Any]:
+    metric_ids = {item["id"] for item in metrics}
+    requested_ids = source.get("brief_metric_ids") or [*FIXED_BRIEF_METRIC_IDS, "auto"]
+    fixed_ids = [item for item in requested_ids if item not in AUTO_BRIEF_TOKENS]
+    if not fixed_ids:
+        fixed_ids = [item for item in FIXED_BRIEF_METRIC_IDS if item in metric_ids]
+    use_auto = any(item in AUTO_BRIEF_TOKENS for item in requested_ids) or not source.get("brief_metric_ids")
+    fixed_ids = [item for item in fixed_ids if item in metric_ids]
+    selected_ids = list(dict.fromkeys(fixed_ids))
+    recommended = recommend_brief_metric(metrics, selected_ids) if use_auto else None
+    if recommended and recommended["id"] not in selected_ids:
+        selected_ids.append(recommended["id"])
+
     return {
+        "ids": selected_ids[:6],
+        "fixed_ids": fixed_ids,
+        "recommended_id": recommended["id"] if recommended else None,
+        "recommendation_reason": recommended.get("recommendation_reason") if recommended else None,
+    }
+
+
+def recommend_brief_metric(metrics: list[dict[str, Any]], excluded_ids: list[str]) -> dict[str, Any] | None:
+    excluded = set(excluded_ids)
+    candidates = [
+        item
+        for item in metrics
+        if item["id"] not in excluded and item.get("recommendation_score", 0) > 0
+    ]
+    if not candidates:
+        return None
+    candidates.sort(key=lambda item: (-item.get("recommendation_score", 0), item["id"]))
+    selected = candidates[0]
+    reason = recommendation_reason(selected)
+    return {**selected, "recommendation_reason": reason}
+
+
+def recommendation_reason(metric_item: dict[str, Any]) -> str:
+    reference_label = metric_item.get("reference_label") or "비교군"
+    if metric_item.get("difference_abs") is not None and metric_item.get("unit") == "percent":
+        return (
+            f"{reference_label} 기준값과 {signed_number(metric_item['difference_abs'])}%p 차이를 보여 "
+            "고정 지표 외 추가 확인 지표로 추천했습니다."
+        )
+    if metric_item.get("difference_pct") is not None:
+        return (
+            f"{reference_label} 평균 대비 {signed_percent(metric_item['difference_pct'])} 차이를 보여 "
+            "고정 지표 외 추가 확인 지표로 추천했습니다."
+        )
+    return "고정 지표 외 비교 가능한 지표 중 차이가 가장 커 추천했습니다."
+
+
+def annotate_brief_metrics(metrics: list[dict[str, Any]], selection: dict[str, Any]) -> None:
+    fixed_ids = set(selection.get("fixed_ids", []))
+    recommended_id = selection.get("recommended_id")
+    for item in metrics:
+        if item["id"] in fixed_ids:
+            item["brief_role"] = "fixed"
+        if item["id"] == recommended_id:
+            item["brief_role"] = "recommended"
+            item["recommendation_reason"] = selection.get("recommendation_reason")
+
+
+def metric_against_reference(
+    id: str,
+    label: str,
+    value: float | None,
+    unit: str,
+    reference_value: float | None,
+    reference_group: dict[str, Any],
+    score_kind: str = "percent",
+) -> dict[str, Any]:
+    extra: dict[str, Any] = {
+        "reference_group": reference_group["id"],
+        "reference_label": reference_group["label"],
+        "reference_value": clean_number(reference_value),
+    }
+    if value is not None and reference_value:
+        if score_kind == "absolute":
+            diff_abs = round(value - reference_value, 1)
+            extra["difference_abs"] = diff_abs
+            extra["recommendation_score"] = abs(diff_abs)
+        else:
+            diff_pct = pct_diff(value, reference_value)
+            extra["difference_pct"] = diff_pct
+            extra["recommendation_score"] = abs(diff_pct)
+    else:
+        extra["recommendation_score"] = 0
+
+    return metric(
+        id,
+        label,
+        value,
+        unit,
+        context_against_reference(value, reference_value, unit, reference_group),
+        **extra,
+    )
+
+
+def cost_context(value: float, reference_value: float | None, reference_group: dict[str, Any]) -> str:
+    formula = "총 사용 예산 / 총 관객 수"
+    if not reference_value:
+        return formula
+    comparison = context_against_reference(value, reference_value, "krw_per_person", reference_group)
+    return f"{formula}; {comparison}"
+
+
+def metric(id: str, label: str, value: Any, unit: str, context: str, **kwargs: Any) -> dict[str, Any]:
+    result = {
         "id": id,
         "label": label,
         "value": clean_number(value),
         "unit": unit,
         "context": context,
     }
+    result.update({key: value for key, value in kwargs.items() if value is not None})
+    return result
 
 
 def observation(**kwargs: Any) -> dict[str, Any]:
@@ -541,11 +678,13 @@ def derive_paid_ratio(audience: dict[str, Any]) -> float | None:
 
 
 def context_against_reference(
-    value: float,
+    value: float | None,
     reference_value: float | None,
     unit: str,
     reference_group: dict[str, Any],
 ) -> str:
+    if value is None:
+        return "입력값 없음"
     if reference_value is None:
         return "비교 기준값 없음"
     diff = pct_diff(value, reference_value)
@@ -611,7 +750,13 @@ def number(value: Any) -> float:
     return float(value)
 
 
-def clean_number(value: Any) -> int | float:
+def optional_number(value: Any) -> float | None:
+    if value in (None, ""):
+        return None
+    return float(value)
+
+
+def clean_number(value: Any) -> int | float | None:
     if isinstance(value, float) and value.is_integer():
         return int(value)
     return value

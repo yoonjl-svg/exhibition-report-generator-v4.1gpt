@@ -23,7 +23,13 @@ This is the draft schema used by `data/generated-ledger.json` and the fallback `
   "period": "2025.06.13 - 2025.08.17",
   "generated_at": "2026-05-11T15:42:00+09:00",
   "scope_note": "샘플 데이터 기반",
-  "brief_metric_ids": ["total_visitors"]
+  "brief_metric_ids": ["total_visitors"],
+  "brief_metric_strategy": {
+    "fixed_ids": ["total_visitors"],
+    "recommended_metric_id": "program_participants",
+    "recommendation_basis": "type_specific_reference_deviation",
+    "recommendation_reason": "비교 기준 대비 차이가 커 추천됨"
+  }
 }
 ```
 
@@ -48,7 +54,8 @@ Reference groups should be explicit. Averages without a defined group are not ac
   "label": "총 관객 수",
   "value": 15200,
   "unit": "people",
-  "context": "기존 기획전 평균 9,413명 대비 상회"
+  "context": "기존 기획전 평균 9,413명 대비 상회",
+  "brief_role": "fixed"
 }
 ```
 
@@ -60,6 +67,8 @@ Supported draft units:
 - `program_count`
 - `percent`
 - `krw_per_person`
+
+Director metric cards may include `brief_role: "fixed"` or `brief_role: "recommended"`. Recommended metrics may also carry `recommendation_reason`.
 
 ## Observation
 

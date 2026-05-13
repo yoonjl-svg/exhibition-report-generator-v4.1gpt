@@ -82,6 +82,14 @@ This workbook contains the five input sheets in one file.
 
 The `reference-exhibitions` sheet is the preferred source for comparison baselines. Set `exhibition.type` in the `core` sheet, using values such as `정기 기획전`, `특별전`, or `기타`. The converter groups existing exhibitions by the same `type`, calculates averages, and places the matching type first in `reference_groups`. The `reference-groups` sheet remains available as a manual fallback or override.
 
+The `brief_metrics.ids` row in the `core` sheet uses five fixed director-facing indicators plus one automatic slot:
+
+```text
+total_visitors,daily_visitors,total_budget,total_income,cost_per_visitor,auto
+```
+
+The `auto` token is replaced during Ledger generation with the non-fixed metric that has the largest deviation from the current type-specific reference baseline.
+
 ## Validate
 
 Run:

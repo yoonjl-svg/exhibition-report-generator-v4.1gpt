@@ -100,17 +100,22 @@
   }
 
   function renderMetricCard(metric) {
+    const badge = metric.brief_role === "recommended" ? `<span class="metric-badge">추천</span>` : "";
+    const contextParts = [];
+    if (metric.context) contextParts.push(metric.context);
+    if (metric.recommendation_reason) contextParts.push(metric.recommendation_reason);
+    const context = contextParts.join(" ");
     const tooltip = metric.context
       ? `
         <span class="metric-info-wrap">
-          <span class="metric-info" tabindex="0" aria-label="${escapeHtml(metric.context)}">i</span>
-          <span class="metric-tooltip" role="tooltip">${escapeHtml(metric.context)}</span>
+          <span class="metric-info" tabindex="0" aria-label="${escapeHtml(context)}">i</span>
+          <span class="metric-tooltip" role="tooltip">${escapeHtml(context)}</span>
         </span>
       `
       : "";
     return `
       <article class="metric">
-        <p class="label">${escapeHtml(metric.label)}${tooltip}</p>
+        <p class="label">${escapeHtml(metric.label)}${badge}${tooltip}</p>
         <div class="value">${escapeHtml(tools.formatValue(metric.value, metric.unit))}</div>
       </article>
     `;

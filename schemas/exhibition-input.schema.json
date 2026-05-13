@@ -49,9 +49,9 @@
         "total_visitors",
         "daily_visitors",
         "total_budget",
+        "total_income",
         "cost_per_visitor",
-        "program_participants",
-        "press_mentions"
+        "auto"
       ]
     },
     "narrative": {
