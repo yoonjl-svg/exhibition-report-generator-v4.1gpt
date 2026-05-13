@@ -33,6 +33,7 @@
   --font-xs: 11px;
   --font-sm: 12px;
   --font-note: 13px;
+  --font-command: 14px;
   --font-base: 15px;
   --font-section: 18px;
   --font-report: 14px;
@@ -123,6 +124,11 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.toolbar button,
+.toolbar .button-link {
+  font-size: var(--font-command);
 }
 
 .export-menu {
