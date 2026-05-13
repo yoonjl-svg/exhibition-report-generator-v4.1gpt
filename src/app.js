@@ -79,11 +79,9 @@
     const states = Object.values(reviewState);
     const included = states.filter((item) => item.included).length;
     const director = states.filter((item) => item.included && item.directorBrief).length;
-    const excluded = states.filter((item) => !item.included).length;
     const values = [
       ["보고서 포함", `${included}/${states.length}`],
-      ["요약 포함", director],
-      ["제외", excluded]
+      ["요약 포함", director]
     ];
 
     els.review.innerHTML = values.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("");
