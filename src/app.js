@@ -6,14 +6,11 @@
   let reviewState = {};
 
   const els = {
-    emptyState: document.querySelector("#empty-state"),
     workspace: document.querySelector("#workspace"),
     title: document.querySelector("#report-title"),
     excelUpload: document.querySelector("#excel-upload"),
     uploadExcelButton: document.querySelector("#upload-excel-button"),
-    emptyUploadButton: document.querySelector("#empty-upload-button"),
     loadSampleButton: document.querySelector("#load-sample-button"),
-    emptySampleButton: document.querySelector("#empty-sample-button"),
     scopeNote: document.querySelector("#scope-note"),
     metricStrip: document.querySelector("#metric-strip"),
     brief: document.querySelector("#brief-observations"),
@@ -40,14 +37,13 @@
 
   function init() {
     bindEvents();
-    renderEmptyState();
+    renderInitialState();
   }
 
-  function renderEmptyState() {
+  function renderInitialState() {
     ledger = null;
     reviewState = {};
     els.title.textContent = "전시보고서 데이터 입력";
-    els.emptyState.hidden = false;
     els.workspace.hidden = true;
     setReportActionsEnabled(false);
     setExportMenuOpen(false);
@@ -58,7 +54,6 @@
     reviewState = loadReviewState();
     els.title.textContent = ledger.report.title;
     els.scopeNote.textContent = ledger.report.scope_note || "";
-    els.emptyState.hidden = true;
     els.workspace.hidden = false;
     setReportActionsEnabled(true);
     renderFilters();
@@ -229,9 +224,7 @@
 
   function bindEvents() {
     els.uploadExcelButton.addEventListener("click", () => els.excelUpload.click());
-    els.emptyUploadButton.addEventListener("click", () => els.excelUpload.click());
     els.loadSampleButton.addEventListener("click", loadSampleLedger);
-    els.emptySampleButton.addEventListener("click", loadSampleLedger);
     els.excelUpload.addEventListener("change", handleExcelUpload);
 
     for (const el of [els.sectionFilter, els.importanceFilter, els.kindFilter]) {
