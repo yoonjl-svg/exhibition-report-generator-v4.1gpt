@@ -109,7 +109,7 @@
   }
 
   function renderBrief() {
-    els.brief.innerHTML = tools.getDirectorObservations(makeApprovedLedger()).map(renderObservation).join("");
+    els.brief.innerHTML = "";
   }
 
   function renderReportDraft() {
