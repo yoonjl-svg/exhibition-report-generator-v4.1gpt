@@ -82,13 +82,15 @@ This workbook contains the five input sheets in one file.
 
 The `reference-exhibitions` sheet is the preferred source for comparison baselines. Set `exhibition.type` in the `core` sheet, using values such as `정기 기획전`, `특별전`, or `기타`. The converter groups existing exhibitions by the same `type`, calculates averages, and places the matching type first in `reference_groups`. The `reference-groups` sheet remains available as a manual fallback or override.
 
+The historical reference sheet now calculates averages for the full director metric set, including budget execution rate, group audience ratio, program sessions, and SNS feedback. The converter accepts either English field ids such as `sns_feedback_total` or Korean headers such as `SNS 피드백 합계`.
+
 The `brief_metrics.ids` row in the `core` sheet uses six fixed paired director-facing cards:
 
 ```text
 total_visitors,daily_visitors,total_budget,budget_execution_rate,total_income,cost_per_visitor,paid_audience_ratio,group_audience_ratio,program_sessions,program_participants,press_mentions,sns_feedback
 ```
 
-In the web app, these ids are arranged as paired cards: audience, budget, income/cost, paid/group audience ratio, program, and publicity/feedback. `SNS 피드백` means the `publicity.sns_feedback_total` value entered in the workbook, not the count of selected audience quotes.
+In the web app, these ids are arranged as paired cards: audience, budget, income/cost, paid/group audience ratio, program, and publicity/feedback. `SNS 피드백` means the `publicity.sns_feedback_total` value entered for the current exhibition, while its hover comparison is calculated from `SNS 피드백 합계` values in `reference-exhibitions`.
 
 ## Validate
 

@@ -56,12 +56,16 @@
         "total_visitors_avg": 9538,
         "daily_visitors_avg": 158.4,
         "total_budget_avg": 140000000,
+        "budget_execution_rate_avg": 89.7,
         "income_avg": 29375000,
         "cost_per_visitor_avg": 14719,
+        "group_audience_ratio_avg": 6.7,
+        "program_sessions_avg": 55,
         "program_participants_avg": 806,
         "program_participation_rate_avg": 8.4,
         "press_mentions_avg": 29,
-        "paid_audience_ratio_avg": 86.2
+        "paid_audience_ratio_avg": 86.2,
+        "sns_feedback_avg": 126781
       }
     },
     {
@@ -73,12 +77,16 @@
         "total_visitors_avg": 19233,
         "daily_visitors_avg": 259.2,
         "total_budget_avg": 339166667,
+        "budget_execution_rate_avg": 93.2,
         "income_avg": 70000000,
         "cost_per_visitor_avg": 17675,
+        "group_audience_ratio_avg": 5.5,
+        "program_sessions_avg": 74,
         "program_participants_avg": 1075,
         "program_participation_rate_avg": 5.6,
         "press_mentions_avg": 50,
-        "paid_audience_ratio_avg": 72.3
+        "paid_audience_ratio_avg": 72.3,
+        "sns_feedback_avg": 480144
       }
     },
     {
@@ -90,12 +98,16 @@
         "total_visitors_avg": 5750,
         "daily_visitors_avg": 125.9,
         "total_budget_avg": 77250000,
+        "budget_execution_rate_avg": 83.5,
         "income_avg": 10250000,
         "cost_per_visitor_avg": 13613,
+        "group_audience_ratio_avg": 5.3,
+        "program_sessions_avg": 27,
         "program_participants_avg": 370,
         "program_participation_rate_avg": 6.4,
         "press_mentions_avg": 14,
-        "paid_audience_ratio_avg": 63.5
+        "paid_audience_ratio_avg": 63.5,
+        "sns_feedback_avg": 57500
       }
     },
     {
@@ -107,10 +119,14 @@
         "total_visitors_avg": 9413,
         "daily_visitors_avg": 159.7,
         "total_budget_avg": 140000000,
+        "budget_execution_rate_avg": 89.7,
         "cost_per_visitor_avg": 20000,
+        "group_audience_ratio_avg": 6.9,
+        "program_sessions_avg": 55,
         "program_participants_avg": 807.6,
         "press_mentions_avg": 28.9,
-        "paid_audience_ratio_avg": 86.6
+        "paid_audience_ratio_avg": 86.6,
+        "sns_feedback_avg": 126781
       }
     },
     {

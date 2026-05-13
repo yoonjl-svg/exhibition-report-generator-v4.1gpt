@@ -33,16 +33,59 @@ NUMERIC_FIELDS = {
     "memberships_sold",
 }
 
+FIELD_ALIASES = {
+    "id": ["ID"],
+    "title": ["전시명", "전시 제목"],
+    "type": ["유형", "구분"],
+    "total_visitors": ["총 관객 수", "총 관객수", "총관객수"],
+    "operating_days": ["운영일수", "운영 일수"],
+    "daily_visitors": ["일평균 관객", "일평균 관객 수"],
+    "paid_visitors": ["유료 관객 수", "유료 관객수"],
+    "group_visitors": ["단체 관객 수", "단체 관객수"],
+    "group_audience_ratio": ["단체 관객 비율"],
+    "total_budget": ["총 사용 예산", "총예산"],
+    "allocated_budget": ["편성 예산"],
+    "execution_rate": ["예산 집행률"],
+    "budget_execution_rate": ["예산 집행률"],
+    "income": ["총 수입", "수입"],
+    "cost_per_visitor": ["관객당 비용"],
+    "program_sessions": ["프로그램 회수", "프로그램 총 회차", "프로그램 회차"],
+    "sessions": ["프로그램 회수", "프로그램 총 회차", "프로그램 회차"],
+    "program_participants": ["프로그램 참여 수", "프로그램 참여 인원"],
+    "press_mentions": ["보도 건수", "언론 보도 건수"],
+    "paid_audience_ratio": ["유료 관객 비율"],
+    "sns_feedback_total": ["SNS 피드백 합계", "SNS피드백합계", "sns 피드백 합계"],
+}
+
+CORE_KEY_ALIASES = {
+    "단체 관객 수": "group_visitors",
+    "단체 관객수": "group_visitors",
+    "단체 관객 비율": "group_audience_ratio",
+    "예산 집행률": "execution_rate",
+    "편성 예산": "allocated_budget",
+    "총 수입": "income",
+    "프로그램 회수": "sessions",
+    "프로그램 총 회차": "sessions",
+    "프로그램 참여 수": "participants",
+    "프로그램 참여 인원": "participants",
+    "SNS 피드백 합계": "sns_feedback_total",
+    "SNS피드백합계": "sns_feedback_total",
+}
+
 REFERENCE_METRIC_FIELDS = (
     "total_visitors_avg",
     "daily_visitors_avg",
     "total_budget_avg",
+    "budget_execution_rate_avg",
     "income_avg",
     "cost_per_visitor_avg",
+    "group_audience_ratio_avg",
+    "program_sessions_avg",
     "program_participants_avg",
     "program_participation_rate_avg",
     "press_mentions_avg",
     "paid_audience_ratio_avg",
+    "sns_feedback_avg",
 )
 
 REFERENCE_TYPE_IDS = {
@@ -53,6 +96,8 @@ REFERENCE_TYPE_IDS = {
 
 REFERENCE_AVERAGE_PRECISION = {
     "daily_visitors_avg": 1,
+    "budget_execution_rate_avg": 1,
+    "group_audience_ratio_avg": 1,
     "program_participation_rate_avg": 1,
     "paid_audience_ratio_avg": 1,
 }
@@ -133,7 +178,7 @@ def build_input_from_tables(tables: dict[str, list[dict[str, str]]]) -> dict[str
 def read_core(rows: list[dict[str, str]], source: dict[str, Any]) -> None:
     for row in rows:
         section = row["section"].strip()
-        key = row["key"].strip()
+        key = canonical_core_key(row["key"].strip())
         value = row["value"].strip()
         if value == "":
             continue
@@ -155,19 +200,19 @@ def read_core(rows: list[dict[str, str]], source: dict[str, Any]) -> None:
 def read_reference_groups(rows: list[dict[str, str]]) -> list[dict[str, Any]]:
     groups = []
     for row in rows:
-        if not row.get("id"):
+        if not row_value(row, "id"):
             continue
         metrics = {}
         for key in REFERENCE_METRIC_FIELDS:
-            value = row.get(key, "").strip()
+            value = row_value(row, key).strip()
             if value:
                 metrics[key] = parse_number(value)
         groups.append(
             {
-                "id": row["id"].strip(),
-                "label": row["label"].strip(),
-                "selection_rule": row["selection_rule"].strip(),
-                "caveat": row["caveat"].strip(),
+                "id": row_value(row, "id").strip(),
+                "label": row_value(row, "label").strip(),
+                "selection_rule": row_value(row, "selection_rule").strip(),
+                "caveat": row_value(row, "caveat").strip(),
                 "metrics": metrics,
             }
         )
@@ -177,7 +222,7 @@ def read_reference_groups(rows: list[dict[str, str]]) -> list[dict[str, Any]]:
 def build_reference_groups_from_history(rows: list[dict[str, str]], current_type: str) -> list[dict[str, Any]]:
     grouped: dict[str, list[dict[str, str]]] = {}
     for row in rows:
-        type_name = row.get("type", "").strip() or row.get("category", "").strip()
+        type_name = row_value(row, "type").strip() or row_value(row, "category").strip()
         if not type_name:
             continue
         grouped.setdefault(type_name, []).append(row)
@@ -207,19 +252,23 @@ def build_reference_groups_from_history(rows: list[dict[str, str]], current_type
 
 def historical_average_metrics(rows: list[dict[str, str]]) -> dict[str, int | float]:
     values = {
-        "total_visitors_avg": present_numbers(optional_number(row.get("total_visitors")) for row in rows),
+        "total_visitors_avg": present_numbers(optional_number(row_value(row, "total_visitors")) for row in rows),
         "daily_visitors_avg": present_numbers(historical_daily_visitors(row) for row in rows),
-        "total_budget_avg": present_numbers(optional_number(row.get("total_budget")) for row in rows),
-        "income_avg": present_numbers(optional_number(row.get("income")) for row in rows),
+        "total_budget_avg": present_numbers(optional_number(row_value(row, "total_budget")) for row in rows),
+        "budget_execution_rate_avg": present_numbers(historical_budget_execution_rate(row) for row in rows),
+        "income_avg": present_numbers(optional_number(row_value(row, "income")) for row in rows),
         "cost_per_visitor_avg": present_numbers(historical_cost_per_visitor(row) for row in rows),
+        "group_audience_ratio_avg": present_numbers(historical_group_audience_ratio(row) for row in rows),
+        "program_sessions_avg": present_numbers(historical_program_sessions(row) for row in rows),
         "program_participants_avg": present_numbers(
-            optional_number(row.get("program_participants")) for row in rows
+            optional_number(row_value(row, "program_participants")) for row in rows
         ),
         "program_participation_rate_avg": present_numbers(
             historical_program_participation_rate(row) for row in rows
         ),
-        "press_mentions_avg": present_numbers(optional_number(row.get("press_mentions")) for row in rows),
+        "press_mentions_avg": present_numbers(optional_number(row_value(row, "press_mentions")) for row in rows),
         "paid_audience_ratio_avg": present_numbers(historical_paid_ratio(row) for row in rows),
+        "sns_feedback_avg": present_numbers(optional_number(row_value(row, "sns_feedback_total")) for row in rows),
     }
     return {
         key: rounded_average(metric_values, REFERENCE_AVERAGE_PRECISION.get(key, 0))
@@ -229,44 +278,75 @@ def historical_average_metrics(rows: list[dict[str, str]]) -> dict[str, int | fl
 
 
 def historical_daily_visitors(row: dict[str, str]) -> float | None:
-    daily_visitors = optional_number(row.get("daily_visitors"))
+    daily_visitors = optional_number(row_value(row, "daily_visitors"))
     if daily_visitors is not None:
         return daily_visitors
-    total_visitors = optional_number(row.get("total_visitors"))
-    operating_days = optional_number(row.get("operating_days"))
+    total_visitors = optional_number(row_value(row, "total_visitors"))
+    operating_days = optional_number(row_value(row, "operating_days"))
     if total_visitors and operating_days:
         return total_visitors / operating_days
     return None
 
 
+def historical_budget_execution_rate(row: dict[str, str]) -> float | None:
+    execution_rate = optional_number(row_value(row, "execution_rate"))
+    if execution_rate is None:
+        execution_rate = optional_number(row_value(row, "budget_execution_rate"))
+    if execution_rate is not None:
+        return execution_rate
+    total_budget = optional_number(row_value(row, "total_budget"))
+    allocated_budget = optional_number(row_value(row, "allocated_budget"))
+    if total_budget is not None and allocated_budget:
+        return total_budget / allocated_budget * 100
+    return None
+
+
 def historical_cost_per_visitor(row: dict[str, str]) -> float | None:
-    cost_per_visitor = optional_number(row.get("cost_per_visitor"))
+    cost_per_visitor = optional_number(row_value(row, "cost_per_visitor"))
     if cost_per_visitor is not None:
         return cost_per_visitor
-    total_budget = optional_number(row.get("total_budget"))
-    total_visitors = optional_number(row.get("total_visitors"))
+    total_budget = optional_number(row_value(row, "total_budget"))
+    total_visitors = optional_number(row_value(row, "total_visitors"))
     if total_budget and total_visitors:
         return total_budget / total_visitors
     return None
 
 
+def historical_group_audience_ratio(row: dict[str, str]) -> float | None:
+    group_ratio = optional_number(row_value(row, "group_audience_ratio"))
+    if group_ratio is not None:
+        return group_ratio
+    total_visitors = optional_number(row_value(row, "total_visitors"))
+    group_visitors = optional_number(row_value(row, "group_visitors"))
+    if total_visitors and group_visitors is not None:
+        return group_visitors / total_visitors * 100
+    return None
+
+
+def historical_program_sessions(row: dict[str, str]) -> float | None:
+    program_sessions = optional_number(row_value(row, "program_sessions"))
+    if program_sessions is not None:
+        return program_sessions
+    return optional_number(row_value(row, "sessions"))
+
+
 def historical_program_participation_rate(row: dict[str, str]) -> float | None:
-    participation_rate = optional_number(row.get("program_participation_rate"))
+    participation_rate = optional_number(row_value(row, "program_participation_rate"))
     if participation_rate is not None:
         return participation_rate
-    participants = optional_number(row.get("program_participants"))
-    total_visitors = optional_number(row.get("total_visitors"))
+    participants = optional_number(row_value(row, "program_participants"))
+    total_visitors = optional_number(row_value(row, "total_visitors"))
     if participants is not None and total_visitors:
         return participants / total_visitors * 100
     return None
 
 
 def historical_paid_ratio(row: dict[str, str]) -> float | None:
-    paid_ratio = optional_number(row.get("paid_audience_ratio"))
+    paid_ratio = optional_number(row_value(row, "paid_audience_ratio"))
     if paid_ratio is not None:
         return paid_ratio
-    total_visitors = optional_number(row.get("total_visitors"))
-    paid_visitors = optional_number(row.get("paid_visitors"))
+    total_visitors = optional_number(row_value(row, "total_visitors"))
+    paid_visitors = optional_number(row_value(row, "paid_visitors"))
     if total_visitors and paid_visitors is not None:
         return paid_visitors / total_visitors * 100
     return None
@@ -281,6 +361,25 @@ def rounded_average(values: list[float], precision: int) -> int | float:
 
 def present_numbers(values: Any) -> list[float]:
     return [value for value in values if value is not None]
+
+
+def canonical_core_key(key: str) -> str:
+    return CORE_KEY_ALIASES.get(key, key)
+
+
+def row_value(row: dict[str, str], key: str) -> str:
+    if key in row:
+        return row.get(key, "")
+    normalized = {normalize_header(header): value for header, value in row.items()}
+    for candidate in [key, *FIELD_ALIASES.get(key, [])]:
+        value = normalized.get(normalize_header(candidate))
+        if value is not None:
+            return value
+    return ""
+
+
+def normalize_header(value: str) -> str:
+    return re.sub(r"[\s_()（）·/]+", "", value).lower()
 
 
 def reference_type_id(type_name: str, index: int) -> str:

@@ -5,7 +5,7 @@ window.GENERATED_LEDGER = {
     "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
     "period": "2025.06.13 - 2025.08.17",
     "venue": "일민미술관",
-    "generated_at": "2026-05-13T21:30:45+09:00",
+    "generated_at": "2026-05-13T21:44:09+09:00",
     "scope_note": "엑셀 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
     "narrative": {
       "theme_and_content": "이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.",
@@ -173,8 +173,12 @@ window.GENERATED_LEDGER = {
       "label": "예산 집행률",
       "value": 92.4,
       "unit": "percent",
-      "context": "엑셀 입력 예산 집행률",
-      "recommendation_score": 0,
+      "context": "정기 기획전 평균 89.7% 대비 상회",
+      "reference_group": "regular_planned_exhibitions",
+      "reference_label": "정기 기획전",
+      "reference_value": 89.7,
+      "difference_abs": 2.7,
+      "recommendation_score": 2.7,
       "brief_role": "fixed"
     },
     {
@@ -195,7 +199,7 @@ window.GENERATED_LEDGER = {
       "label": "관객당 비용",
       "value": 13816,
       "unit": "krw_per_person",
-      "context": "총 사용 예산 / 총 관객 수; 정기 기획전 평균 14,719원/명 대비 하회",
+      "context": "정기 기획전 평균 14,719원/명 대비 하회",
       "reference_group": "regular_planned_exhibitions",
       "reference_label": "정기 기획전",
       "reference_value": 14719,
@@ -208,8 +212,12 @@ window.GENERATED_LEDGER = {
       "label": "프로그램 회수",
       "value": 65,
       "unit": "session_count",
-      "context": "프로그램 총 회차",
-      "recommendation_score": 0,
+      "context": "정기 기획전 평균 55회 대비 상회",
+      "reference_group": "regular_planned_exhibitions",
+      "reference_label": "정기 기획전",
+      "reference_value": 55,
+      "difference_pct": 18.2,
+      "recommendation_score": 18.2,
       "brief_role": "fixed"
     },
     {
@@ -243,8 +251,12 @@ window.GENERATED_LEDGER = {
       "label": "SNS 피드백",
       "value": 186,
       "unit": "count",
-      "context": "엑셀 입력 SNS 피드백 합계",
-      "recommendation_score": 0,
+      "context": "정기 기획전 평균 126,781건 대비 하회",
+      "reference_group": "regular_planned_exhibitions",
+      "reference_label": "정기 기획전",
+      "reference_value": 126781,
+      "difference_pct": -99.9,
+      "recommendation_score": 99.9,
       "brief_role": "fixed"
     },
     {
@@ -265,8 +277,12 @@ window.GENERATED_LEDGER = {
       "label": "단체 관객 비율",
       "value": 8,
       "unit": "percent",
-      "context": "단체 관객 수 / 총 관객 수",
-      "recommendation_score": 0,
+      "context": "정기 기획전 평균 6.7% 대비 상회",
+      "reference_group": "regular_planned_exhibitions",
+      "reference_label": "정기 기획전",
+      "reference_value": 6.7,
+      "difference_abs": 1.3,
+      "recommendation_score": 1.3,
       "brief_role": "fixed"
     }
   ],

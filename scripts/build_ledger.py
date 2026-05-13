@@ -215,13 +215,14 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
             ref.get("total_budget_avg"),
             reference_group,
         ),
-        metric(
+        metric_against_reference(
             "budget_execution_rate",
             "예산 집행률",
             budget_execution_rate,
             "percent",
-            budget_execution_context(budget),
-            recommendation_score=0,
+            ref.get("budget_execution_rate_avg"),
+            reference_group,
+            score_kind="absolute",
         ),
         metric_against_reference(
             "total_income",
@@ -231,29 +232,21 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
             ref.get("income_avg"),
             reference_group,
         ),
-        metric(
+        metric_against_reference(
             "cost_per_visitor",
             "관객당 비용",
             cost_per_visitor,
             "krw_per_person",
-            cost_context(cost_per_visitor, ref.get("cost_per_visitor_avg"), reference_group),
-            reference_group=reference_group["id"],
-            reference_label=reference_group["label"],
-            reference_value=clean_number(ref.get("cost_per_visitor_avg")),
-            difference_pct=pct_diff(cost_per_visitor, ref["cost_per_visitor_avg"])
-            if ref.get("cost_per_visitor_avg")
-            else None,
-            recommendation_score=abs(pct_diff(cost_per_visitor, ref["cost_per_visitor_avg"]))
-            if ref.get("cost_per_visitor_avg")
-            else 0,
+            ref.get("cost_per_visitor_avg"),
+            reference_group,
         ),
-        metric(
+        metric_against_reference(
             "program_sessions",
             "프로그램 회수",
             program_sessions,
             "session_count",
-            "프로그램 총 회차",
-            recommendation_score=0,
+            ref.get("program_sessions_avg"),
+            reference_group,
         ),
         metric_against_reference(
             "program_participants",
@@ -271,13 +264,13 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
             ref.get("press_mentions_avg"),
             reference_group,
         ),
-        metric(
+        metric_against_reference(
             "sns_feedback",
             "SNS 피드백",
             sns_feedback,
             "count",
-            "엑셀 입력 SNS 피드백 합계",
-            recommendation_score=0,
+            ref.get("sns_feedback_avg"),
+            reference_group,
         ),
     ]
 
@@ -296,13 +289,14 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
 
     if group_audience_ratio is not None:
         metrics.append(
-            metric(
+            metric_against_reference(
                 "group_audience_ratio",
                 "단체 관객 비율",
                 group_audience_ratio,
                 "percent",
-                "단체 관객 수 / 총 관객 수",
-                recommendation_score=0,
+                ref.get("group_audience_ratio_avg"),
+                reference_group,
+                score_kind="absolute",
             )
         )
 
@@ -711,14 +705,6 @@ def metric_against_reference(
     )
 
 
-def cost_context(value: float, reference_value: float | None, reference_group: dict[str, Any]) -> str:
-    formula = "총 사용 예산 / 총 관객 수"
-    if not reference_value:
-        return formula
-    comparison = context_against_reference(value, reference_value, "krw_per_person", reference_group)
-    return f"{formula}; {comparison}"
-
-
 def metric(id: str, label: str, value: Any, unit: str, context: str, **kwargs: Any) -> dict[str, Any]:
     result = {
         "id": id,
@@ -780,14 +766,6 @@ def derive_budget_execution_rate(budget: dict[str, Any]) -> float | None:
     if allocated_budget and total_budget is not None:
         return round(total_budget / allocated_budget * 100, 1)
     return None
-
-
-def budget_execution_context(budget: dict[str, Any]) -> str:
-    if budget.get("execution_rate") not in (None, ""):
-        return "엑셀 입력 예산 집행률"
-    if budget.get("allocated_budget") not in (None, ""):
-        return "총 사용 예산 / 편성 예산"
-    return "입력값 없음"
 
 
 def derive_program_participation_rate(programs: dict[str, Any], total_visitors: float) -> float | None:

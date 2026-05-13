@@ -72,3 +72,9 @@
 - Replace the recommendation card with six fixed paired cards. Done in v4.11.
 - Use workbook SNS feedback total rather than counting selected SNS quotes. Done in v4.11.
 - Add budget execution rate, group audience ratio, and program sessions to the director metric set. Done in v4.11.
+
+## Phase 12: Metric Strip Refinement
+
+- Show the six director metric cards in a single desktop row. Done in v4.12.
+- Use the same reference-comparison hover wording across the full metric set. Done in v4.12.
+- Read `SNS 피드백 합계` from historical exhibition data for reference averages. Done in v4.12.
