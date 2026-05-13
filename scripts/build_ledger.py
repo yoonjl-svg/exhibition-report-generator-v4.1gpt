@@ -119,10 +119,13 @@ def validate_minimum_input(source: dict[str, Any]) -> None:
         raise SystemExit("audience.operating_days or audience.daily_visitors is required.")
 
 
-def build_ledger(source: dict[str, Any]) -> dict[str, Any]:
+def build_ledger(source: dict[str, Any], reference_group_id: str | None = None) -> dict[str, Any]:
     exhibition = source["exhibition"]
     reference_groups = source["reference_groups"]
-    primary_ref = reference_groups[0]
+    primary_ref = next(
+        (group for group in reference_groups if group["id"] == reference_group_id),
+        reference_groups[0],
+    )
 
     metrics = build_metrics(source, primary_ref)
     observations = []
@@ -145,6 +148,10 @@ def build_ledger(source: dict[str, Any]) -> dict[str, Any]:
                 "정규화된 전시 입력 데이터를 바탕으로 생성된 Analysis Ledger입니다.",
             ),
             "narrative": source.get("narrative", {}),
+            "reference_group_id": primary_ref["id"],
+            "reference_group_label": primary_ref["label"],
+            "reference_group_rule": primary_ref["selection_rule"],
+            "reference_group_count": len(primary_ref.get("members", [])) or None,
             "brief_metric_ids": brief_selection["ids"],
             "brief_metric_groups": brief_selection["groups"],
             "brief_metric_strategy": {
@@ -156,15 +163,8 @@ def build_ledger(source: dict[str, Any]) -> dict[str, Any]:
                 "recommendation_reason": brief_selection.get("recommendation_reason"),
             },
         },
-        "reference_groups": [
-            {
-                "id": group["id"],
-                "label": group["label"],
-                "selection_rule": group["selection_rule"],
-                "caveat": group["caveat"],
-            }
-            for group in reference_groups
-        ],
+        "reference_groups": reference_groups,
+        "source_input": source,
         "metrics": metrics,
         "observations": observations,
     }

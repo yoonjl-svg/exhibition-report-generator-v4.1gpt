@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>v4.1gpt Exhibition Report Data Review</title>
-    <link rel="stylesheet" href="src/styles.css?v=20260514-02" />
+    <link rel="stylesheet" href="src/styles.css?v=20260514-03" />
   </head>
   <body>
     <header class="topbar">
@@ -28,35 +28,11 @@
     </header>
 
     <main id="workspace" class="layout" hidden>
-      <aside class="sidebar" aria-label="data filters">
+      <aside class="sidebar" aria-label="report controls">
         <section class="panel compact">
-          <h2>관찰 데이터 필터</h2>
-          <p id="filter-summary" class="filter-summary"></p>
-          <label>
-            섹션
-            <select id="section-filter"></select>
-          </label>
-          <label>
-            중요도
-            <select id="importance-filter">
-              <option value="all">전체</option>
-              <option value="high">높음</option>
-              <option value="medium">중간</option>
-              <option value="low">낮음</option>
-            </select>
-          </label>
-          <label>
-            진술 성격
-            <select id="kind-filter">
-              <option value="all">전체</option>
-              <option value="factual">사실</option>
-              <option value="comparative">비교</option>
-              <option value="interpretive">해석</option>
-              <option value="inference">추정</option>
-              <option value="data_quality">데이터 검증</option>
-            </select>
-          </label>
-          <button id="clear-filters" class="wide-button" type="button">필터 해제</button>
+          <h2>비교 기준</h2>
+          <p id="reference-summary" class="filter-summary"></p>
+          <div id="reference-group-list" class="reference-group-list"></div>
         </section>
 
         <section class="panel compact">
@@ -120,13 +96,13 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <script src="data/generated-ledger.js?v=20260514-02"></script>
-    <script src="data/generated-report.js?v=20260514-02"></script>
-    <script src="data/sample-ledger.js?v=20260514-02"></script>
-    <script src="src/ledger.js?v=20260514-02"></script>
-    <script src="src/docx-export.js?v=20260514-02"></script>
-    <script src="src/input-loader.js?v=20260514-02"></script>
-    <script src="src/charts.js?v=20260514-02"></script>
-    <script src="src/app.js?v=20260514-02"></script>
+    <script src="data/generated-ledger.js?v=20260514-03"></script>
+    <script src="data/generated-report.js?v=20260514-03"></script>
+    <script src="data/sample-ledger.js?v=20260514-03"></script>
+    <script src="src/ledger.js?v=20260514-03"></script>
+    <script src="src/docx-export.js?v=20260514-03"></script>
+    <script src="src/input-loader.js?v=20260514-03"></script>
+    <script src="src/charts.js?v=20260514-03"></script>
+    <script src="src/app.js?v=20260514-03"></script>
   </body>
 </html>

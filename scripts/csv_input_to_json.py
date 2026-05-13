@@ -245,9 +245,38 @@ def build_reference_groups_from_history(rows: list[dict[str, str]], current_type
                 "selection_rule": f"기존 전시 데이터 중 '{type_name}' 유형 {len(items)}건",
                 "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
                 "metrics": metrics,
+                "members": [reference_member(item) for item in items],
             }
         )
+    all_items = [item for items in grouped.values() for item in items]
+    if all_items:
+        metrics = historical_average_metrics(all_items)
+        if metrics:
+            groups.append(
+                {
+                    "id": "all_reference_exhibitions",
+                    "label": "전체 전시",
+                    "selection_rule": f"기존 전시 데이터 전체 {len(all_items)}건",
+                    "caveat": "유형을 구분하지 않고 입력된 기존 전시 전체를 평균낸 비교군입니다.",
+                    "metrics": metrics,
+                    "members": [reference_member(item) for item in all_items],
+                }
+            )
     return groups
+
+
+def reference_member(row: dict[str, str]) -> dict[str, Any]:
+    return remove_empty_containers(
+        {
+            "id": row_value(row, "id").strip(),
+            "title": row_value(row, "title").strip(),
+            "type": row_value(row, "type").strip() or row_value(row, "category").strip(),
+            "total_visitors": optional_number(row_value(row, "total_visitors")),
+            "daily_visitors": historical_daily_visitors(row),
+            "total_budget": optional_number(row_value(row, "total_budget")),
+            "note": row_value(row, "note").strip(),
+        }
+    )
 
 
 def historical_average_metrics(rows: list[dict[str, str]]) -> dict[str, int | float]:

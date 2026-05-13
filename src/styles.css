@@ -295,6 +295,96 @@ button[aria-pressed="true"] {
   color: var(--warn);
 }
 
+.reference-group-list {
+  display: grid;
+  gap: 8px;
+}
+
+.reference-group {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px;
+  background: var(--surface);
+}
+
+.reference-group.is-active {
+  border-color: var(--accent);
+  background: var(--soft);
+}
+
+.reference-group-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.reference-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  margin: 0;
+  color: var(--ink);
+  font-size: var(--font-secondary-command);
+  font-weight: 700;
+}
+
+.reference-choice span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reference-choice input {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.reference-toggle {
+  min-height: 26px;
+  padding: 0 7px;
+  font-size: var(--font-micro);
+}
+
+.reference-rule {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: var(--font-sm);
+  line-height: 1.45;
+}
+
+.reference-members {
+  margin-top: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 7px;
+}
+
+.reference-members ul {
+  display: grid;
+  gap: 6px;
+  max-height: 220px;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+  list-style: none;
+}
+
+.reference-members li {
+  display: grid;
+  gap: 2px;
+  color: var(--ink);
+  font-size: var(--font-sm);
+  line-height: 1.35;
+}
+
+.reference-members li span,
+.reference-members p {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--font-xs);
+}
+
 label {
   display: grid;
   gap: 6px;

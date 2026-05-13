@@ -5,13 +5,17 @@ window.GENERATED_LEDGER = {
     "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
     "period": "2025.06.13 - 2025.08.17",
     "venue": "일민미술관",
-    "generated_at": "2026-05-13T22:13:10+09:00",
+    "generated_at": "2026-05-14T00:36:59+09:00",
     "scope_note": "엑셀 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
     "narrative": {
       "theme_and_content": "이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.",
       "composition_note": "전시 구성 항목에는 전시실별 구성·작품 수·공간 연출·연계 프로그램 운영 내역을 입력합니다. 현재 샘플은 프로그램 참여 지표를 중심으로 구성됩니다.",
       "evaluation_note": "평가 및 개선방안 항목은 성공/실패 판정이 아니라 수치상 특이점"
     },
+    "reference_group_id": "regular_planned_exhibitions",
+    "reference_group_label": "정기 기획전",
+    "reference_group_rule": "기존 전시 데이터 중 '정기 기획전' 유형 8건",
+    "reference_group_count": 8,
     "brief_metric_ids": [
       "total_visitors",
       "daily_visitors",
@@ -101,25 +105,400 @@ window.GENERATED_LEDGER = {
       "id": "regular_planned_exhibitions",
       "label": "정기 기획전",
       "selection_rule": "기존 전시 데이터 중 '정기 기획전' 유형 8건",
-      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다."
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+      "metrics": {
+        "total_visitors_avg": 9538,
+        "daily_visitors_avg": 158.4,
+        "total_budget_avg": 140000000,
+        "budget_execution_rate_avg": 89.7,
+        "income_avg": 29375000,
+        "cost_per_visitor_avg": 14719,
+        "group_audience_ratio_avg": 6.7,
+        "program_sessions_avg": 55,
+        "program_participants_avg": 806,
+        "program_participation_rate_avg": 8.4,
+        "press_mentions_avg": 29,
+        "paid_audience_ratio_avg": 86.2,
+        "sns_feedback_avg": 126781
+      },
+      "members": [
+        {
+          "id": "regular-01",
+          "title": "기존 정기 기획전 01",
+          "type": "정기 기획전",
+          "total_visitors": 9200.0,
+          "daily_visitors": 158.6206896551724,
+          "total_budget": 138000000.0
+        },
+        {
+          "id": "regular-02",
+          "title": "기존 정기 기획전 02",
+          "type": "정기 기획전",
+          "total_visitors": 10100.0,
+          "daily_visitors": 160.31746031746033,
+          "total_budget": 142000000.0
+        },
+        {
+          "id": "regular-03",
+          "title": "기존 정기 기획전 03",
+          "type": "정기 기획전",
+          "total_visitors": 8700.0,
+          "daily_visitors": 158.1818181818182,
+          "total_budget": 132000000.0
+        },
+        {
+          "id": "regular-04",
+          "title": "기존 정기 기획전 04",
+          "type": "정기 기획전",
+          "total_visitors": 9600.0,
+          "daily_visitors": 160.0,
+          "total_budget": 149000000.0
+        },
+        {
+          "id": "regular-05",
+          "title": "기존 정기 기획전 05",
+          "type": "정기 기획전",
+          "total_visitors": 11000.0,
+          "daily_visitors": 161.76470588235293,
+          "total_budget": 155000000.0
+        },
+        {
+          "id": "regular-06",
+          "title": "기존 정기 기획전 06",
+          "type": "정기 기획전",
+          "total_visitors": 7900.0,
+          "daily_visitors": 151.92307692307693,
+          "total_budget": 120000000.0
+        },
+        {
+          "id": "regular-07",
+          "title": "기존 정기 기획전 07",
+          "type": "정기 기획전",
+          "total_visitors": 9300.0,
+          "daily_visitors": 157.6271186440678,
+          "total_budget": 136000000.0
+        },
+        {
+          "id": "regular-08",
+          "title": "기존 정기 기획전 08",
+          "type": "정기 기획전",
+          "total_visitors": 10500.0,
+          "daily_visitors": 159.0909090909091,
+          "total_budget": 148000000.0
+        }
+      ]
     },
     {
       "id": "special_exhibitions",
       "label": "특별전",
       "selection_rule": "기존 전시 데이터 중 '특별전' 유형 6건",
-      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다."
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+      "metrics": {
+        "total_visitors_avg": 19233,
+        "daily_visitors_avg": 259.2,
+        "total_budget_avg": 339166667,
+        "budget_execution_rate_avg": 93.2,
+        "income_avg": 70000000,
+        "cost_per_visitor_avg": 17675,
+        "group_audience_ratio_avg": 5.5,
+        "program_sessions_avg": 74,
+        "program_participants_avg": 1075,
+        "program_participation_rate_avg": 5.6,
+        "press_mentions_avg": 50,
+        "paid_audience_ratio_avg": 72.3,
+        "sns_feedback_avg": 480144
+      },
+      "members": [
+        {
+          "id": "special-01",
+          "title": "기존 특별전 01",
+          "type": "특별전",
+          "total_visitors": 18200.0,
+          "daily_visitors": 252.77777777777777,
+          "total_budget": 320000000.0
+        },
+        {
+          "id": "special-02",
+          "title": "기존 특별전 02",
+          "type": "특별전",
+          "total_visitors": 21400.0,
+          "daily_visitors": 267.5,
+          "total_budget": 380000000.0
+        },
+        {
+          "id": "special-03",
+          "title": "기존 특별전 03",
+          "type": "특별전",
+          "total_visitors": 16800.0,
+          "daily_visitors": 258.46153846153845,
+          "total_budget": 295000000.0
+        },
+        {
+          "id": "special-04",
+          "title": "기존 특별전 04",
+          "type": "특별전",
+          "total_visitors": 24000.0,
+          "daily_visitors": 266.6666666666667,
+          "total_budget": 410000000.0
+        },
+        {
+          "id": "special-05",
+          "title": "기존 특별전 05",
+          "type": "특별전",
+          "total_visitors": 19700.0,
+          "daily_visitors": 259.2105263157895,
+          "total_budget": 350000000.0
+        },
+        {
+          "id": "special-06",
+          "title": "기존 특별전 06",
+          "type": "특별전",
+          "total_visitors": 15300.0,
+          "daily_visitors": 250.81967213114754,
+          "total_budget": 280000000.0
+        }
+      ]
     },
     {
       "id": "other_exhibitions",
       "label": "기타",
       "selection_rule": "기존 전시 데이터 중 '기타' 유형 4건",
-      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다."
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+      "metrics": {
+        "total_visitors_avg": 5750,
+        "daily_visitors_avg": 125.9,
+        "total_budget_avg": 77250000,
+        "budget_execution_rate_avg": 83.5,
+        "income_avg": 10250000,
+        "cost_per_visitor_avg": 13613,
+        "group_audience_ratio_avg": 5.3,
+        "program_sessions_avg": 27,
+        "program_participants_avg": 370,
+        "program_participation_rate_avg": 6.4,
+        "press_mentions_avg": 14,
+        "paid_audience_ratio_avg": 63.5,
+        "sns_feedback_avg": 57500
+      },
+      "members": [
+        {
+          "id": "other-01",
+          "title": "기존 기타 전시 01",
+          "type": "기타",
+          "total_visitors": 5200.0,
+          "daily_visitors": 120.93023255813954,
+          "total_budget": 70000000.0
+        },
+        {
+          "id": "other-02",
+          "title": "기존 기타 전시 02",
+          "type": "기타",
+          "total_visitors": 6100.0,
+          "daily_visitors": 127.08333333333333,
+          "total_budget": 82000000.0
+        },
+        {
+          "id": "other-03",
+          "title": "기존 기타 전시 03",
+          "type": "기타",
+          "total_visitors": 4300.0,
+          "daily_visitors": 113.15789473684211,
+          "total_budget": 65000000.0
+        },
+        {
+          "id": "other-04",
+          "title": "기존 기타 전시 04",
+          "type": "기타",
+          "total_visitors": 7400.0,
+          "daily_visitors": 142.30769230769232,
+          "total_budget": 92000000.0
+        }
+      ]
+    },
+    {
+      "id": "all_reference_exhibitions",
+      "label": "전체 전시",
+      "selection_rule": "기존 전시 데이터 전체 18건",
+      "caveat": "유형을 구분하지 않고 입력된 기존 전시 전체를 평균낸 비교군입니다.",
+      "metrics": {
+        "total_visitors_avg": 11928,
+        "daily_visitors_avg": 184.8,
+        "total_budget_avg": 192444444,
+        "budget_execution_rate_avg": 89.5,
+        "income_avg": 38666667,
+        "cost_per_visitor_avg": 15459,
+        "group_audience_ratio_avg": 6.0,
+        "program_sessions_avg": 55,
+        "program_participants_avg": 799,
+        "program_participation_rate_avg": 7.0,
+        "press_mentions_avg": 33,
+        "paid_audience_ratio_avg": 76.6,
+        "sns_feedback_avg": 229173
+      },
+      "members": [
+        {
+          "id": "regular-01",
+          "title": "기존 정기 기획전 01",
+          "type": "정기 기획전",
+          "total_visitors": 9200.0,
+          "daily_visitors": 158.6206896551724,
+          "total_budget": 138000000.0
+        },
+        {
+          "id": "regular-02",
+          "title": "기존 정기 기획전 02",
+          "type": "정기 기획전",
+          "total_visitors": 10100.0,
+          "daily_visitors": 160.31746031746033,
+          "total_budget": 142000000.0
+        },
+        {
+          "id": "regular-03",
+          "title": "기존 정기 기획전 03",
+          "type": "정기 기획전",
+          "total_visitors": 8700.0,
+          "daily_visitors": 158.1818181818182,
+          "total_budget": 132000000.0
+        },
+        {
+          "id": "regular-04",
+          "title": "기존 정기 기획전 04",
+          "type": "정기 기획전",
+          "total_visitors": 9600.0,
+          "daily_visitors": 160.0,
+          "total_budget": 149000000.0
+        },
+        {
+          "id": "regular-05",
+          "title": "기존 정기 기획전 05",
+          "type": "정기 기획전",
+          "total_visitors": 11000.0,
+          "daily_visitors": 161.76470588235293,
+          "total_budget": 155000000.0
+        },
+        {
+          "id": "regular-06",
+          "title": "기존 정기 기획전 06",
+          "type": "정기 기획전",
+          "total_visitors": 7900.0,
+          "daily_visitors": 151.92307692307693,
+          "total_budget": 120000000.0
+        },
+        {
+          "id": "regular-07",
+          "title": "기존 정기 기획전 07",
+          "type": "정기 기획전",
+          "total_visitors": 9300.0,
+          "daily_visitors": 157.6271186440678,
+          "total_budget": 136000000.0
+        },
+        {
+          "id": "regular-08",
+          "title": "기존 정기 기획전 08",
+          "type": "정기 기획전",
+          "total_visitors": 10500.0,
+          "daily_visitors": 159.0909090909091,
+          "total_budget": 148000000.0
+        },
+        {
+          "id": "special-01",
+          "title": "기존 특별전 01",
+          "type": "특별전",
+          "total_visitors": 18200.0,
+          "daily_visitors": 252.77777777777777,
+          "total_budget": 320000000.0
+        },
+        {
+          "id": "special-02",
+          "title": "기존 특별전 02",
+          "type": "특별전",
+          "total_visitors": 21400.0,
+          "daily_visitors": 267.5,
+          "total_budget": 380000000.0
+        },
+        {
+          "id": "special-03",
+          "title": "기존 특별전 03",
+          "type": "특별전",
+          "total_visitors": 16800.0,
+          "daily_visitors": 258.46153846153845,
+          "total_budget": 295000000.0
+        },
+        {
+          "id": "special-04",
+          "title": "기존 특별전 04",
+          "type": "특별전",
+          "total_visitors": 24000.0,
+          "daily_visitors": 266.6666666666667,
+          "total_budget": 410000000.0
+        },
+        {
+          "id": "special-05",
+          "title": "기존 특별전 05",
+          "type": "특별전",
+          "total_visitors": 19700.0,
+          "daily_visitors": 259.2105263157895,
+          "total_budget": 350000000.0
+        },
+        {
+          "id": "special-06",
+          "title": "기존 특별전 06",
+          "type": "특별전",
+          "total_visitors": 15300.0,
+          "daily_visitors": 250.81967213114754,
+          "total_budget": 280000000.0
+        },
+        {
+          "id": "other-01",
+          "title": "기존 기타 전시 01",
+          "type": "기타",
+          "total_visitors": 5200.0,
+          "daily_visitors": 120.93023255813954,
+          "total_budget": 70000000.0
+        },
+        {
+          "id": "other-02",
+          "title": "기존 기타 전시 02",
+          "type": "기타",
+          "total_visitors": 6100.0,
+          "daily_visitors": 127.08333333333333,
+          "total_budget": 82000000.0
+        },
+        {
+          "id": "other-03",
+          "title": "기존 기타 전시 03",
+          "type": "기타",
+          "total_visitors": 4300.0,
+          "daily_visitors": 113.15789473684211,
+          "total_budget": 65000000.0
+        },
+        {
+          "id": "other-04",
+          "title": "기존 기타 전시 04",
+          "type": "기타",
+          "total_visitors": 7400.0,
+          "daily_visitors": 142.30769230769232,
+          "total_budget": 92000000.0
+        }
+      ]
     },
     {
       "id": "legacy_planned_exhibitions",
       "label": "기존 기획전",
       "selection_rule": "샘플 데이터에 포함된 이전 기획전 전체",
-      "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다."
+      "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다.",
+      "metrics": {
+        "total_visitors_avg": 9413,
+        "daily_visitors_avg": 159.7,
+        "total_budget_avg": 140000000,
+        "budget_execution_rate_avg": 89.7,
+        "cost_per_visitor_avg": 20000,
+        "group_audience_ratio_avg": 6.9,
+        "program_sessions_avg": 55,
+        "program_participants_avg": 807.6,
+        "press_mentions_avg": 28.9,
+        "paid_audience_ratio_avg": 86.6,
+        "sns_feedback_avg": 126781
+      }
     },
     {
       "id": "similar_theme_scale",
@@ -128,6 +507,524 @@ window.GENERATED_LEDGER = {
       "caveat": "v4.3에서는 비교군 개념만 보존하며 자동 군집화는 구현하지 않습니다."
     }
   ],
+  "source_input": {
+    "schema_version": "0.2.0",
+    "exhibition": {
+      "period": {
+        "start": "2025-06-13",
+        "end": "2025-08-17",
+        "display": "2025.06.13 - 2025.08.17"
+      },
+      "id": "hyper-yellow-demo",
+      "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
+      "subtitle": "엑셀 입력 템플릿 샘플",
+      "venue": "일민미술관",
+      "type": "정기 기획전",
+      "scope_note": "엑셀 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다."
+    },
+    "narrative": {
+      "theme_and_content": "이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.",
+      "composition_note": "전시 구성 항목에는 전시실별 구성·작품 수·공간 연출·연계 프로그램 운영 내역을 입력합니다. 현재 샘플은 프로그램 참여 지표를 중심으로 구성됩니다.",
+      "evaluation_note": "평가 및 개선방안 항목은 성공/실패 판정이 아니라 수치상 특이점"
+    },
+    "audience": {
+      "total_visitors": 15200,
+      "operating_days": 66,
+      "daily_visitors": 230,
+      "paid_visitors": 8907,
+      "free_visitors": 6293,
+      "group_visitors": 1216
+    },
+    "budget": {
+      "total_budget": 210000000,
+      "execution_rate": 92.4,
+      "income": 35600000
+    },
+    "programs": {
+      "count": 8,
+      "sessions": 65,
+      "participants": 548,
+      "participation_rate": 3.6
+    },
+    "publicity": {
+      "press_mentions": 32,
+      "sns_posts": 24,
+      "sns_feedback_total": 186
+    },
+    "membership": {
+      "memberships_sold": 0,
+      "note": "v4.3 샘플에서는 멤버십 분석을 생성하지 않습니다."
+    },
+    "reference_groups": [
+      {
+        "id": "regular_planned_exhibitions",
+        "label": "정기 기획전",
+        "selection_rule": "기존 전시 데이터 중 '정기 기획전' 유형 8건",
+        "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+        "metrics": {
+          "total_visitors_avg": 9538,
+          "daily_visitors_avg": 158.4,
+          "total_budget_avg": 140000000,
+          "budget_execution_rate_avg": 89.7,
+          "income_avg": 29375000,
+          "cost_per_visitor_avg": 14719,
+          "group_audience_ratio_avg": 6.7,
+          "program_sessions_avg": 55,
+          "program_participants_avg": 806,
+          "program_participation_rate_avg": 8.4,
+          "press_mentions_avg": 29,
+          "paid_audience_ratio_avg": 86.2,
+          "sns_feedback_avg": 126781
+        },
+        "members": [
+          {
+            "id": "regular-01",
+            "title": "기존 정기 기획전 01",
+            "type": "정기 기획전",
+            "total_visitors": 9200.0,
+            "daily_visitors": 158.6206896551724,
+            "total_budget": 138000000.0
+          },
+          {
+            "id": "regular-02",
+            "title": "기존 정기 기획전 02",
+            "type": "정기 기획전",
+            "total_visitors": 10100.0,
+            "daily_visitors": 160.31746031746033,
+            "total_budget": 142000000.0
+          },
+          {
+            "id": "regular-03",
+            "title": "기존 정기 기획전 03",
+            "type": "정기 기획전",
+            "total_visitors": 8700.0,
+            "daily_visitors": 158.1818181818182,
+            "total_budget": 132000000.0
+          },
+          {
+            "id": "regular-04",
+            "title": "기존 정기 기획전 04",
+            "type": "정기 기획전",
+            "total_visitors": 9600.0,
+            "daily_visitors": 160.0,
+            "total_budget": 149000000.0
+          },
+          {
+            "id": "regular-05",
+            "title": "기존 정기 기획전 05",
+            "type": "정기 기획전",
+            "total_visitors": 11000.0,
+            "daily_visitors": 161.76470588235293,
+            "total_budget": 155000000.0
+          },
+          {
+            "id": "regular-06",
+            "title": "기존 정기 기획전 06",
+            "type": "정기 기획전",
+            "total_visitors": 7900.0,
+            "daily_visitors": 151.92307692307693,
+            "total_budget": 120000000.0
+          },
+          {
+            "id": "regular-07",
+            "title": "기존 정기 기획전 07",
+            "type": "정기 기획전",
+            "total_visitors": 9300.0,
+            "daily_visitors": 157.6271186440678,
+            "total_budget": 136000000.0
+          },
+          {
+            "id": "regular-08",
+            "title": "기존 정기 기획전 08",
+            "type": "정기 기획전",
+            "total_visitors": 10500.0,
+            "daily_visitors": 159.0909090909091,
+            "total_budget": 148000000.0
+          }
+        ]
+      },
+      {
+        "id": "special_exhibitions",
+        "label": "특별전",
+        "selection_rule": "기존 전시 데이터 중 '특별전' 유형 6건",
+        "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+        "metrics": {
+          "total_visitors_avg": 19233,
+          "daily_visitors_avg": 259.2,
+          "total_budget_avg": 339166667,
+          "budget_execution_rate_avg": 93.2,
+          "income_avg": 70000000,
+          "cost_per_visitor_avg": 17675,
+          "group_audience_ratio_avg": 5.5,
+          "program_sessions_avg": 74,
+          "program_participants_avg": 1075,
+          "program_participation_rate_avg": 5.6,
+          "press_mentions_avg": 50,
+          "paid_audience_ratio_avg": 72.3,
+          "sns_feedback_avg": 480144
+        },
+        "members": [
+          {
+            "id": "special-01",
+            "title": "기존 특별전 01",
+            "type": "특별전",
+            "total_visitors": 18200.0,
+            "daily_visitors": 252.77777777777777,
+            "total_budget": 320000000.0
+          },
+          {
+            "id": "special-02",
+            "title": "기존 특별전 02",
+            "type": "특별전",
+            "total_visitors": 21400.0,
+            "daily_visitors": 267.5,
+            "total_budget": 380000000.0
+          },
+          {
+            "id": "special-03",
+            "title": "기존 특별전 03",
+            "type": "특별전",
+            "total_visitors": 16800.0,
+            "daily_visitors": 258.46153846153845,
+            "total_budget": 295000000.0
+          },
+          {
+            "id": "special-04",
+            "title": "기존 특별전 04",
+            "type": "특별전",
+            "total_visitors": 24000.0,
+            "daily_visitors": 266.6666666666667,
+            "total_budget": 410000000.0
+          },
+          {
+            "id": "special-05",
+            "title": "기존 특별전 05",
+            "type": "특별전",
+            "total_visitors": 19700.0,
+            "daily_visitors": 259.2105263157895,
+            "total_budget": 350000000.0
+          },
+          {
+            "id": "special-06",
+            "title": "기존 특별전 06",
+            "type": "특별전",
+            "total_visitors": 15300.0,
+            "daily_visitors": 250.81967213114754,
+            "total_budget": 280000000.0
+          }
+        ]
+      },
+      {
+        "id": "other_exhibitions",
+        "label": "기타",
+        "selection_rule": "기존 전시 데이터 중 '기타' 유형 4건",
+        "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+        "metrics": {
+          "total_visitors_avg": 5750,
+          "daily_visitors_avg": 125.9,
+          "total_budget_avg": 77250000,
+          "budget_execution_rate_avg": 83.5,
+          "income_avg": 10250000,
+          "cost_per_visitor_avg": 13613,
+          "group_audience_ratio_avg": 5.3,
+          "program_sessions_avg": 27,
+          "program_participants_avg": 370,
+          "program_participation_rate_avg": 6.4,
+          "press_mentions_avg": 14,
+          "paid_audience_ratio_avg": 63.5,
+          "sns_feedback_avg": 57500
+        },
+        "members": [
+          {
+            "id": "other-01",
+            "title": "기존 기타 전시 01",
+            "type": "기타",
+            "total_visitors": 5200.0,
+            "daily_visitors": 120.93023255813954,
+            "total_budget": 70000000.0
+          },
+          {
+            "id": "other-02",
+            "title": "기존 기타 전시 02",
+            "type": "기타",
+            "total_visitors": 6100.0,
+            "daily_visitors": 127.08333333333333,
+            "total_budget": 82000000.0
+          },
+          {
+            "id": "other-03",
+            "title": "기존 기타 전시 03",
+            "type": "기타",
+            "total_visitors": 4300.0,
+            "daily_visitors": 113.15789473684211,
+            "total_budget": 65000000.0
+          },
+          {
+            "id": "other-04",
+            "title": "기존 기타 전시 04",
+            "type": "기타",
+            "total_visitors": 7400.0,
+            "daily_visitors": 142.30769230769232,
+            "total_budget": 92000000.0
+          }
+        ]
+      },
+      {
+        "id": "all_reference_exhibitions",
+        "label": "전체 전시",
+        "selection_rule": "기존 전시 데이터 전체 18건",
+        "caveat": "유형을 구분하지 않고 입력된 기존 전시 전체를 평균낸 비교군입니다.",
+        "metrics": {
+          "total_visitors_avg": 11928,
+          "daily_visitors_avg": 184.8,
+          "total_budget_avg": 192444444,
+          "budget_execution_rate_avg": 89.5,
+          "income_avg": 38666667,
+          "cost_per_visitor_avg": 15459,
+          "group_audience_ratio_avg": 6.0,
+          "program_sessions_avg": 55,
+          "program_participants_avg": 799,
+          "program_participation_rate_avg": 7.0,
+          "press_mentions_avg": 33,
+          "paid_audience_ratio_avg": 76.6,
+          "sns_feedback_avg": 229173
+        },
+        "members": [
+          {
+            "id": "regular-01",
+            "title": "기존 정기 기획전 01",
+            "type": "정기 기획전",
+            "total_visitors": 9200.0,
+            "daily_visitors": 158.6206896551724,
+            "total_budget": 138000000.0
+          },
+          {
+            "id": "regular-02",
+            "title": "기존 정기 기획전 02",
+            "type": "정기 기획전",
+            "total_visitors": 10100.0,
+            "daily_visitors": 160.31746031746033,
+            "total_budget": 142000000.0
+          },
+          {
+            "id": "regular-03",
+            "title": "기존 정기 기획전 03",
+            "type": "정기 기획전",
+            "total_visitors": 8700.0,
+            "daily_visitors": 158.1818181818182,
+            "total_budget": 132000000.0
+          },
+          {
+            "id": "regular-04",
+            "title": "기존 정기 기획전 04",
+            "type": "정기 기획전",
+            "total_visitors": 9600.0,
+            "daily_visitors": 160.0,
+            "total_budget": 149000000.0
+          },
+          {
+            "id": "regular-05",
+            "title": "기존 정기 기획전 05",
+            "type": "정기 기획전",
+            "total_visitors": 11000.0,
+            "daily_visitors": 161.76470588235293,
+            "total_budget": 155000000.0
+          },
+          {
+            "id": "regular-06",
+            "title": "기존 정기 기획전 06",
+            "type": "정기 기획전",
+            "total_visitors": 7900.0,
+            "daily_visitors": 151.92307692307693,
+            "total_budget": 120000000.0
+          },
+          {
+            "id": "regular-07",
+            "title": "기존 정기 기획전 07",
+            "type": "정기 기획전",
+            "total_visitors": 9300.0,
+            "daily_visitors": 157.6271186440678,
+            "total_budget": 136000000.0
+          },
+          {
+            "id": "regular-08",
+            "title": "기존 정기 기획전 08",
+            "type": "정기 기획전",
+            "total_visitors": 10500.0,
+            "daily_visitors": 159.0909090909091,
+            "total_budget": 148000000.0
+          },
+          {
+            "id": "special-01",
+            "title": "기존 특별전 01",
+            "type": "특별전",
+            "total_visitors": 18200.0,
+            "daily_visitors": 252.77777777777777,
+            "total_budget": 320000000.0
+          },
+          {
+            "id": "special-02",
+            "title": "기존 특별전 02",
+            "type": "특별전",
+            "total_visitors": 21400.0,
+            "daily_visitors": 267.5,
+            "total_budget": 380000000.0
+          },
+          {
+            "id": "special-03",
+            "title": "기존 특별전 03",
+            "type": "특별전",
+            "total_visitors": 16800.0,
+            "daily_visitors": 258.46153846153845,
+            "total_budget": 295000000.0
+          },
+          {
+            "id": "special-04",
+            "title": "기존 특별전 04",
+            "type": "특별전",
+            "total_visitors": 24000.0,
+            "daily_visitors": 266.6666666666667,
+            "total_budget": 410000000.0
+          },
+          {
+            "id": "special-05",
+            "title": "기존 특별전 05",
+            "type": "특별전",
+            "total_visitors": 19700.0,
+            "daily_visitors": 259.2105263157895,
+            "total_budget": 350000000.0
+          },
+          {
+            "id": "special-06",
+            "title": "기존 특별전 06",
+            "type": "특별전",
+            "total_visitors": 15300.0,
+            "daily_visitors": 250.81967213114754,
+            "total_budget": 280000000.0
+          },
+          {
+            "id": "other-01",
+            "title": "기존 기타 전시 01",
+            "type": "기타",
+            "total_visitors": 5200.0,
+            "daily_visitors": 120.93023255813954,
+            "total_budget": 70000000.0
+          },
+          {
+            "id": "other-02",
+            "title": "기존 기타 전시 02",
+            "type": "기타",
+            "total_visitors": 6100.0,
+            "daily_visitors": 127.08333333333333,
+            "total_budget": 82000000.0
+          },
+          {
+            "id": "other-03",
+            "title": "기존 기타 전시 03",
+            "type": "기타",
+            "total_visitors": 4300.0,
+            "daily_visitors": 113.15789473684211,
+            "total_budget": 65000000.0
+          },
+          {
+            "id": "other-04",
+            "title": "기존 기타 전시 04",
+            "type": "기타",
+            "total_visitors": 7400.0,
+            "daily_visitors": 142.30769230769232,
+            "total_budget": 92000000.0
+          }
+        ]
+      },
+      {
+        "id": "legacy_planned_exhibitions",
+        "label": "기존 기획전",
+        "selection_rule": "샘플 데이터에 포함된 이전 기획전 전체",
+        "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다.",
+        "metrics": {
+          "total_visitors_avg": 9413,
+          "daily_visitors_avg": 159.7,
+          "total_budget_avg": 140000000,
+          "budget_execution_rate_avg": 89.7,
+          "cost_per_visitor_avg": 20000,
+          "group_audience_ratio_avg": 6.9,
+          "program_sessions_avg": 55,
+          "program_participants_avg": 807.6,
+          "press_mentions_avg": 28.9,
+          "paid_audience_ratio_avg": 86.6,
+          "sns_feedback_avg": 126781
+        }
+      },
+      {
+        "id": "similar_theme_scale",
+        "label": "유사 규모/주제 전시",
+        "selection_rule": "관객 수, 예산, 프로그램 수가 유사한 전시 후보",
+        "caveat": "v4.3에서는 비교군 개념만 보존하며 자동 군집화는 구현하지 않습니다."
+      }
+    ],
+    "selected_feedback": [
+      {
+        "id": "fb-color-materiality",
+        "source": "SNS 인용",
+        "theme": "색채 경험과 공간 몰입",
+        "polarity": "positive",
+        "quote": "색의 물질성이 느껴졌습니다."
+      },
+      {
+        "id": "fb-family-workshop",
+        "source": "설문 인용",
+        "theme": "색채 경험과 공간 몰입",
+        "polarity": "positive",
+        "quote": "아이와 함께 왔는데 색채 워크숍이 좋았습니다."
+      },
+      {
+        "id": "fb-crowding",
+        "source": "SNS 인용",
+        "theme": "혼잡도와 감상 동선",
+        "polarity": "critical",
+        "quote": "인파가 많아 작품 감상이 쉽지 않았습니다."
+      },
+      {
+        "id": "fb-reservation",
+        "source": "설문 인용",
+        "theme": "혼잡도와 감상 동선",
+        "polarity": "suggestion",
+        "quote": "사전예약제가 필요해 보입니다."
+      }
+    ],
+    "data_quality_checks": [
+      {
+        "id": "program-count-conflict",
+        "claim": "본문 내 프로그램 수와 표의 프로그램 수가 일치하지 않을 가능성이 있음",
+        "importance": "high",
+        "caveat": "자동 보고서 생성 전 검수자가 원자료의 프로그램 총수·회차·참여 인원을 확인해야 합니다.",
+        "sources": [
+          {
+            "label": "개요 표기",
+            "value": "총 8개(65회) 프로그램 진행·548명 참여"
+          },
+          {
+            "label": "전시 구성 표기",
+            "value": "총 7개 프로그램 진행·453명 참여"
+          }
+        ]
+      }
+    ],
+    "brief_metric_ids": [
+      "total_visitors",
+      "daily_visitors",
+      "total_budget",
+      "budget_execution_rate",
+      "total_income",
+      "cost_per_visitor",
+      "paid_audience_ratio",
+      "group_audience_ratio",
+      "program_sessions",
+      "program_participants",
+      "press_mentions",
+      "sns_feedback"
+    ]
+  },
   "metrics": [
     {
       "id": "total_visitors",

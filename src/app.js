@@ -4,6 +4,7 @@
   const tools = window.LedgerTools;
   let showEvidence = true;
   let reviewState = {};
+  let referenceOpenState = {};
 
   const els = {
     workspace: document.querySelector("#workspace"),
@@ -20,11 +21,8 @@
     count: document.querySelector("#observation-count"),
     health: document.querySelector("#health-list"),
     review: document.querySelector("#review-list"),
-    filterSummary: document.querySelector("#filter-summary"),
-    sectionFilter: document.querySelector("#section-filter"),
-    importanceFilter: document.querySelector("#importance-filter"),
-    kindFilter: document.querySelector("#kind-filter"),
-    clearFilters: document.querySelector("#clear-filters"),
+    referenceSummary: document.querySelector("#reference-summary"),
+    referenceGroupList: document.querySelector("#reference-group-list"),
     exportMenuButton: document.querySelector("#export-menu-button"),
     exportMenu: document.querySelector("#export-menu"),
     toggleEvidence: document.querySelector("#toggle-evidence"),
@@ -56,7 +54,7 @@
     els.scopeNote.textContent = ledger.report.scope_note || "";
     els.workspace.hidden = false;
     setReportActionsEnabled(true);
-    renderFilters();
+    renderReferenceGroups();
     renderHealth();
     renderReviewSummary();
     renderMetrics();
@@ -72,15 +70,79 @@
     }
   }
 
-  function renderFilters() {
-    const options = [`<option value="all">전체</option>`]
-      .concat(
-        tools.getSections(ledger).map((section) => {
-          return `<option value="${section}">${tools.sectionLabel(section)}</option>`;
-        })
-      )
-      .join("");
-    els.sectionFilter.innerHTML = options;
+  function renderReferenceGroups() {
+    const groups = ledger.reference_groups || [];
+    const activeId = currentReferenceGroupId();
+    const activeGroup = groups.find((group) => group.id === activeId) || groups[0];
+    if (!groups.length) {
+      els.referenceSummary.textContent = "비교 기준 데이터 없음";
+      els.referenceGroupList.innerHTML = "";
+      return;
+    }
+    const activeCount = referenceGroupCount(activeGroup);
+    els.referenceSummary.textContent = activeCount
+      ? `${activeGroup.label} ${activeCount}건 기준`
+      : `${activeGroup.label} 기준`;
+    els.referenceGroupList.innerHTML = groups.map((group) => renderReferenceGroup(group, activeId)).join("");
+  }
+
+  function renderReferenceGroup(group, activeId) {
+    const members = referenceGroupMembers(group);
+    const count = referenceGroupCount(group);
+    const isActive = group.id === activeId;
+    const isOpen = referenceOpenState[group.id] ?? isActive;
+    const disabled = !canRebuildReferenceGroup() && !isActive;
+    return `
+      <article class="reference-group ${isActive ? "is-active" : ""}" data-reference-id="${escapeHtml(group.id)}">
+        <div class="reference-group-head">
+          <label class="reference-choice">
+            <input type="checkbox" data-reference-choice="${escapeHtml(group.id)}" ${isActive ? "checked" : ""} ${disabled ? "disabled" : ""} />
+            <span>${escapeHtml(group.label)}</span>
+          </label>
+          <button class="reference-toggle" type="button" data-reference-toggle="${escapeHtml(group.id)}" aria-expanded="${String(isOpen)}">${isOpen ? "접기" : "펼치기"}</button>
+        </div>
+        <p class="reference-rule">${escapeHtml(group.selection_rule || (count ? `${count}건` : "비교군 설명 없음"))}</p>
+        <div class="reference-members" ${isOpen ? "" : "hidden"}>
+          ${members.length ? `<ul>${members.map(renderReferenceMember).join("")}</ul>` : `<p>펼쳐볼 전시 목록이 없습니다.</p>`}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderReferenceMember(member) {
+    const details = [
+      member.type,
+      member.total_visitors !== undefined && member.total_visitors !== null ? tools.formatValue(member.total_visitors, "people") : "",
+      member.daily_visitors !== undefined && member.daily_visitors !== null ? `일평균 ${tools.formatValue(member.daily_visitors, "people")}` : ""
+    ]
+      .filter(Boolean)
+      .join(" · ");
+    return `<li><strong>${escapeHtml(member.title || member.id || "제목 없음")}</strong>${details ? `<span>${escapeHtml(details)}</span>` : ""}</li>`;
+  }
+
+  function currentReferenceGroupId() {
+    return (
+      ledger.report?.reference_group_id ||
+      (ledger.metrics || []).find((metric) => metric.reference_group)?.reference_group ||
+      ledger.reference_groups?.[0]?.id ||
+      ""
+    );
+  }
+
+  function referenceGroupMembers(group) {
+    return Array.isArray(group?.members) ? group.members : [];
+  }
+
+  function referenceGroupCount(group) {
+    if (!group) return 0;
+    const members = referenceGroupMembers(group);
+    if (members.length) return members.length;
+    const match = String(group.selection_rule || "").match(/(\d+)\s*건/);
+    return match ? Number(match[1]) : 0;
+  }
+
+  function canRebuildReferenceGroup() {
+    return Boolean(ledger?.source_input && window.InputLoader?.buildLedger);
   }
 
   function renderHealth() {
@@ -181,15 +243,8 @@
   }
 
   function renderLedger() {
-    const filters = getLedgerFilters();
-    const observations = tools.filterObservations(ledger, filters);
-    const active = hasActiveLedgerFilters(filters);
-    const summary = `${ledger.observations.length}개 중 ${observations.length}개`;
-    els.count.textContent = active ? `${summary} 표시 중` : `전체 ${ledger.observations.length}개 관찰`;
-    els.filterSummary.textContent = active
-      ? `${summary} 표시 중. 출력물은 바뀌지 않습니다.`
-      : `총 ${ledger.observations.length}개 관찰을 표시합니다.`;
-    els.filterSummary.classList.toggle("is-active", active);
+    const observations = ledger.observations || [];
+    els.count.textContent = `전체 ${observations.length}개 관찰`;
     els.ledgerList.innerHTML = observations.map(renderObservation).join("");
   }
 
@@ -247,21 +302,23 @@
     els.loadSampleButton.addEventListener("click", loadSampleLedger);
     els.excelUpload.addEventListener("change", handleExcelUpload);
 
-    for (const el of [els.sectionFilter, els.importanceFilter, els.kindFilter]) {
-      el.addEventListener("change", () => {
-        if (!ledger) return;
-        renderLedger();
-        showToast(ledgerFilterToast());
-      });
-    }
+    els.referenceGroupList.addEventListener("click", (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      const toggle = target?.closest("[data-reference-toggle]");
+      if (!toggle || !ledger) return;
+      const id = toggle.dataset.referenceToggle;
+      referenceOpenState[id] = !(referenceOpenState[id] ?? id === currentReferenceGroupId());
+      renderReferenceGroups();
+    });
 
-    els.clearFilters.addEventListener("click", () => {
-      if (!ledger) return;
-      els.sectionFilter.value = "all";
-      els.importanceFilter.value = "all";
-      els.kindFilter.value = "all";
-      renderLedger();
-      showToast("관찰 데이터 필터를 해제했습니다.");
+    els.referenceGroupList.addEventListener("change", (event) => {
+      const target = event.target instanceof HTMLInputElement ? event.target : null;
+      if (!ledger || !target || !target.dataset.referenceChoice) return;
+      if (!target.checked) {
+        target.checked = true;
+        return;
+      }
+      applyReferenceGroup(target.dataset.referenceChoice);
     });
 
     for (const reviewContainer of [els.brief, els.ledgerList]) {
@@ -363,6 +420,20 @@
     }
   }
 
+  function applyReferenceGroup(referenceId) {
+    if (referenceId === currentReferenceGroupId()) {
+      renderReferenceGroups();
+      return;
+    }
+    if (!canRebuildReferenceGroup()) {
+      renderReferenceGroups();
+      showToast("이 데이터에는 비교 기준 재계산용 원본 입력이 포함되어 있지 않습니다.");
+      return;
+    }
+    const nextLedger = window.InputLoader.buildLedger(clone(ledger.source_input), referenceId);
+    setLedger(nextLedger, nextLedger.report.reference_group_label || "비교 기준");
+  }
+
   function updateObservationReview(id, field, target) {
     const observation = ledger.observations.find((item) => item.id === id);
     reviewState[id] = {
@@ -375,29 +446,11 @@
   }
 
   function renderAll() {
+    renderReferenceGroups();
     renderReviewSummary();
     renderBrief();
     renderReportDraft();
     renderLedger();
-  }
-
-  function getLedgerFilters() {
-    return {
-      section: els.sectionFilter.value,
-      importance: els.importanceFilter.value,
-      kind: els.kindFilter.value
-    };
-  }
-
-  function hasActiveLedgerFilters(filters) {
-    return filters.section !== "all" || filters.importance !== "all" || filters.kind !== "all";
-  }
-
-  function ledgerFilterToast() {
-    const filters = getLedgerFilters();
-    const count = tools.filterObservations(ledger, filters).length;
-    if (!hasActiveLedgerFilters(filters)) return "전체 관찰을 표시합니다.";
-    return `관찰 데이터 필터: ${ledger.observations.length}개 중 ${count}개 표시`;
   }
 
   function setExportMenuOpen(open) {

@@ -309,13 +309,41 @@
     const ordered = [];
     if (grouped.has(currentType)) ordered.push(currentType);
     for (const typeName of grouped.keys()) if (!ordered.includes(typeName)) ordered.push(typeName);
-    return ordered.map((typeName, index) => ({
+    const groups = ordered.map((typeName, index) => ({
       id: referenceTypeId(typeName, index + 1),
       label: typeName,
       selection_rule: `기존 전시 데이터 중 '${typeName}' 유형 ${grouped.get(typeName).length}건`,
       caveat: "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
-      metrics: historicalAverageMetrics(grouped.get(typeName))
+      metrics: historicalAverageMetrics(grouped.get(typeName)),
+      members: grouped.get(typeName).map(referenceMember)
     })).filter((group) => Object.keys(group.metrics).length);
+    if (rows.length) {
+      const allMembers = Array.from(grouped.values()).flat();
+      const metrics = historicalAverageMetrics(allMembers);
+      if (Object.keys(metrics).length) {
+        groups.push({
+          id: "all_reference_exhibitions",
+          label: "전체 전시",
+          selection_rule: `기존 전시 데이터 전체 ${allMembers.length}건`,
+          caveat: "유형을 구분하지 않고 입력된 기존 전시 전체를 평균낸 비교군입니다.",
+          metrics,
+          members: allMembers.map(referenceMember)
+        });
+      }
+    }
+    return groups;
+  }
+
+  function referenceMember(row) {
+    return {
+      id: rowValue(row, "id").trim(),
+      title: rowValue(row, "title").trim(),
+      type: rowValue(row, "type").trim() || rowValue(row, "category").trim(),
+      total_visitors: optionalNumber(rowValue(row, "total_visitors")),
+      daily_visitors: historicalDailyVisitors(row),
+      total_budget: optionalNumber(rowValue(row, "total_budget")),
+      note: rowValue(row, "note").trim()
+    };
   }
 
   function historicalAverageMetrics(rows) {
@@ -423,9 +451,10 @@
     return Array.from(grouped.values());
   }
 
-  function buildLedger(source) {
+  function buildLedger(source, referenceGroupId) {
     validateSource(source);
-    const referenceGroup = source.reference_groups[0];
+    const referenceGroup =
+      source.reference_groups.find((group) => group.id === referenceGroupId) || source.reference_groups[0];
     const metrics = buildMetrics(source, referenceGroup);
     const selection = buildBriefSelection(metrics);
     annotateBriefMetrics(metrics, selection);
@@ -438,6 +467,10 @@
         venue: source.exhibition.venue || "",
         generated_at: new Date().toISOString(),
         scope_note: source.exhibition.scope_note || "업로드한 엑셀 템플릿에서 생성한 보고서입니다.",
+        reference_group_id: referenceGroup.id,
+        reference_group_label: referenceGroup.label,
+        reference_group_rule: referenceGroup.selection_rule,
+        reference_group_count: referenceGroup.members?.length || null,
         brief_metric_ids: selection.ids,
         brief_metric_groups: selection.groups,
         brief_metric_strategy: {
@@ -448,6 +481,7 @@
         }
       },
       reference_groups: source.reference_groups,
+      source_input: source,
       metrics,
       observations: buildObservations(source, referenceGroup, metrics)
     };
