@@ -26,31 +26,34 @@
     <main class="layout">
       <aside class="sidebar" aria-label="ledger filters">
         <section class="panel compact">
-          <h2>Filters</h2>
+          <h2>관찰 원장 필터</h2>
+          <p class="panel-note">아래 관찰 원장 목록만 좁혀 봅니다. 보고서 출력 여부는 Include와 Director 설정으로 결정됩니다.</p>
+          <p id="filter-summary" class="filter-summary"></p>
           <label>
-            Section
+            섹션
             <select id="section-filter"></select>
           </label>
           <label>
-            Importance
+            중요도
             <select id="importance-filter">
-              <option value="all">All</option>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
+              <option value="all">전체</option>
+              <option value="high">높음</option>
+              <option value="medium">중간</option>
+              <option value="low">낮음</option>
             </select>
           </label>
           <label>
-            Statement Kind
+            진술 성격
             <select id="kind-filter">
-              <option value="all">All</option>
-              <option value="factual">Fact</option>
-              <option value="comparative">Comparison</option>
-              <option value="interpretive">Interpretation</option>
-              <option value="inference">Inference</option>
-              <option value="data_quality">Data Quality</option>
+              <option value="all">전체</option>
+              <option value="factual">사실</option>
+              <option value="comparative">비교</option>
+              <option value="interpretive">해석</option>
+              <option value="inference">추정</option>
+              <option value="data_quality">데이터 검증</option>
             </select>
           </label>
+          <button id="clear-filters" class="wide-button" type="button">필터 해제</button>
         </section>
 
         <section class="panel compact">

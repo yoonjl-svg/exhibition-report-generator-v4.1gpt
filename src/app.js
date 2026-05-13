@@ -15,9 +15,11 @@
     count: document.querySelector("#observation-count"),
     health: document.querySelector("#health-list"),
     review: document.querySelector("#review-list"),
+    filterSummary: document.querySelector("#filter-summary"),
     sectionFilter: document.querySelector("#section-filter"),
     importanceFilter: document.querySelector("#importance-filter"),
     kindFilter: document.querySelector("#kind-filter"),
+    clearFilters: document.querySelector("#clear-filters"),
     toggleEvidence: document.querySelector("#toggle-evidence"),
     copyMarkdown: document.querySelector("#copy-markdown"),
     downloadReportHtml: document.querySelector("#download-report-html"),
@@ -47,7 +49,7 @@
   }
 
   function renderFilters() {
-    const options = [`<option value="all">All</option>`]
+    const options = [`<option value="all">전체</option>`]
       .concat(
         tools.getSections(ledger).map((section) => {
           return `<option value="${section}">${tools.sectionLabel(section)}</option>`;
@@ -118,13 +120,15 @@
   }
 
   function renderLedger() {
-    const filters = {
-      section: els.sectionFilter.value,
-      importance: els.importanceFilter.value,
-      kind: els.kindFilter.value
-    };
+    const filters = getLedgerFilters();
     const observations = tools.filterObservations(ledger, filters);
-    els.count.textContent = `${observations.length} of ${ledger.observations.length} observations`;
+    const active = hasActiveLedgerFilters(filters);
+    const summary = `${ledger.observations.length}개 중 ${observations.length}개`;
+    els.count.textContent = active ? `${summary} 표시 중` : `전체 ${ledger.observations.length}개 관찰`;
+    els.filterSummary.textContent = active
+      ? `${summary} 표시 중. 출력물은 바뀌지 않습니다.`
+      : `전체 ${ledger.observations.length}개 관찰을 표시합니다.`;
+    els.filterSummary.classList.toggle("is-active", active);
     els.ledgerList.innerHTML = observations.map(renderObservation).join("");
   }
 
@@ -173,8 +177,19 @@
 
   function bindEvents() {
     for (const el of [els.sectionFilter, els.importanceFilter, els.kindFilter]) {
-      el.addEventListener("change", renderLedger);
+      el.addEventListener("change", () => {
+        renderLedger();
+        showToast(ledgerFilterToast());
+      });
     }
+
+    els.clearFilters.addEventListener("click", () => {
+      els.sectionFilter.value = "all";
+      els.importanceFilter.value = "all";
+      els.kindFilter.value = "all";
+      renderLedger();
+      showToast("관찰 원장 필터를 해제했습니다.");
+    });
 
     for (const reviewContainer of [els.brief, els.ledgerList]) {
       reviewContainer.addEventListener("change", (event) => {
@@ -253,6 +268,25 @@
     renderBrief();
     renderReportDraft();
     renderLedger();
+  }
+
+  function getLedgerFilters() {
+    return {
+      section: els.sectionFilter.value,
+      importance: els.importanceFilter.value,
+      kind: els.kindFilter.value
+    };
+  }
+
+  function hasActiveLedgerFilters(filters) {
+    return filters.section !== "all" || filters.importance !== "all" || filters.kind !== "all";
+  }
+
+  function ledgerFilterToast() {
+    const filters = getLedgerFilters();
+    const count = tools.filterObservations(ledger, filters).length;
+    if (!hasActiveLedgerFilters(filters)) return "전체 관찰을 표시합니다.";
+    return `관찰 원장 필터: ${ledger.observations.length}개 중 ${count}개 표시`;
   }
 
   async function copyText(text, successMessage) {

@@ -117,6 +117,10 @@ button,
   text-decoration: none;
 }
 
+.wide-button {
+  width: 100%;
+}
+
 button:hover,
 select:hover,
 .button-link:hover {
@@ -164,6 +168,30 @@ button[aria-pressed="true"] {
 .panel.compact h2 {
   margin-bottom: 12px;
   font-size: 15px;
+}
+
+.panel-note {
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.filter-summary {
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.filter-summary.is-active {
+  border-color: #c7a66d;
+  background: #fbf4e8;
+  color: var(--warn);
 }
 
 label {
