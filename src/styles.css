@@ -306,6 +306,7 @@ label {
 select {
   width: 100%;
   padding: 0 10px;
+  font-size: var(--font-secondary-command);
 }
 
 .section-heading {
