@@ -57,6 +57,24 @@
     return ids.map((id) => metrics.get(id)).filter(Boolean);
   }
 
+  function getBriefMetricGroups(ledger) {
+    const metrics = new Map(ledger.metrics.map((metric) => [metric.id, metric]));
+    const groups = ledger.report.brief_metric_groups || [];
+    if (groups.length) {
+      return groups
+        .map((group) => ({
+          ...group,
+          metrics: (group.metric_ids || []).map((id) => metrics.get(id)).filter(Boolean)
+        }))
+        .filter((group) => group.metrics.length);
+    }
+    return getBriefMetrics(ledger).map((metric) => ({
+      id: metric.id,
+      label: metric.label,
+      metrics: [metric]
+    }));
+  }
+
   function getDirectorObservations(ledger) {
     return ledger.observations
       .filter((observation) => observation.report_placement?.director_brief)
@@ -166,6 +184,7 @@
     evidenceText,
     filterObservations,
     formatValue,
+    getBriefMetricGroups,
     getBriefMetrics,
     getDirectorObservations,
     getSections,

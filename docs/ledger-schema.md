@@ -24,6 +24,13 @@ This is the draft schema used by `data/generated-ledger.json` and the fallback `
   "generated_at": "2026-05-11T15:42:00+09:00",
   "scope_note": "샘플 데이터 기반",
   "brief_metric_ids": ["total_visitors"],
+  "brief_metric_groups": [
+    {
+      "id": "audience",
+      "label": "관객",
+      "metric_ids": ["total_visitors", "daily_visitors"]
+    }
+  ],
   "brief_metric_strategy": {
     "fixed_ids": ["total_visitors"],
     "recommended_metric_id": "program_participants",

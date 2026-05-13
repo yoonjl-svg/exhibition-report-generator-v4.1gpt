@@ -15,14 +15,26 @@ FIXED_BRIEF_METRIC_IDS = [
     "daily_visitors",
     "total_budget",
     "total_income",
+    "program_participants",
+    "program_participation_rate",
+    "press_mentions",
+    "sns_feedback",
     "cost_per_visitor",
+]
+
+BRIEF_METRIC_GROUPS = [
+    {"id": "audience", "label": "관객", "metric_ids": ["total_visitors", "daily_visitors"]},
+    {"id": "finance", "label": "예산/수입", "metric_ids": ["total_budget", "total_income"]},
+    {"id": "program", "label": "프로그램", "metric_ids": ["program_participants", "program_participation_rate"]},
+    {"id": "publicity", "label": "홍보/반응", "metric_ids": ["press_mentions", "sns_feedback"]},
+    {"id": "cost", "label": "관객당 비용", "metric_ids": ["cost_per_visitor"]},
 ]
 
 AUTO_BRIEF_TOKENS = {"auto", "auto_recommended", "recommended"}
 
 BRIEF_METRIC_IDS = [
     *FIXED_BRIEF_METRIC_IDS,
-    "program_participants",
+    "paid_audience_ratio",
 ]
 
 UNIT_SUFFIX = {
@@ -129,6 +141,7 @@ def build_ledger(source: dict[str, Any]) -> dict[str, Any]:
             ),
             "narrative": source.get("narrative", {}),
             "brief_metric_ids": brief_selection["ids"],
+            "brief_metric_groups": brief_selection["groups"],
             "brief_metric_strategy": {
                 "fixed_ids": brief_selection["fixed_ids"],
                 "recommended_metric_id": brief_selection.get("recommended_id"),
@@ -164,7 +177,9 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
     total_income = optional_number(budget.get("income"))
     cost_per_visitor = round(total_budget / total_visitors)
     program_participants = number(programs.get("participants", 0))
+    program_participation_rate = derive_program_participation_rate(programs, total_visitors)
     press_mentions = number(publicity.get("press_mentions", 0))
+    sns_feedback = count_sns_feedback(source.get("selected_feedback", []))
     paid_audience_ratio = derive_paid_ratio(audience)
 
     metrics = [
@@ -218,19 +233,35 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
         ),
         metric_against_reference(
             "program_participants",
-            "프로그램 참여 인원",
+            "프로그램 참여",
             program_participants,
             "people",
             ref.get("program_participants_avg"),
             reference_group,
         ),
         metric_against_reference(
+            "program_participation_rate",
+            "프로그램 참여율",
+            program_participation_rate,
+            "percent",
+            ref.get("program_participation_rate_avg"),
+            reference_group,
+        ),
+        metric_against_reference(
             "press_mentions",
-            "언론 보도 건수",
+            "보도 건수",
             press_mentions,
             "count",
             ref.get("press_mentions_avg"),
             reference_group,
+        ),
+        metric(
+            "sns_feedback",
+            "SNS 피드백",
+            sns_feedback,
+            "count",
+            "선별 입력 SNS 후기 수",
+            recommendation_score=0,
         ),
     ]
 
@@ -533,22 +564,46 @@ def build_data_quality_observations(source: dict[str, Any]) -> list[dict[str, An
 def build_brief_metric_selection(source: dict[str, Any], metrics: list[dict[str, Any]]) -> dict[str, Any]:
     metric_ids = {item["id"] for item in metrics}
     requested_ids = source.get("brief_metric_ids") or [*FIXED_BRIEF_METRIC_IDS, "auto"]
-    fixed_ids = [item for item in requested_ids if item not in AUTO_BRIEF_TOKENS]
-    if not fixed_ids:
-        fixed_ids = [item for item in FIXED_BRIEF_METRIC_IDS if item in metric_ids]
+    fixed_ids = [item for item in FIXED_BRIEF_METRIC_IDS if item in metric_ids]
+    requested_fixed = [item for item in requested_ids if item not in AUTO_BRIEF_TOKENS and item in metric_ids]
+    if requested_fixed and set(requested_fixed) != set(FIXED_BRIEF_METRIC_IDS):
+        fixed_ids = requested_fixed
     use_auto = any(item in AUTO_BRIEF_TOKENS for item in requested_ids) or not source.get("brief_metric_ids")
     fixed_ids = [item for item in fixed_ids if item in metric_ids]
-    selected_ids = list(dict.fromkeys(fixed_ids))
-    recommended = recommend_brief_metric(metrics, selected_ids) if use_auto else None
-    if recommended and recommended["id"] not in selected_ids:
-        selected_ids.append(recommended["id"])
+    recommended = recommend_brief_metric(metrics, fixed_ids) if use_auto else None
+    groups = build_brief_metric_groups(metric_ids, recommended["id"] if recommended else None)
+    selected_ids = [
+        metric_id
+        for group in groups
+        for metric_id in group["metric_ids"]
+        if metric_id in metric_ids
+    ]
 
     return {
-        "ids": selected_ids[:6],
+        "ids": list(dict.fromkeys(selected_ids)),
+        "groups": groups,
         "fixed_ids": fixed_ids,
         "recommended_id": recommended["id"] if recommended else None,
         "recommendation_reason": recommended.get("recommendation_reason") if recommended else None,
     }
+
+
+def build_brief_metric_groups(metric_ids: set[str], recommended_id: str | None) -> list[dict[str, Any]]:
+    groups = []
+    for group in BRIEF_METRIC_GROUPS:
+        ids = [metric_id for metric_id in group["metric_ids"] if metric_id in metric_ids]
+        if ids:
+            groups.append({**group, "metric_ids": ids})
+    if recommended_id and recommended_id in metric_ids:
+        groups.append(
+            {
+                "id": "recommended",
+                "label": "추천",
+                "role": "recommended",
+                "metric_ids": [recommended_id],
+            }
+        )
+    return groups
 
 
 def recommend_brief_metric(metrics: list[dict[str, Any]], excluded_ids: list[str]) -> dict[str, Any] | None:
@@ -675,6 +730,20 @@ def derive_paid_ratio(audience: dict[str, Any]) -> float | None:
     if total and paid is not None:
         return round(number(paid) / total * 100, 1)
     return None
+
+
+def derive_program_participation_rate(programs: dict[str, Any], total_visitors: float) -> float | None:
+    participation_rate = optional_number(programs.get("participation_rate"))
+    if participation_rate is not None:
+        return participation_rate
+    participants = optional_number(programs.get("participants"))
+    if participants is not None and total_visitors:
+        return round(participants / total_visitors * 100, 1)
+    return None
+
+
+def count_sns_feedback(feedback: list[dict[str, Any]]) -> int:
+    return sum(1 for item in feedback if "sns" in str(item.get("source", "")).lower())
 
 
 def context_against_reference(

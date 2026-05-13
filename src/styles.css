@@ -292,28 +292,55 @@ select {
 
 .metric-strip {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
   margin-bottom: 16px;
 }
 
 .metric {
   position: relative;
-  min-height: 92px;
+  min-height: 72px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 12px;
+  padding: 9px 10px;
   background: var(--soft);
+}
+
+.metric-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  align-items: start;
+}
+
+.metric--single .metric-items {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.metric-item {
+  min-width: 0;
+}
+
+.metric-item + .metric-item {
+  border-left: 1px solid rgba(96, 105, 92, 0.18);
+  padding-left: 8px;
+}
+
+.metric--single .metric-item + .metric-item {
+  border-left: 0;
+  padding-left: 0;
 }
 
 .metric .label {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 6px;
+  gap: 4px;
+  min-height: 18px;
+  margin: 0 0 3px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.25;
 }
 
 .metric-badge {
@@ -328,8 +355,9 @@ select {
 }
 
 .metric .value {
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 700;
+  line-height: 1.25;
 }
 
 .metric-info-wrap {
@@ -654,5 +682,16 @@ select {
 
   .metric-strip {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .metric-items {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-item + .metric-item {
+    border-top: 1px solid rgba(96, 105, 92, 0.18);
+    border-left: 0;
+    padding-top: 6px;
+    padding-left: 0;
   }
 }

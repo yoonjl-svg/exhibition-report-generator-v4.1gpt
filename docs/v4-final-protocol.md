@@ -1,4 +1,4 @@
-# v4.9 Final Operating Protocol
+# v4.10 Final Operating Protocol
 
 This protocol describes the complete v4 flow after the planning spike.
 
@@ -13,6 +13,7 @@ This protocol describes the complete v4 flow after the planning spike.
 - v4.7: single-workbook Excel template
 - v4.8: type-specific reference baselines from existing exhibition records
 - v4.9: five fixed director metrics plus one automatically recommended metric
+- v4.10: compact paired metric cards in the director view
 
 ## Operating Flow
 
@@ -50,7 +51,7 @@ No observation should appear in the final report unless it has:
 
 ## Boundary
 
-The current v4.9 system does not yet automate:
+The current v4.10 system does not yet automate:
 
 - automatic collection of audience feedback from the web
 - LLM rewriting inside the browser

@@ -50,6 +50,10 @@
         "daily_visitors",
         "total_budget",
         "total_income",
+        "program_participants",
+        "program_participation_rate",
+        "press_mentions",
+        "sns_feedback",
         "cost_per_visitor",
         "auto"
       ]

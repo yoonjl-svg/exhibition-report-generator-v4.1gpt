@@ -5,7 +5,7 @@ window.GENERATED_LEDGER = {
     "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
     "period": "2025.06.13 - 2025.08.17",
     "venue": "일민미술관",
-    "generated_at": "2026-05-13T20:51:54+09:00",
+    "generated_at": "2026-05-13T21:05:42+09:00",
     "scope_note": "엑셀 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
     "narrative": {
       "theme_and_content": "이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.",
@@ -17,8 +17,61 @@ window.GENERATED_LEDGER = {
       "daily_visitors",
       "total_budget",
       "total_income",
+      "program_participants",
+      "program_participation_rate",
+      "press_mentions",
+      "sns_feedback",
       "cost_per_visitor",
-      "program_participants"
+      "paid_audience_ratio"
+    ],
+    "brief_metric_groups": [
+      {
+        "id": "audience",
+        "label": "관객",
+        "metric_ids": [
+          "total_visitors",
+          "daily_visitors"
+        ]
+      },
+      {
+        "id": "finance",
+        "label": "예산/수입",
+        "metric_ids": [
+          "total_budget",
+          "total_income"
+        ]
+      },
+      {
+        "id": "program",
+        "label": "프로그램",
+        "metric_ids": [
+          "program_participants",
+          "program_participation_rate"
+        ]
+      },
+      {
+        "id": "publicity",
+        "label": "홍보/반응",
+        "metric_ids": [
+          "press_mentions",
+          "sns_feedback"
+        ]
+      },
+      {
+        "id": "cost",
+        "label": "관객당 비용",
+        "metric_ids": [
+          "cost_per_visitor"
+        ]
+      },
+      {
+        "id": "recommended",
+        "label": "추천",
+        "role": "recommended",
+        "metric_ids": [
+          "paid_audience_ratio"
+        ]
+      }
     ],
     "brief_metric_strategy": {
       "fixed_ids": [
@@ -26,11 +79,15 @@ window.GENERATED_LEDGER = {
         "daily_visitors",
         "total_budget",
         "total_income",
+        "program_participants",
+        "program_participation_rate",
+        "press_mentions",
+        "sns_feedback",
         "cost_per_visitor"
       ],
-      "recommended_metric_id": "program_participants",
+      "recommended_metric_id": "paid_audience_ratio",
       "recommendation_basis": "type_specific_reference_deviation",
-      "recommendation_reason": "정기 기획전 평균 대비 -32% 차이를 보여 고정 지표 외 추가 확인 지표로 추천했습니다."
+      "recommendation_reason": "정기 기획전 기준값과 -27.6%p 차이를 보여 고정 지표 외 추가 확인 지표로 추천했습니다."
     }
   },
   "reference_groups": [
@@ -133,7 +190,7 @@ window.GENERATED_LEDGER = {
     },
     {
       "id": "program_participants",
-      "label": "프로그램 참여 인원",
+      "label": "프로그램 참여",
       "value": 548,
       "unit": "people",
       "context": "정기 기획전 평균 806명 대비 하회",
@@ -142,12 +199,24 @@ window.GENERATED_LEDGER = {
       "reference_value": 806,
       "difference_pct": -32.0,
       "recommendation_score": 32.0,
-      "brief_role": "recommended",
-      "recommendation_reason": "정기 기획전 평균 대비 -32% 차이를 보여 고정 지표 외 추가 확인 지표로 추천했습니다."
+      "brief_role": "fixed"
+    },
+    {
+      "id": "program_participation_rate",
+      "label": "프로그램 참여율",
+      "value": 3.6,
+      "unit": "percent",
+      "context": "정기 기획전 평균 8.4% 대비 하회",
+      "reference_group": "regular_planned_exhibitions",
+      "reference_label": "정기 기획전",
+      "reference_value": 8.4,
+      "difference_pct": -57.1,
+      "recommendation_score": 57.1,
+      "brief_role": "fixed"
     },
     {
       "id": "press_mentions",
-      "label": "언론 보도 건수",
+      "label": "보도 건수",
       "value": 32,
       "unit": "count",
       "context": "정기 기획전 평균 29건 대비 상회",
@@ -155,7 +224,17 @@ window.GENERATED_LEDGER = {
       "reference_label": "정기 기획전",
       "reference_value": 29,
       "difference_pct": 10.3,
-      "recommendation_score": 10.3
+      "recommendation_score": 10.3,
+      "brief_role": "fixed"
+    },
+    {
+      "id": "sns_feedback",
+      "label": "SNS 피드백",
+      "value": 2,
+      "unit": "count",
+      "context": "선별 입력 SNS 후기 수",
+      "recommendation_score": 0,
+      "brief_role": "fixed"
     },
     {
       "id": "paid_audience_ratio",
@@ -167,7 +246,9 @@ window.GENERATED_LEDGER = {
       "reference_label": "정기 기획전",
       "reference_value": 86.2,
       "difference_abs": -27.6,
-      "recommendation_score": 27.6
+      "recommendation_score": 27.6,
+      "brief_role": "recommended",
+      "recommendation_reason": "정기 기획전 기준값과 -27.6%p 차이를 보여 고정 지표 외 추가 확인 지표로 추천했습니다."
     }
   ],
   "observations": [

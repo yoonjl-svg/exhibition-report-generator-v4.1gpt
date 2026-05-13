@@ -60,3 +60,9 @@
 - Fix the first five director-facing metrics as total visitors, daily visitors, total budget, total income, and cost per visitor. Done in v4.9.
 - Replace the sixth metric with the strongest non-fixed type-specific deviation. Done in v4.9.
 - Show the recommended metric with an explicit recommendation marker and reason. Done in v4.9.
+
+## Phase 10: Metric Card Layout
+
+- Pair related director metrics inside compact cards. Done in v4.10.
+- Add program participation rate as a first-class metric. Done in v4.10.
+- Add selected SNS feedback count as a restrained feedback metric. Done in v4.10.

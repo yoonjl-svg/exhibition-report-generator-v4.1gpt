@@ -94,12 +94,30 @@
 
   function renderMetrics() {
     els.metricStrip.innerHTML = tools
-      .getBriefMetrics(ledger)
-      .map(renderMetricCard)
+      .getBriefMetricGroups(ledger)
+      .map(renderMetricGroupCard)
       .join("");
   }
 
-  function renderMetricCard(metric) {
+  function renderMetricGroupCard(group) {
+    const isSingle = group.metrics.length === 1;
+    const className = [
+      "metric",
+      isSingle ? "metric--single" : "metric--pair",
+      group.role === "recommended" ? "metric--recommended" : ""
+    ]
+      .filter(Boolean)
+      .join(" ");
+    return `
+      <article class="${className}">
+        <div class="metric-items">
+          ${group.metrics.map((metric) => renderMetricItem(metric)).join("")}
+        </div>
+      </article>
+    `;
+  }
+
+  function renderMetricItem(metric) {
     const badge = metric.brief_role === "recommended" ? `<span class="metric-badge">추천</span>` : "";
     const contextParts = [];
     if (metric.context) contextParts.push(metric.context);
@@ -114,10 +132,10 @@
       `
       : "";
     return `
-      <article class="metric">
+      <div class="metric-item">
         <p class="label">${escapeHtml(metric.label)}${badge}${tooltip}</p>
         <div class="value">${escapeHtml(tools.formatValue(metric.value, metric.unit))}</div>
-      </article>
+      </div>
     `;
   }
 

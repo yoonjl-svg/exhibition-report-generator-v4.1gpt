@@ -71,7 +71,7 @@ templates/sample-input/*.csv
 
 The `reference-exhibitions` input sheet stores existing exhibition records with a `type` field. During conversion, those records are grouped by type and averaged to produce reference groups. The current exhibition's type is placed first, so the Ledger builder uses that type-specific baseline before any manual fallback group.
 
-The director metric strip is resolved during Ledger generation. Five metrics are fixed, and the sixth is selected automatically from non-fixed metrics by the largest difference from the current type-specific baseline. The recommended metric remains a metric card, not an automated success/failure judgment.
+The director metric strip is resolved during Ledger generation. Related metrics are grouped into compact cards, and the final recommendation card is selected automatically from non-fixed metrics by the largest difference from the current type-specific baseline. The recommended metric remains a metric card, not an automated success/failure judgment.
 
 The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback. It also loads `data/generated-report.js` when a rendered report draft exists. The report layout references the old Ilmin report's page and table style, but the content order follows the v4 analysis protocol.
 
@@ -87,6 +87,8 @@ Examples:
 - daily visitors
 - total budget
 - total income
+- program participation rate
+- selected SNS feedback count
 - cost per visitor
 - paid audience ratio
 - press mentions

@@ -35,6 +35,7 @@ REFERENCE_METRIC_FIELDS = (
     "income_avg",
     "cost_per_visitor_avg",
     "program_participants_avg",
+    "program_participation_rate_avg",
     "press_mentions_avg",
     "paid_audience_ratio_avg",
 )
@@ -47,6 +48,7 @@ REFERENCE_TYPE_IDS = {
 
 REFERENCE_AVERAGE_PRECISION = {
     "daily_visitors_avg": 1,
+    "program_participation_rate_avg": 1,
     "paid_audience_ratio_avg": 1,
 }
 
@@ -208,6 +210,9 @@ def historical_average_metrics(rows: list[dict[str, str]]) -> dict[str, int | fl
         "program_participants_avg": present_numbers(
             optional_number(row.get("program_participants")) for row in rows
         ),
+        "program_participation_rate_avg": present_numbers(
+            historical_program_participation_rate(row) for row in rows
+        ),
         "press_mentions_avg": present_numbers(optional_number(row.get("press_mentions")) for row in rows),
         "paid_audience_ratio_avg": present_numbers(historical_paid_ratio(row) for row in rows),
     }
@@ -237,6 +242,17 @@ def historical_cost_per_visitor(row: dict[str, str]) -> float | None:
     total_visitors = optional_number(row.get("total_visitors"))
     if total_budget and total_visitors:
         return total_budget / total_visitors
+    return None
+
+
+def historical_program_participation_rate(row: dict[str, str]) -> float | None:
+    participation_rate = optional_number(row.get("program_participation_rate"))
+    if participation_rate is not None:
+        return participation_rate
+    participants = optional_number(row.get("program_participants"))
+    total_visitors = optional_number(row.get("total_visitors"))
+    if participants is not None and total_visitors:
+        return participants / total_visitors * 100
     return None
 
 
