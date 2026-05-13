@@ -495,10 +495,10 @@
 
     lines.push("## II. 핵심 수치 종합");
     lines.push("");
-    lines.push("| 항목 | 값 | 참고 |");
-    lines.push("| --- | ---: | --- |");
-    for (const metric of tools.getBriefMetrics(sourceLedger)) {
-      lines.push(`| ${metric.label} | ${tools.formatValue(metric.value, metric.unit)} | ${metric.context || ""} |`);
+    lines.push("| 지표 | 이번 전시 | 기준값 | 차이 |");
+    lines.push("| --- | ---: | ---: | ---: |");
+    for (const row of metricSummaryRows(sourceLedger)) {
+      lines.push(`| ${row.label} | ${row.current} | ${row.reference} | ${row.difference} |`);
     }
     lines.push("");
 
@@ -539,12 +539,12 @@
     const director = observations
       .filter((item) => item.report_placement?.director_brief && item.statement_kind !== "data_quality")
       .sort((a, b) => importanceRank(a.importance) - importanceRank(b.importance));
-    const metricRows = tools
-      .getBriefMetrics(sourceLedger)
-      .map((metric) => {
-        return `<tr><th>${escapeHtml(metric.label)}</th><td>${escapeHtml(tools.formatValue(metric.value, metric.unit))}</td><td>${escapeHtml(metric.context || "")}</td></tr>`;
+    const metricRows = metricSummaryRows(sourceLedger)
+      .map((row) => {
+        return `<tr><th>${escapeHtml(row.label)}</th><td class="numeric">${escapeHtml(row.current)}</td><td class="numeric">${escapeHtml(row.reference)}</td><td class="numeric delta">${escapeHtml(row.difference)}</td></tr>`;
       })
       .join("");
+    const referenceLabel = reportReferenceLabel(sourceLedger);
     const directorBody = director.length
       ? `<ol class="summary-list">${director.map(observationSummaryHtml).join("")}</ol>`
       : `<p>요약에 포함된 주요 관찰이 없습니다.</p>`;
@@ -562,52 +562,57 @@
   <meta charset="utf-8" />
   <title>${escapeHtml(report.title || "전시보고서")}</title>
   <style>
-    @page { size: A4; margin: 20mm 18mm; }
+    @page { size: A4; margin: 18mm 17mm 20mm; }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #e9e9e9; color: #111; font-family: "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; font-size: 10.5pt; line-height: 1.75; }
-    main { width: 210mm; min-height: 297mm; margin: 24px auto; padding: 22mm 18mm; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.14); }
-    h1 { margin: 0 0 10mm; padding-top: 16mm; border-top: 4px solid #111; font-size: 22pt; line-height: 1.35; word-break: keep-all; }
-    h2 { margin: 13mm 0 5mm; padding-bottom: 2mm; border-bottom: 1.5px solid #111; font-size: 15pt; }
-    h3 { margin: 7mm 0 2mm; font-size: 11.5pt; }
+    body { margin: 0; background: #e7e7e2; color: #161616; font-family: "Noto Sans KR", "Malgun Gothic", Arial, sans-serif; font-size: 10pt; line-height: 1.78; }
+    main { width: 210mm; min-height: 297mm; margin: 22px auto; padding: 20mm 17mm 18mm; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,.13); }
+    h1 { margin: 0 0 13mm; padding-top: 7mm; border-top: 3px solid #161616; font-size: 20pt; line-height: 1.38; word-break: keep-all; }
+    h2 { margin: 14mm 0 5mm; padding-top: 2.5mm; border-top: 1.5px solid #161616; font-size: 13.5pt; line-height: 1.35; }
+    h3 { margin: 8mm 0 3mm; font-size: 10.5pt; line-height: 1.45; }
     p { margin: 0 0 3.5mm; word-break: keep-all; }
-    table { width: 100%; border-collapse: collapse; margin: 3mm 0 7mm; table-layout: fixed; }
-    th, td { border: 1px solid #b9b9b9; padding: 2.5mm 3mm; vertical-align: top; word-break: keep-all; }
-    th { width: 30%; background: #f3f3f3; text-align: left; font-weight: 700; }
-    td:nth-child(2) { width: 22%; text-align: right; white-space: nowrap; }
-    .cover-meta { display: grid; grid-template-columns: 26mm 1fr; gap: 1.5mm 6mm; margin: 0 0 16mm; }
-    .cover-meta dt { color: #555; }
+    table { width: 100%; border-collapse: collapse; margin: 3mm 0 4mm; table-layout: fixed; }
+    th, td { border: 0; border-bottom: 1px solid #d9d9d2; padding: 2.3mm 1.5mm; vertical-align: top; word-break: keep-all; }
+    thead th { border-top: 1.5px solid #161616; border-bottom: 1px solid #161616; color: #555; font-size: 8.8pt; font-weight: 700; text-align: left; }
+    tbody tr:last-child th, tbody tr:last-child td { border-bottom: 1.5px solid #161616; }
+    tbody th { width: 27%; font-weight: 700; text-align: left; }
+    .numeric { text-align: right; white-space: nowrap; }
+    .delta { width: 17%; }
+    .table-note { margin: -1mm 0 7mm; color: #666; font-size: 9pt; }
+    .report-kicker { margin: 0 0 5mm; color: #555; font-size: 9.3pt; font-weight: 700; }
+    .cover-meta { display: grid; grid-template-columns: 24mm 1fr; gap: 1.5mm 6mm; margin: 0 0 15mm; }
+    .cover-meta dt { color: #555; font-size: 9.5pt; }
     .cover-meta dd { margin: 0; font-weight: 700; }
-    .scope-note { margin: 0 0 10mm; padding: 4mm 5mm; border-left: 3px solid #111; background: #f6f6f6; }
-    .summary-list { margin: 0 0 7mm; padding-left: 7mm; }
-    .summary-list li { margin-bottom: 4mm; }
-    .source { color: #555; font-size: 9.5pt; }
-    .report-chart-grid { display: grid; gap: 5mm; margin: 4mm 0 8mm; }
-    .report-chart { break-inside: avoid; border: 1px solid #c9c9c9; padding: 4mm; }
+    .scope-note { margin: 0 0 10mm; padding: 0 0 0 4mm; border-left: 2px solid #161616; color: #444; }
+    .summary-list { margin: 0 0 7mm; padding-left: 6mm; }
+    .summary-list li { margin-bottom: 3.5mm; }
+    .source { color: #666; font-size: 9pt; }
+    .chart-section { margin-top: 7mm; }
+    .report-chart-grid { display: grid; gap: 5.5mm; margin: 4mm 0 8mm; }
+    .report-chart { break-inside: avoid; margin: 0; padding: 0 0 4.5mm; border-bottom: 1px solid #d9d9d2; }
+    .report-chart figcaption { margin: 0 0 2.5mm; font-size: 9pt; font-weight: 700; }
     .report-chart svg { display: block; width: 100%; height: auto; }
-    .chart-title { font: 700 15px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #111; }
-    .chart-legend text { font: 11px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #555; }
+    .chart-legend text, .chart-series-label, .chart-value { font: 10px "Noto Sans KR", "Malgun Gothic", Arial, sans-serif; fill: #666; }
     .chart-legend rect.current,
-    .chart-legend rect { fill: #245d4b; }
-    .chart-legend rect.reference { fill: #b7afa2; }
-    .chart-label { font: 12px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #333; }
-    .chart-value { font: 11px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #444; }
-    .chart-track { fill: #edf0e9; }
-    .current { fill: #245d4b; }
-    .reference { fill: #b7afa2; }
-    .observation-block { margin-bottom: 7mm; page-break-inside: avoid; }
-    .meta-grid { display: grid; grid-template-columns: 26mm 1fr 26mm 1fr; gap: 1mm 4mm; margin: 2mm 0 3mm; font-size: 9.5pt; }
+    .chart-legend rect { fill: #255c4a; }
+    .chart-legend rect.reference { fill: #aaa59b; }
+    .chart-label { font: 700 11px "Noto Sans KR", "Malgun Gothic", Arial, sans-serif; fill: #222; }
+    .chart-track { fill: #efefea; }
+    .current { fill: #255c4a; }
+    .reference { fill: #aaa59b; }
+    .observation-block { margin-bottom: 7.5mm; page-break-inside: avoid; }
+    .meta-grid { display: grid; grid-template-columns: 24mm 1fr 24mm 1fr; gap: 1mm 4mm; margin: 2mm 0 3mm; font-size: 9pt; }
     .meta-grid dt { color: #555; }
     .meta-grid dd { margin: 0; }
     .caveat { margin-top: 2mm; color: #6f3a0b; }
-    .evidence-list { margin: 1mm 0 0; padding-left: 6mm; color: #444; font-size: 9.5pt; }
-    .footer { margin-top: 12mm; padding-top: 3mm; border-top: 1px solid #999; color: #666; font-size: 9pt; }
+    .evidence-list { margin: 1mm 0 0; padding-left: 5mm; color: #555; font-size: 9pt; }
+    .footer { margin-top: 12mm; padding-top: 3mm; border-top: 1px solid #aaa; color: #666; font-size: 8.8pt; }
     @media print { body { background: #fff; } main { width: auto; min-height: auto; margin: 0; padding: 0; box-shadow: none; } }
   </style>
 </head>
 <body>
   <main>
     <section class="cover">
-      <p>일민미술관 전시보고서</p>
+      <p class="report-kicker">일민미술관 전시보고서</p>
       <h1>${escapeHtml(report.title || "전시보고서")}</h1>
       <dl class="cover-meta">
         <dt>전시 기간</dt><dd>${escapeHtml(report.period || "")}</dd>
@@ -618,10 +623,11 @@
 
     <section class="report-section">
       <h2>I. 핵심 수치 종합</h2>
-      <table>
-        <thead><tr><th>항목</th><th>값</th><th>참고</th></tr></thead>
+      <table class="metric-summary-table">
+        <thead><tr><th>지표</th><th>이번 전시</th><th>기준값</th><th>차이</th></tr></thead>
         <tbody>${metricRows}</tbody>
       </table>
+      ${referenceLabel ? `<p class="table-note">기준값: ${escapeHtml(referenceLabel)} 평균</p>` : ""}
       ${chartSection}
     </section>
 
@@ -636,6 +642,56 @@
   </main>
 </body>
 </html>`;
+  }
+
+  function metricSummaryRows(sourceLedger) {
+    return tools.getBriefMetrics(sourceLedger).map((metric) => ({
+      label: metric.label,
+      current: tools.formatValue(metric.value, metric.unit),
+      reference:
+        metric.reference_value !== undefined && metric.reference_value !== null
+          ? tools.formatValue(metric.reference_value, metric.unit)
+          : "비교 기준 없음",
+      difference: metricDifferenceLabel(metric)
+    }));
+  }
+
+  function reportReferenceLabel(sourceLedger) {
+    const metric = tools.getBriefMetrics(sourceLedger).find((item) => item.reference_label);
+    return metric?.reference_label || "";
+  }
+
+  function metricDifferenceLabel(metric) {
+    if (metric.difference_abs !== undefined && metric.difference_abs !== null) {
+      const value = Number(metric.difference_abs);
+      if (!Number.isFinite(value)) return "-";
+      if (metric.unit === "percent") return `${signedNumber(value)}%p`;
+      return signedFormattedValue(value, metric.unit);
+    }
+    if (metric.difference_pct !== undefined && metric.difference_pct !== null) {
+      const value = Number(metric.difference_pct);
+      return Number.isFinite(value) ? `${signedNumber(value)}%` : "-";
+    }
+    const current = Number(metric.value);
+    const reference = Number(metric.reference_value);
+    if (Number.isFinite(current) && Number.isFinite(reference) && reference !== 0) {
+      return `${signedNumber(((current - reference) / reference) * 100)}%`;
+    }
+    return "-";
+  }
+
+  function signedFormattedValue(value, unit) {
+    const sign = value > 0 ? "+" : "";
+    return `${sign}${tools.formatValue(value, unit)}`;
+  }
+
+  function signedNumber(value) {
+    const rounded = Math.abs(value) >= 10 ? Math.round(value) : Math.round(value * 10) / 10;
+    const formatted = rounded.toLocaleString("ko-KR", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: Number.isInteger(rounded) ? 0 : 1
+    });
+    return `${rounded > 0 ? "+" : ""}${formatted}`;
   }
 
   function reportPreviewHtml(sourceLedger) {

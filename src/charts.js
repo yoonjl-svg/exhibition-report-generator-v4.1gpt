@@ -2,17 +2,17 @@
   const DEFINITIONS = [
     {
       id: "audience",
-      title: "관객 규모 비교",
+      title: "관객 규모",
       metricIds: ["total_visitors", "daily_visitors"]
     },
     {
       id: "finance",
-      title: "예산 및 수입 구조",
+      title: "재정 지표",
       metricIds: ["total_budget", "total_income", "cost_per_visitor"]
     },
     {
       id: "engagement",
-      title: "참여 및 홍보 지표",
+      title: "참여 및 홍보",
       metricIds: ["program_sessions", "program_participants", "press_mentions", "sns_feedback"]
     }
   ];
@@ -66,7 +66,7 @@
 
   function renderList(charts) {
     if (!charts.length) return "";
-    return charts.map(renderCard).join("");
+    return charts.map((chart, index) => renderFigure(chart, index + 1)).join("");
   }
 
   function renderReportSection(ledger, tools) {
@@ -74,7 +74,7 @@
     if (!charts.length) return "";
     return `
       <div class="chart-section">
-        <h3>핵심 지표 그래프</h3>
+        <h3>핵심 지표 도표</h3>
         <div class="report-chart-grid">
           ${renderList(charts)}
         </div>
@@ -82,43 +82,46 @@
     `;
   }
 
-  function renderCard(chart) {
-    const height = 56 + chart.rows.length * 48;
+  function renderFigure(chart, figureNumber) {
+    const height = 26 + chart.rows.length * 70;
     const rows = chart.rows
-      .map((row, index) => renderRow(row, 52 + index * 48))
+      .map((row, index) => renderRow(row, 36 + index * 70))
       .join("");
 
     return `
-      <article class="report-chart" data-chart-id="${escapeHtml(chart.id)}">
+      <figure class="report-chart" data-chart-id="${escapeHtml(chart.id)}">
+        <figcaption>그림 ${figureNumber}. ${escapeHtml(chart.title)} 비교</figcaption>
         <svg viewBox="0 0 720 ${height}" role="img" aria-label="${escapeHtml(chart.title)}">
-          <text x="0" y="20" class="chart-title">${escapeSvg(chart.title)}</text>
           <g class="chart-legend">
-            <rect x="522" y="8" width="10" height="10" rx="2"></rect>
-            <text x="538" y="17">현재 전시</text>
-            <rect x="610" y="8" width="10" height="10" rx="2" class="reference"></rect>
-            <text x="626" y="17">기준 평균</text>
+            <rect x="0" y="0" width="10" height="10" rx="1"></rect>
+            <text x="16" y="9">이번 전시</text>
+            <rect x="90" y="0" width="10" height="10" rx="1" class="reference"></rect>
+            <text x="106" y="9">기준 평균</text>
           </g>
           ${rows}
         </svg>
-      </article>
+      </figure>
     `;
   }
 
   function renderRow(row, y) {
-    const barX = 150;
-    const barWidth = 330;
+    const barX = 92;
+    const barWidth = 390;
+    const valueX = 502;
     const currentWidth = Math.round((row.currentPct / 100) * barWidth);
     const referenceWidth = Math.round((row.referencePct / 100) * barWidth);
 
     return `
       <g class="chart-row">
-        <text x="0" y="${y + 8}" class="chart-label">${escapeSvg(row.label)}</text>
-        <rect x="${barX}" y="${y - 12}" width="${barWidth}" height="12" rx="3" class="chart-track"></rect>
-        <rect x="${barX}" y="${y - 12}" width="${currentWidth}" height="12" rx="3" class="current"></rect>
-        <text x="496" y="${y - 2}" class="chart-value">${escapeSvg(row.currentLabel)}</text>
-        <rect x="${barX}" y="${y + 7}" width="${barWidth}" height="12" rx="3" class="chart-track"></rect>
-        <rect x="${barX}" y="${y + 7}" width="${referenceWidth}" height="12" rx="3" class="reference"></rect>
-        <text x="496" y="${y + 17}" class="chart-value">${escapeSvg(row.referenceLabel)}</text>
+        <text x="0" y="${y}" class="chart-label">${escapeSvg(row.label)}</text>
+        <text x="0" y="${y + 24}" class="chart-series-label">이번 전시</text>
+        <rect x="${barX}" y="${y + 12}" width="${barWidth}" height="10" rx="1" class="chart-track"></rect>
+        <rect x="${barX}" y="${y + 12}" width="${currentWidth}" height="10" rx="1" class="current"></rect>
+        <text x="${valueX}" y="${y + 22}" class="chart-value">${escapeSvg(row.currentLabel)}</text>
+        <text x="0" y="${y + 45}" class="chart-series-label">기준 평균</text>
+        <rect x="${barX}" y="${y + 33}" width="${barWidth}" height="10" rx="1" class="chart-track"></rect>
+        <rect x="${barX}" y="${y + 33}" width="${referenceWidth}" height="10" rx="1" class="reference"></rect>
+        <text x="${valueX}" y="${y + 43}" class="chart-value">${escapeSvg(row.referenceLabel)}</text>
       </g>
     `;
   }

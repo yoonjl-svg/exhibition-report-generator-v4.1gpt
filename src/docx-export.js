@@ -30,16 +30,20 @@
     body.push(paragraph("I. 핵심 수치 종합", "Heading1"));
     body.push(
       table(
-        [["항목", "값", "참고"]].concat(
-          getBriefMetrics(ledger, tools).map((metric) => [
-            metric.label,
-            formatValue(metric.value, metric.unit, tools),
-            metric.context || ""
+        [["지표", "이번 전시", "기준값", "차이"]].concat(
+          metricSummaryRows(ledger, tools).map((row) => [
+            row.label,
+            row.current,
+            row.reference,
+            row.difference
           ])
         ),
         true
       )
     );
+    const referenceLabel = reportReferenceLabel(ledger, tools);
+    if (referenceLabel) body.push(paragraph(`기준값: ${referenceLabel} 평균`, "TableNote"));
+    body.push(chartSummary(ledger, tools));
 
     body.push(paragraph("II. 주요 관찰", "Heading1"));
     if (director.length) {
@@ -107,12 +111,13 @@
     const tableRows = rows
       .map((row, rowIndex) => {
         const cells = row
-          .map((value) => {
-            const shade = header && rowIndex === 0 ? '<w:shd w:fill="F2F2F2"/>' : "";
+          .map((value, cellIndex) => {
+            const shade = header && rowIndex === 0 ? '<w:shd w:fill="F7F8F5"/>' : "";
+            const align = cellIndex > 0 && row.length > 2 ? '<w:jc w:val="right"/>' : "";
             return (
               "<w:tc>" +
               `<w:tcPr>${shade}<w:tcW w:w="3000" w:type="dxa"/></w:tcPr>` +
-              paragraph(String(value ?? ""), "TableText") +
+              paragraph(String(value ?? ""), "TableText", align ? "right" : undefined) +
               "</w:tc>"
             );
           })
@@ -124,12 +129,12 @@
     return (
       "<w:tbl>" +
       '<w:tblPr><w:tblW w:w="0" w:type="auto"/>' +
-      '<w:tblBorders><w:top w:val="single" w:sz="6" w:color="B8B8B8"/>' +
-      '<w:left w:val="single" w:sz="6" w:color="B8B8B8"/>' +
-      '<w:bottom w:val="single" w:sz="6" w:color="B8B8B8"/>' +
-      '<w:right w:val="single" w:sz="6" w:color="B8B8B8"/>' +
-      '<w:insideH w:val="single" w:sz="6" w:color="B8B8B8"/>' +
-      '<w:insideV w:val="single" w:sz="6" w:color="B8B8B8"/></w:tblBorders></w:tblPr>' +
+      '<w:tblBorders><w:top w:val="single" w:sz="10" w:color="111111"/>' +
+      '<w:left w:val="nil"/>' +
+      '<w:bottom w:val="single" w:sz="10" w:color="111111"/>' +
+      '<w:right w:val="nil"/>' +
+      '<w:insideH w:val="single" w:sz="4" w:color="D9D9D2"/>' +
+      '<w:insideV w:val="nil"/></w:tblBorders></w:tblPr>' +
       tableRows +
       "</w:tbl>"
     );
@@ -154,6 +159,98 @@
   function getBriefMetrics(ledger, tools) {
     if (tools?.getBriefMetrics) return tools.getBriefMetrics(ledger);
     return ledger.metrics || [];
+  }
+
+  function metricSummaryRows(ledger, tools) {
+    return getBriefMetrics(ledger, tools).map((metric) => ({
+      label: metric.label,
+      current: formatValue(metric.value, metric.unit, tools),
+      reference:
+        metric.reference_value !== undefined && metric.reference_value !== null
+          ? formatValue(metric.reference_value, metric.unit, tools)
+          : "비교 기준 없음",
+      difference: metricDifferenceLabel(metric, tools)
+    }));
+  }
+
+  function reportReferenceLabel(ledger, tools) {
+    const metric = getBriefMetrics(ledger, tools).find((item) => item.reference_label);
+    return metric?.reference_label || "";
+  }
+
+  function metricDifferenceLabel(metric, tools) {
+    if (metric.difference_abs !== undefined && metric.difference_abs !== null) {
+      const value = Number(metric.difference_abs);
+      if (!Number.isFinite(value)) return "-";
+      if (metric.unit === "percent") return `${signedNumber(value)}%p`;
+      return signedFormattedValue(value, metric.unit, tools);
+    }
+    if (metric.difference_pct !== undefined && metric.difference_pct !== null) {
+      const value = Number(metric.difference_pct);
+      return Number.isFinite(value) ? `${signedNumber(value)}%` : "-";
+    }
+    const current = Number(metric.value);
+    const reference = Number(metric.reference_value);
+    if (Number.isFinite(current) && Number.isFinite(reference) && reference !== 0) {
+      return `${signedNumber(((current - reference) / reference) * 100)}%`;
+    }
+    return "-";
+  }
+
+  function signedFormattedValue(value, unit, tools) {
+    const sign = value > 0 ? "+" : "";
+    return `${sign}${formatValue(value, unit, tools)}`;
+  }
+
+  function signedNumber(value) {
+    const rounded = Math.abs(value) >= 10 ? Math.round(value) : Math.round(value * 10) / 10;
+    const formatted = rounded.toLocaleString("ko-KR", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: Number.isInteger(rounded) ? 0 : 1
+    });
+    return `${rounded > 0 ? "+" : ""}${formatted}`;
+  }
+
+  function chartSummary(ledger, tools) {
+    const charts = buildChartGroups(ledger, tools);
+    if (!charts.length) return "";
+    const body = [paragraph("핵심 지표 도표", "Heading2")];
+    charts.forEach((chart, index) => {
+      body.push(paragraph(`그림 ${index + 1}. ${chart.title} 비교`, "FigureCaption"));
+      body.push(
+        table(
+          [["지표", "이번 전시", "기준 평균"]].concat(
+            chart.rows.map((row) => [row.label, row.currentLabel, row.referenceLabel])
+          ),
+          true
+        )
+      );
+    });
+    return body.join("");
+  }
+
+  function buildChartGroups(ledger, tools) {
+    const definitions = [
+      { title: "관객 규모", metricIds: ["total_visitors", "daily_visitors"] },
+      { title: "재정 지표", metricIds: ["total_budget", "total_income", "cost_per_visitor"] },
+      { title: "참여 및 홍보", metricIds: ["program_sessions", "program_participants", "press_mentions", "sns_feedback"] }
+    ];
+    const metricMap = new Map((ledger.metrics || []).map((metric) => [metric.id, metric]));
+    const allowed = new Set(getBriefMetrics(ledger, tools).map((metric) => metric.id));
+    return definitions
+      .map((definition) => ({
+        title: definition.title,
+        rows: definition.metricIds
+          .filter((id) => allowed.has(id))
+          .map((id) => metricMap.get(id))
+          .filter((metric) => metric && metric.reference_value !== undefined && metric.reference_value !== null)
+          .map((metric) => ({
+            label: metric.label,
+            currentLabel: formatValue(metric.value, metric.unit, tools),
+            referenceLabel: formatValue(metric.reference_value, metric.unit, tools)
+          }))
+      }))
+      .filter((chart) => chart.rows.length);
   }
 
   function formatValue(value, unit, tools) {
@@ -207,67 +304,77 @@
 <w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">
   <w:style w:type="paragraph" w:default="1" w:styleId="BodyText">
     <w:name w:val="Body Text"/>
-    <w:rPr><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="21"/></w:rPr>
-    <w:pPr><w:spacing w:after="160" w:line="360" w:lineRule="auto"/></w:pPr>
+    <w:rPr><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="20"/></w:rPr>
+    <w:pPr><w:spacing w:after="150" w:line="360" w:lineRule="auto"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Kicker">
     <w:name w:val="Kicker"/>
-    <w:rPr><w:b/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="22"/></w:rPr>
-    <w:pPr><w:spacing w:before="720" w:after="720"/></w:pPr>
+    <w:rPr><w:b/><w:color w:val="555555"/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="19"/></w:rPr>
+    <w:pPr><w:spacing w:before="520" w:after="320"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Title">
     <w:name w:val="Title"/>
-    <w:rPr><w:b/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="42"/></w:rPr>
-    <w:pPr><w:spacing w:after="320"/></w:pPr>
+    <w:rPr><w:b/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="40"/></w:rPr>
+    <w:pPr><w:spacing w:after="360"/><w:pBdr><w:top w:val="single" w:sz="18" w:space="8" w:color="111111"/></w:pBdr></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Subtitle">
     <w:name w:val="Subtitle"/>
-    <w:rPr><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="24"/></w:rPr>
+    <w:rPr><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="22"/></w:rPr>
     <w:pPr><w:spacing w:after="220"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="ScopeNote">
     <w:name w:val="Scope Note"/>
-    <w:rPr><w:color w:val="333333"/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="21"/></w:rPr>
-    <w:pPr><w:spacing w:before="240" w:after="420" w:line="360" w:lineRule="auto"/></w:pPr>
+    <w:rPr><w:color w:val="444444"/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="20"/></w:rPr>
+    <w:pPr><w:ind w:left="260"/><w:spacing w:before="240" w:after="420" w:line="360" w:lineRule="auto"/><w:pBdr><w:left w:val="single" w:sz="8" w:space="6" w:color="111111"/></w:pBdr></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Heading1">
     <w:name w:val="Heading 1"/>
-    <w:rPr><w:b/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="30"/></w:rPr>
-    <w:pPr><w:spacing w:before="420" w:after="180"/><w:pBdr><w:bottom w:val="single" w:sz="8" w:space="3" w:color="111111"/></w:pBdr></w:pPr>
+    <w:rPr><w:b/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="27"/></w:rPr>
+    <w:pPr><w:spacing w:before="520" w:after="200"/><w:pBdr><w:top w:val="single" w:sz="10" w:space="5" w:color="111111"/></w:pBdr></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Heading2">
     <w:name w:val="Heading 2"/>
-    <w:rPr><w:b/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="23"/></w:rPr>
+    <w:rPr><w:b/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="21"/></w:rPr>
     <w:pPr><w:spacing w:before="260" w:after="120"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Bullet">
     <w:name w:val="Bullet"/>
-    <w:rPr><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="21"/></w:rPr>
+    <w:rPr><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="20"/></w:rPr>
     <w:pPr><w:spacing w:after="100" w:line="360" w:lineRule="auto"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Caveat">
     <w:name w:val="Caveat"/>
-    <w:rPr><w:color w:val="6F3A0B"/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="20"/></w:rPr>
+    <w:rPr><w:color w:val="6F3A0B"/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="19"/></w:rPr>
     <w:pPr><w:ind w:left="360"/><w:spacing w:after="120"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="EvidenceLabel">
     <w:name w:val="Evidence Label"/>
-    <w:rPr><w:b/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="20"/></w:rPr>
+    <w:rPr><w:b/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="19"/></w:rPr>
     <w:pPr><w:spacing w:before="120" w:after="40"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Evidence">
     <w:name w:val="Evidence"/>
-    <w:rPr><w:color w:val="555555"/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="19"/></w:rPr>
+    <w:rPr><w:color w:val="555555"/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="18"/></w:rPr>
     <w:pPr><w:ind w:left="360"/><w:spacing w:after="80"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="TableText">
     <w:name w:val="Table Text"/>
-    <w:rPr><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="19"/></w:rPr>
+    <w:rPr><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="18"/></w:rPr>
     <w:pPr><w:spacing w:after="0"/></w:pPr>
+  </w:style>
+  <w:style w:type="paragraph" w:styleId="TableNote">
+    <w:name w:val="Table Note"/>
+    <w:rPr><w:color w:val="666666"/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="18"/></w:rPr>
+    <w:pPr><w:spacing w:before="80" w:after="220"/></w:pPr>
+  </w:style>
+  <w:style w:type="paragraph" w:styleId="FigureCaption">
+    <w:name w:val="Figure Caption"/>
+    <w:rPr><w:b/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="18"/></w:rPr>
+    <w:pPr><w:spacing w:before="180" w:after="80"/></w:pPr>
   </w:style>
   <w:style w:type="paragraph" w:styleId="Footer">
     <w:name w:val="Footer"/>
-    <w:rPr><w:color w:val="666666"/><w:rFonts w:ascii="Malgun Gothic" w:hAnsi="Malgun Gothic" w:eastAsia="Malgun Gothic"/><w:sz w:val="18"/></w:rPr>
+    <w:rPr><w:color w:val="666666"/><w:rFonts w:ascii="Noto Sans KR" w:hAnsi="Noto Sans KR" w:eastAsia="Noto Sans KR"/><w:sz w:val="17"/></w:rPr>
     <w:pPr><w:spacing w:before="360" w:after="0"/></w:pPr>
   </w:style>
 </w:styles>`;
