@@ -1,4 +1,4 @@
-# v4.13 Final Operating Protocol
+# v4.14 Final Operating Protocol
 
 This protocol describes the complete v4 flow after the planning spike.
 
@@ -17,6 +17,7 @@ This protocol describes the complete v4 flow after the planning spike.
 - v4.11: six fixed paired director cards with budget execution, group audience ratio, program sessions, and workbook SNS feedback total
 - v4.12: desktop single-row director metric strip and full reference comparisons for all director metrics
 - v4.13: empty initial browser state, Excel upload, temporary sample fill, and report draft caveat removal
+- v4.14: browser/PDF report chart previews for selected metric comparisons
 
 ## Operating Flow
 
@@ -54,10 +55,11 @@ No observation should appear in the final report unless it has:
 
 ## Boundary
 
-The current v4.13 system does not yet automate:
+The current v4.14 system does not yet automate:
 
 - automatic collection of audience feedback from the web
 - LLM rewriting inside the browser
+- chart image embedding inside exported DOCX
 - institutional cross-year dashboards
 
 Those should be treated as future modules built on top of the approved data structure.

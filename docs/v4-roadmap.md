@@ -85,3 +85,10 @@
 - Add Excel upload as the primary data input path. Done in v4.13.
 - Add temporary sample fill for testing before final publishing. Done in v4.13.
 - Remove caveat blocks from rendered report drafts while keeping them in the underlying observation data. Done in v4.13.
+
+## Phase 14: Report Chart Preview
+
+- Add browser-side SVG chart previews to the report column. Done in v4.14.
+- Use approved report data and selected metric comparisons as the chart source. Done in v4.14.
+- Include the same chart section in browser print/PDF HTML output. Done in v4.14.
+- Leave DOCX chart image embedding for the next phase. Pending.

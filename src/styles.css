@@ -429,6 +429,77 @@ select {
   gap: 10px;
 }
 
+.chart-list {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.report-subheading {
+  margin: 0;
+  font-size: 15px;
+}
+
+.report-chart {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #fbfcf9;
+}
+
+.report-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart-title {
+  font: 700 15px "Noto Sans KR", "Segoe UI", Arial, sans-serif;
+  fill: var(--ink);
+}
+
+.chart-legend text,
+.chart-label,
+.chart-value {
+  font-family: "Noto Sans KR", "Segoe UI", Arial, sans-serif;
+}
+
+.chart-legend text {
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+.chart-legend rect {
+  fill: var(--accent);
+}
+
+.chart-legend rect.reference {
+  fill: #b7afa2;
+}
+
+.chart-label {
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+.chart-value {
+  font-size: 11px;
+  fill: var(--muted);
+}
+
+.chart-track {
+  fill: #e8ede6;
+}
+
+.current {
+  fill: var(--accent);
+}
+
+.reference {
+  fill: #b7afa2;
+}
+
 .report-draft {
   max-height: calc(100vh - 190px);
   margin: 0;

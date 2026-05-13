@@ -15,6 +15,7 @@
     metricStrip: document.querySelector("#metric-strip"),
     brief: document.querySelector("#brief-observations"),
     ledgerList: document.querySelector("#ledger-list"),
+    reportCharts: document.querySelector("#report-charts"),
     reportDraft: document.querySelector("#report-draft"),
     reportDraftNote: document.querySelector("#report-draft-note"),
     count: document.querySelector("#observation-count"),
@@ -61,6 +62,7 @@
     renderReviewSummary();
     renderMetrics();
     renderBrief();
+    renderReportCharts();
     renderReportDraft();
     renderLedger();
     showToast(sourceLabel ? `${sourceLabel} 데이터를 불러왔습니다.` : "전시 데이터를 불러왔습니다.");
@@ -165,6 +167,18 @@
 
   function renderBrief() {
     els.brief.innerHTML = "";
+  }
+
+  function renderReportCharts() {
+    if (!window.ReportCharts) {
+      els.reportCharts.hidden = true;
+      return;
+    }
+    const charts = window.ReportCharts.build(makeApprovedLedger(), tools);
+    els.reportCharts.innerHTML = charts.length
+      ? `<h3 class="report-subheading">보고서 그래프</h3>${window.ReportCharts.renderList(charts)}`
+      : "";
+    els.reportCharts.hidden = charts.length === 0;
   }
 
   function renderReportDraft() {
@@ -356,6 +370,7 @@
   function renderAll() {
     renderReviewSummary();
     renderBrief();
+    renderReportCharts();
     renderReportDraft();
     renderLedger();
   }
@@ -532,6 +547,7 @@
     const directorBody = director.length
       ? `<ol class="summary-list">${director.map(observationSummaryHtml).join("")}</ol>`
       : `<p>요약에 포함된 주요 관찰이 없습니다.</p>`;
+    const chartSection = window.ReportCharts ? window.ReportCharts.renderReportSection(sourceLedger, tools) : "";
     const sectionBlocks = groupDetailSections(observations)
       .map(([heading, items]) => {
         return `<section class="report-section"><h2>${escapeHtml(heading)}</h2>${items.map(observationDetailHtml).join("")}</section>`;
@@ -567,6 +583,19 @@
     .summary-list { margin: 0 0 7mm; padding-left: 7mm; }
     .summary-list li { margin-bottom: 4mm; }
     .source { color: #555; font-size: 9.5pt; }
+    .report-chart-grid { display: grid; gap: 5mm; margin: 4mm 0 8mm; }
+    .report-chart { break-inside: avoid; border: 1px solid #c9c9c9; padding: 4mm; }
+    .report-chart svg { display: block; width: 100%; height: auto; }
+    .chart-title { font: 700 15px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #111; }
+    .chart-legend text { font: 11px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #555; }
+    .chart-legend rect.current,
+    .chart-legend rect { fill: #245d4b; }
+    .chart-legend rect.reference { fill: #b7afa2; }
+    .chart-label { font: 12px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #333; }
+    .chart-value { font: 11px "Malgun Gothic", "Noto Sans KR", Arial, sans-serif; fill: #444; }
+    .chart-track { fill: #edf0e9; }
+    .current { fill: #245d4b; }
+    .reference { fill: #b7afa2; }
     .observation-block { margin-bottom: 7mm; page-break-inside: avoid; }
     .meta-grid { display: grid; grid-template-columns: 26mm 1fr 26mm 1fr; gap: 1mm 4mm; margin: 2mm 0 3mm; font-size: 9.5pt; }
     .meta-grid dt { color: #555; }
@@ -596,6 +625,8 @@
         <tbody>${metricRows}</tbody>
       </table>
     </section>
+
+    ${chartSection}
 
     <section class="report-section">
       <h2>II. 주요 관찰</h2>
