@@ -10,16 +10,17 @@
 
 ## Phase 2: Director Review
 
-- Build the review UI around observations, not final prose.
-- Allow curator toggles for director summary inclusion.
+- Build the review UI around observations, not final prose. Done in v4.4.
+- Allow curator toggles for director summary inclusion. Done in v4.4.
 - Show evidence and caveats beside every claim.
 - Flag data conflicts before report export.
 - Show a rendered Markdown report draft from the generated Ledger. Done in v4.3.
 - Add print/PDF-ready HTML and DOCX report draft outputs. Done in v4.3.
+- Allow curator inclusion/exclusion before browser report export. Done in v4.4.
 
 ## Phase 3: Editorial Rendering
 
-- Convert approved observations into restrained report prose.
+- Convert approved observations into restrained report prose. Started in v4.4 browser export.
 - Keep fact, comparison, interpretation, and inference visibly separated in internal metadata.
 - Maintain a source map from final sentence to observation id.
 
@@ -28,6 +29,7 @@
 - Render approved sections into `.docx`.
 - Preserve existing report structure where useful.
 - Add a concise "핵심 관찰 요약" or "종합 기록" section without turning it into a success/failure judgment.
+- Current bridge: browser export creates `approved-report.doc`, a Word-readable HTML document reflecting review state.
 
 ## Phase 5: Institutional Memory
 

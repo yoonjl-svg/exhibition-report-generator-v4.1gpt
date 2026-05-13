@@ -13,9 +13,11 @@
         <h1 id="report-title">Analysis Ledger Review</h1>
       </div>
       <div class="toolbar" aria-label="report tools">
-        <button id="copy-markdown" type="button">Copy Markdown</button>
-        <a class="button-link" href="output/report-draft.html" target="_blank" rel="noreferrer">Open Report</a>
-        <a class="button-link" href="output/report-draft.docx" download>DOCX</a>
+        <button id="copy-markdown" type="button">Copy Report</button>
+        <button id="download-report-html" type="button">HTML</button>
+        <button id="download-report-doc" type="button">Word</button>
+        <button id="download-approved-ledger" type="button">Approved Ledger</button>
+        <a class="button-link" href="output/report-draft.docx" download>Sample DOCX</a>
         <a class="button-link" href="templates/ilmin-report-input-template.zip" download>CSV Template</a>
         <button id="toggle-evidence" type="button" aria-pressed="true">Evidence</button>
       </div>
@@ -54,6 +56,15 @@
         <section class="panel compact">
           <h2>Ledger Health</h2>
           <dl id="health-list" class="health-list"></dl>
+        </section>
+
+        <section class="panel compact">
+          <h2>Review</h2>
+          <dl id="review-list" class="health-list"></dl>
+          <div class="sidebar-actions">
+            <button id="approve-all" type="button">Approve All</button>
+            <button id="reset-review" type="button">Reset</button>
+          </div>
         </section>
       </aside>
 

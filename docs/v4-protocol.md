@@ -82,13 +82,21 @@ Validation checks:
 
 The web UI loads `data/generated-ledger.js` first and falls back to `data/sample-ledger.js`.
 
-The UI is for reviewing observations, not for reading a polished report. A curator or director-facing reviewer should be able to see:
+The UI is for reviewing observations before they become a polished report. A curator or director-facing reviewer should be able to see:
 
 - director summary candidates
 - evidence attached to each claim
 - caveats and representativeness notes
 - data quality warnings
 - omitted or lower-priority observations
+
+v4.4 adds browser-side approval controls:
+
+- `Include`: whether the observation is allowed into the generated report
+- `Director`: whether the observation appears in the director-facing summary
+- `Status`: draft, reviewed, or approved
+
+The review state is saved in the browser's local storage for the current report id and schema version. The approved Ledger download includes only included observations and records each observation's review status.
 
 ## 6. Render Report
 
@@ -114,6 +122,14 @@ data/generated-ledger.json
 ```
 
 Word export is a rendering target, not the source of truth.
+
+The web UI can also export review-aware report files directly from the browser:
+
+- `approved-ledger.json`: included observations only
+- `approved-report.html`: print/PDF-ready A4 report
+- `approved-report.doc`: Word-readable HTML document
+
+The static `output/report-draft.docx` remains a sample generated from the full Ledger. The next export step is to render `approved-ledger.json` into a true `.docx` file through a local script or a small backend.
 
 The approved Ledger should render into:
 

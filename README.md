@@ -39,6 +39,8 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - A fallback sample Ledger in `data/sample-ledger.json`
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
+- Approval controls for including/excluding observations from the browser-rendered report
+- Browser downloads for approved Ledger JSON, print-ready HTML, and Word-readable `.doc` output
 - A Node validation script in `scripts/validate-ledger.mjs`
 - Architecture and schema notes in `docs/`
 
@@ -94,6 +96,6 @@ The builder uses only the Python standard library. Python 3.10 or newer is recom
 
 ## Current Scope
 
-This is a working foundation for v4.3 planning. It proves CSV input, the new internal model, the review experience, the first input-to-Ledger generation path, print-ready HTML report rendering, and `.docx` draft generation.
+This is a working foundation for v4.4 planning. It proves CSV input, the new internal model, the review experience, the first input-to-Ledger generation path, print-ready HTML report rendering, `.docx` draft generation, and browser-side approval gating.
 
-The next implementation step is to add approval controls so only reviewed observations are included in the final report output.
+The next implementation step is to turn the approved browser Ledger into a server-side or local-script `.docx` export, so the final Word file reflects the curator's review state rather than only the static sample Ledger.
