@@ -5,11 +5,40 @@
   --muted: #646b61;
   --line: #d9ddd4;
   --accent: #255c4a;
-  --accent-2: #b4512a;
-  --accent-3: #3f5e99;
   --soft: #eef2ea;
   --warn: #8a4b15;
   --danger: #8d2f2b;
+  --danger-strong: #9f1239;
+  --danger-soft: #fff1f2;
+  --danger-line: #fecdd3;
+  --accent-hover: #1d4b3d;
+  --accent-soft: rgba(37, 92, 74, 0.08);
+  --accent-line: rgba(37, 92, 74, 0.22);
+  --focus-ring: rgba(37, 92, 74, 0.3);
+  --active-line: #c7a66d;
+  --active-bg: #fbf4e8;
+  --panel-tint: #fbfcf9;
+  --report-note-bg: #f6f6f1;
+  --evidence-ink: #444;
+  --chart-reference: #b7afa2;
+  --chart-track: #e8ede6;
+  --severity-high-bg: #ffe4e1;
+  --severity-high-fg: #b42318;
+  --severity-medium-bg: #ffedd5;
+  --severity-medium-fg: #c2410c;
+  --severity-low-bg: #fef3c7;
+  --severity-low-fg: #92400e;
+  --font-family-base: "Noto Sans KR", "Segoe UI", Arial, sans-serif;
+  --font-micro: 10px;
+  --font-xs: 11px;
+  --font-sm: 12px;
+  --font-note: 13px;
+  --font-base: 15px;
+  --font-section: 18px;
+  --font-report: 14px;
+  --font-report-h3: 16px;
+  --font-report-h2: 20px;
+  --font-report-h1: 28px;
 }
 
 * {
@@ -21,8 +50,8 @@ body {
   min-height: 100vh;
   color: var(--ink);
   background: var(--bg);
-  font-family: "Noto Sans KR", "Segoe UI", Arial, sans-serif;
-  font-size: 15px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-base);
   line-height: 1.5;
 }
 
@@ -30,9 +59,9 @@ body {
   max-width: 720px;
   margin: 80px auto;
   padding: 24px;
-  color: #9f1239;
-  background: #fff1f2;
-  border: 1px solid #fecdd3;
+  color: var(--danger-strong);
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-line);
   border-radius: 8px;
 }
 
@@ -65,27 +94,27 @@ p {
 
 h1 {
   margin-bottom: 0;
-  font-size: 22px;
+  font-size: var(--font-section);
   font-weight: 700;
   letter-spacing: 0;
 }
 
 h2 {
   margin-bottom: 0;
-  font-size: 18px;
+  font-size: var(--font-section);
   letter-spacing: 0;
 }
 
 h3 {
   margin-bottom: 8px;
-  font-size: 15px;
+  font-size: var(--font-base);
   letter-spacing: 0;
 }
 
 .eyebrow {
   margin-bottom: 4px;
   color: var(--accent);
-  font-size: 12px;
+  font-size: var(--font-sm);
   font-weight: 700;
   letter-spacing: 0;
 }
@@ -156,8 +185,8 @@ button,
 }
 
 .primary-button:hover {
-  border-color: #1d4b3d;
-  background: #1d4b3d;
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
 }
 
 button:hover,
@@ -234,13 +263,13 @@ button[aria-pressed="true"] {
 
 .panel.compact h2 {
   margin-bottom: 12px;
-  font-size: 15px;
+  font-size: var(--font-base);
 }
 
 .panel-note {
   margin-bottom: 12px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--font-sm);
   line-height: 1.45;
 }
 
@@ -251,13 +280,13 @@ button[aria-pressed="true"] {
   padding: 8px 10px;
   background: var(--soft);
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--font-sm);
   font-weight: 700;
 }
 
 .filter-summary.is-active {
-  border-color: #c7a66d;
-  background: #fbf4e8;
+  border-color: var(--active-line);
+  background: var(--active-bg);
   color: var(--warn);
 }
 
@@ -266,7 +295,7 @@ label {
   gap: 6px;
   margin-bottom: 12px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 select {
@@ -299,7 +328,7 @@ select {
   max-width: 680px;
   margin-bottom: 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 .metric-strip {
@@ -351,23 +380,23 @@ select {
   min-height: 18px;
   margin: 0 0 3px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--font-xs);
   line-height: 1.25;
 }
 
 .metric-badge {
-  border: 1px solid rgba(37, 92, 74, 0.22);
+  border: 1px solid var(--accent-line);
   border-radius: 999px;
   padding: 1px 6px;
-  background: rgba(37, 92, 74, 0.08);
+  background: var(--accent-soft);
   color: var(--accent);
-  font-size: 10px;
+  font-size: var(--font-micro);
   font-weight: 700;
   line-height: 1.4;
 }
 
 .metric .value {
-  font-size: 18px;
+  font-size: var(--font-section);
   font-weight: 700;
   line-height: 1.25;
   white-space: nowrap;
@@ -387,14 +416,14 @@ select {
   border: 1px solid var(--muted);
   border-radius: 50%;
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--font-micro);
   font-weight: 700;
   line-height: 1;
   cursor: help;
 }
 
 .metric-info:focus {
-  outline: 2px solid rgba(37, 92, 74, 0.3);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -410,8 +439,8 @@ select {
   border-radius: 6px;
   padding: 8px 10px;
   background: var(--ink);
-  color: #fff;
-  font-size: 12px;
+  color: white;
+  font-size: var(--font-sm);
   font-weight: 400;
   line-height: 1.45;
   box-shadow: 0 8px 18px rgba(32, 35, 31, 0.18);
@@ -432,7 +461,7 @@ select {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 12px;
-  background: #fbfcf9;
+  background: var(--panel-tint);
 }
 
 .report-chart svg {
@@ -442,7 +471,7 @@ select {
 }
 
 .chart-title {
-  font: 700 15px "Noto Sans KR", "Segoe UI", Arial, sans-serif;
+  font: 700 var(--font-base) var(--font-family-base);
   fill: var(--ink);
 }
 
@@ -453,7 +482,7 @@ select {
 }
 
 .chart-legend text {
-  font-size: 11px;
+  font-size: var(--font-xs);
   fill: var(--muted);
 }
 
@@ -462,22 +491,22 @@ select {
 }
 
 .chart-legend rect.reference {
-  fill: #b7afa2;
+  fill: var(--chart-reference);
 }
 
 .chart-label {
-  font-size: 12px;
+  font-size: var(--font-sm);
   font-weight: 700;
   fill: var(--ink);
 }
 
 .chart-value {
-  font-size: 11px;
+  font-size: var(--font-xs);
   fill: var(--muted);
 }
 
 .chart-track {
-  fill: #e8ede6;
+  fill: var(--chart-track);
 }
 
 .current {
@@ -485,7 +514,7 @@ select {
 }
 
 .reference {
-  fill: #b7afa2;
+  fill: var(--chart-reference);
 }
 
 .report-draft {
@@ -495,16 +524,16 @@ select {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 24px;
-  background: #fff;
+  background: var(--surface);
   color: var(--ink);
-  font: 14px/1.7 "Noto Sans KR", "Segoe UI", Arial, sans-serif;
+  font: var(--font-report) / 1.7 var(--font-family-base);
 }
 
 .report-preview h1 {
   margin: 0 0 22px;
   padding-top: 18px;
   border-top: 4px solid var(--ink);
-  font-size: 28px;
+  font-size: var(--font-report-h1);
   line-height: 1.32;
   word-break: keep-all;
 }
@@ -513,12 +542,12 @@ select {
   margin: 28px 0 14px;
   padding-bottom: 7px;
   border-bottom: 2px solid var(--ink);
-  font-size: 20px;
+  font-size: var(--font-report-h2);
 }
 
 .report-preview h3 {
   margin: 18px 0 8px;
-  font-size: 16px;
+  font-size: var(--font-report-h3);
 }
 
 .report-preview p {
@@ -555,7 +584,7 @@ select {
   margin: 0 0 22px;
   border-left: 3px solid var(--ink);
   padding: 10px 14px;
-  background: #f6f6f1;
+  background: var(--report-note-bg);
 }
 
 .report-preview table {
@@ -605,7 +634,7 @@ select {
 
 .report-preview .source {
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 .report-preview .observation-block {
@@ -617,7 +646,7 @@ select {
   grid-template-columns: 72px 1fr 72px 1fr;
   gap: 4px 10px;
   margin: 8px 0 10px;
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 .report-preview .meta-grid dt {
@@ -631,8 +660,8 @@ select {
 .report-preview .evidence-list {
   margin: 4px 0 0;
   padding-left: 20px;
-  color: #444;
-  font-size: 13px;
+  color: var(--evidence-ink);
+  font-size: var(--font-note);
 }
 
 .report-preview .footer {
@@ -640,7 +669,7 @@ select {
   border-top: 1px solid var(--line);
   padding-top: 10px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .observation {
@@ -660,7 +689,7 @@ select {
 }
 
 .observation.is-data-quality .chip {
-  background: rgba(37, 92, 74, 0.08);
+  background: var(--accent-soft);
   color: var(--accent);
 }
 
@@ -678,7 +707,7 @@ select {
 
 .claim {
   margin-bottom: 0;
-  font-size: 15px;
+  font-size: var(--font-base);
   font-weight: 700;
 }
 
@@ -697,38 +726,38 @@ select {
   padding: 0 8px;
   background: var(--soft);
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--font-sm);
   white-space: nowrap;
 }
 
 .chip.high {
-  background: #ffe4e1;
-  color: #b42318;
+  background: var(--severity-high-bg);
+  color: var(--severity-high-fg);
 }
 
 .chip.medium {
-  background: #ffedd5;
-  color: #c2410c;
+  background: var(--severity-medium-bg);
+  color: var(--severity-medium-fg);
 }
 
 .chip.low {
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--severity-low-bg);
+  color: var(--severity-low-fg);
 }
 
 .observation.is-data-quality .chip.high {
-  background: #ffe4e1;
-  color: #b42318;
+  background: var(--severity-high-bg);
+  color: var(--severity-high-fg);
 }
 
 .observation.is-data-quality .chip.medium {
-  background: #ffedd5;
-  color: #c2410c;
+  background: var(--severity-medium-bg);
+  color: var(--severity-medium-fg);
 }
 
 .observation.is-data-quality .chip.low {
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--severity-low-bg);
+  color: var(--severity-low-fg);
 }
 
 .review-controls {
@@ -740,7 +769,7 @@ select {
   padding: 8px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #fbfcf9;
+  background: var(--panel-tint);
 }
 
 .inline-control {
@@ -750,7 +779,7 @@ select {
   min-height: 28px;
   margin: 0;
   color: var(--ink);
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .inline-control input {
@@ -762,7 +791,7 @@ select {
   min-width: 104px;
   min-height: 28px;
   padding: 0 8px;
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .wording {
@@ -775,7 +804,7 @@ select {
   border-left: 3px solid var(--warn);
   padding-left: 10px;
   color: var(--warn);
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 .evidence {
@@ -791,7 +820,7 @@ select {
 .evidence-title {
   margin-bottom: 6px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--font-sm);
   font-weight: 700;
 }
 
@@ -803,7 +832,7 @@ select {
 .evidence li {
   margin-bottom: 4px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 .health-list {
@@ -811,7 +840,7 @@ select {
   grid-template-columns: 1fr auto;
   gap: 6px 12px;
   margin: 0;
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 .health-list dt {
@@ -841,7 +870,7 @@ select {
 .sidebar-actions button {
   width: 100%;
   padding: 0 6px;
-  font-size: 13px;
+  font-size: var(--font-note);
 }
 
 .toast {
