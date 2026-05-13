@@ -1,4 +1,4 @@
-# v4.14 Final Operating Protocol
+# v4.15 Final Operating Protocol
 
 This protocol describes the complete v4 flow after the planning spike.
 
@@ -18,6 +18,7 @@ This protocol describes the complete v4 flow after the planning spike.
 - v4.12: desktop single-row director metric strip and full reference comparisons for all director metrics
 - v4.13: empty initial browser state, Excel upload, temporary sample fill, and report draft caveat removal
 - v4.14: browser/PDF report chart previews for selected metric comparisons
+- v4.15: rendered report preview with charts integrated into the report body
 
 ## Operating Flow
 
@@ -55,7 +56,7 @@ No observation should appear in the final report unless it has:
 
 ## Boundary
 
-The current v4.14 system does not yet automate:
+The current v4.15 system does not yet automate:
 
 - automatic collection of audience feedback from the web
 - LLM rewriting inside the browser

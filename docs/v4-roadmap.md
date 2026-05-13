@@ -92,3 +92,9 @@
 - Use approved report data and selected metric comparisons as the chart source. Done in v4.14.
 - Include the same chart section in browser print/PDF HTML output. Done in v4.14.
 - Leave DOCX chart image embedding for the next phase. Pending.
+
+## Phase 15: Integrated Report Preview
+
+- Replace the plain Markdown draft pane with a rendered report preview. Done in v4.15.
+- Remove the separate chart preview panel. Done in v4.15.
+- Place charts inside the report body under the core metric summary table. Done in v4.15.

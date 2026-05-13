@@ -73,12 +73,12 @@
     const charts = build(ledger, tools);
     if (!charts.length) return "";
     return `
-      <section class="report-section chart-section">
-        <h2>그래프 요약</h2>
+      <div class="chart-section">
+        <h3>핵심 지표 그래프</h3>
         <div class="report-chart-grid">
           ${renderList(charts)}
         </div>
-      </section>
+      </div>
     `;
   }
 

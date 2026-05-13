@@ -31,7 +31,7 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - Type-specific reference baseline generation from existing exhibition records
 - Six fixed paired director metric cards
 - An empty initial browser state with Excel upload and temporary sample fill
-- Browser-side report chart previews for selected metric comparisons
+- Browser-side rendered report preview with integrated chart sections
 - A draft input schema in `schemas/exhibition-input.schema.json`
 - A Python Ledger builder in `scripts/build_ledger.py`
 - A generated Analysis Ledger in `data/generated-ledger.json`
@@ -121,6 +121,6 @@ In the web app, use the review controls and then download:
 
 ## Current Scope
 
-This is a working v4.14 foundation. It proves single-workbook Excel input, CSV fallback input, browser-side Excel upload, type-specific reference baseline generation, fixed paired director metrics, browser-side chart previews, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
+This is a working v4.15 foundation. It proves single-workbook Excel input, CSV fallback input, browser-side Excel upload, type-specific reference baseline generation, fixed paired director metrics, integrated browser-side chart previews, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
 
-The next implementation step after v4.14 is embedding chart images into the exported DOCX, so the Word output matches the browser/PDF report preview.
+The next implementation step after v4.15 is embedding chart images into the exported DOCX, so the Word output matches the browser/PDF report preview.

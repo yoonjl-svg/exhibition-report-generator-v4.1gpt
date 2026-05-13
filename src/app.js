@@ -15,7 +15,6 @@
     metricStrip: document.querySelector("#metric-strip"),
     brief: document.querySelector("#brief-observations"),
     ledgerList: document.querySelector("#ledger-list"),
-    reportCharts: document.querySelector("#report-charts"),
     reportDraft: document.querySelector("#report-draft"),
     reportDraftNote: document.querySelector("#report-draft-note"),
     count: document.querySelector("#observation-count"),
@@ -62,7 +61,6 @@
     renderReviewSummary();
     renderMetrics();
     renderBrief();
-    renderReportCharts();
     renderReportDraft();
     renderLedger();
     showToast(sourceLabel ? `${sourceLabel} 데이터를 불러왔습니다.` : "전시 데이터를 불러왔습니다.");
@@ -169,22 +167,10 @@
     els.brief.innerHTML = "";
   }
 
-  function renderReportCharts() {
-    if (!window.ReportCharts) {
-      els.reportCharts.hidden = true;
-      return;
-    }
-    const charts = window.ReportCharts.build(makeApprovedLedger(), tools);
-    els.reportCharts.innerHTML = charts.length
-      ? `<h3 class="report-subheading">보고서 그래프</h3>${window.ReportCharts.renderList(charts)}`
-      : "";
-    els.reportCharts.hidden = charts.length === 0;
-  }
-
   function renderReportDraft() {
-    const markdown = getReportMarkdown();
-    els.reportDraft.textContent = markdown;
-    els.reportDraftNote.textContent = `${markdown.length.toLocaleString("ko-KR")} characters`;
+    const approved = makeApprovedLedger();
+    els.reportDraft.innerHTML = reportPreviewHtml(approved);
+    els.reportDraftNote.textContent = "보고서 미리보기";
   }
 
   function renderLedger() {
@@ -370,7 +356,6 @@
   function renderAll() {
     renderReviewSummary();
     renderBrief();
-    renderReportCharts();
     renderReportDraft();
     renderLedger();
   }
@@ -624,9 +609,8 @@
         <thead><tr><th>항목</th><th>값</th><th>참고</th></tr></thead>
         <tbody>${metricRows}</tbody>
       </table>
+      ${chartSection}
     </section>
-
-    ${chartSection}
 
     <section class="report-section">
       <h2>II. 주요 관찰</h2>
@@ -640,6 +624,13 @@
   </main>
 </body>
 </html>`;
+  }
+
+  function reportPreviewHtml(sourceLedger) {
+    const html = makeReportHtml(sourceLedger);
+    const document = new DOMParser().parseFromString(html, "text/html");
+    const main = document.querySelector("main");
+    return main ? main.innerHTML : "";
   }
 
   function observationSummaryHtml(observation) {
