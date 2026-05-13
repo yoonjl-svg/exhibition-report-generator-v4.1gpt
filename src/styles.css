@@ -149,6 +149,18 @@ button,
   width: 100%;
 }
 
+.primary-button {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+}
+
+.primary-button:hover {
+  border-color: #1d4b3d;
+  background: #1d4b3d;
+}
+
 button:hover,
 select:hover,
 .button-link:hover {
