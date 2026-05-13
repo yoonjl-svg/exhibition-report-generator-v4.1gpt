@@ -127,7 +127,9 @@ h3 {
 }
 
 .toolbar button,
-.toolbar .button-link {
+.toolbar .button-link,
+.local-actions button,
+#clear-filters {
   font-size: var(--font-command);
 }
 
