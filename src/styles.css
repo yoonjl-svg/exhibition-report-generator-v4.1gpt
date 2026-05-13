@@ -654,6 +654,21 @@ select {
   opacity: 0.7;
 }
 
+.observation.is-data-quality {
+  border-color: #d4d4cf;
+  background: #f2f2ef;
+}
+
+.observation.is-data-quality .chip {
+  background: #e3e3df;
+  color: #62625d;
+}
+
+.observation.is-data-quality .caveat {
+  border-left-color: #a8a8a1;
+  color: #5f5f59;
+}
+
 .observation-header {
   display: flex;
   justify-content: space-between;

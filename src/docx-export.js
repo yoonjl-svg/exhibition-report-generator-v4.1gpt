@@ -15,7 +15,6 @@
   function documentXml(ledger, tools) {
     const report = ledger.report || {};
     const observations = ledger.observations || [];
-    const dataQuality = observations.filter((item) => item.statement_kind === "data_quality");
     const director = observations
       .filter((item) => item.report_placement?.director_brief && item.statement_kind !== "data_quality")
       .sort((a, b) => importanceRank(a.importance) - importanceRank(b.importance));
@@ -74,17 +73,6 @@
           for (const item of observation.evidence) {
             body.push(paragraph(`• ${evidenceText(item, tools)}`, "Evidence"));
           }
-        }
-      }
-    }
-
-    if (dataQuality.length) {
-      body.push(paragraph("데이터 검증 및 후속 참고", "Heading1"));
-      for (const observation of dataQuality) {
-        body.push(paragraph(`• ${observation.recommended_wording || observation.claim}`, "Bullet"));
-        if (observation.caveat) body.push(paragraph(`확인 필요: ${observation.caveat}`, "Caveat"));
-        for (const item of observation.evidence || []) {
-          body.push(paragraph(`• ${evidenceText(item, tools)}`, "Evidence"));
         }
       }
     }

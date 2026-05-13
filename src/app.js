@@ -105,7 +105,14 @@
   }
 
   function renderReviewSummary() {
-    const states = Object.values(reviewState);
+    const reportObservationIds = new Set(
+      (ledger.observations || [])
+        .filter((observation) => observation.statement_kind !== "data_quality")
+        .map((observation) => observation.id)
+    );
+    const states = Object.entries(reviewState)
+      .filter(([id]) => reportObservationIds.has(id))
+      .map(([, state]) => state);
     const included = states.filter((item) => item.included).length;
     const director = states.filter((item) => item.included && item.directorBrief).length;
     const values = [
@@ -191,17 +198,17 @@
     const caveat = observation.caveat ? `<p class="caveat">${escapeHtml(observation.caveat)}</p>` : "";
     const wording = observation.recommended_wording || observation.claim;
     const state = reviewState[observation.id] || defaultObservationState(observation);
-
-    return `
-      <article class="observation ${state.included ? "" : "is-excluded"}" data-id="${observation.id}">
-        <div class="observation-header">
-          <p class="claim">${escapeHtml(observation.claim)}</p>
-          <div class="chips">
-            <span class="chip ${observation.importance}">${observation.importance}</span>
-            <span class="chip">${tools.sectionLabel(observation.section)}</span>
-            <span class="chip">${tools.kindLabel(observation.statement_kind)}</span>
-          </div>
-        </div>
+    const isDataQuality = observation.statement_kind === "data_quality";
+    const articleClass = [
+      "observation",
+      isDataQuality ? "is-data-quality" : "",
+      !isDataQuality && !state.included ? "is-excluded" : ""
+    ]
+      .filter(Boolean)
+      .join(" ");
+    const reviewControls = isDataQuality
+      ? ""
+      : `
         <div class="review-controls" aria-label="review controls for ${escapeHtml(observation.id)}">
           <label class="inline-control">
             <input type="checkbox" data-review-field="included" data-id="${escapeHtml(observation.id)}" ${state.included ? "checked" : ""} />
@@ -212,6 +219,19 @@
             핵심 지표
           </label>
         </div>
+      `;
+
+    return `
+      <article class="${articleClass}" data-id="${observation.id}">
+        <div class="observation-header">
+          <p class="claim">${escapeHtml(observation.claim)}</p>
+          <div class="chips">
+            <span class="chip ${observation.importance}">${observation.importance}</span>
+            <span class="chip">${tools.sectionLabel(observation.section)}</span>
+            <span class="chip">${tools.kindLabel(observation.statement_kind)}</span>
+          </div>
+        </div>
+        ${reviewControls}
         <p class="wording">${escapeHtml(wording)}</p>
         ${caveat}
         <div class="evidence" ${showEvidence ? "" : "hidden"}>
@@ -288,6 +308,7 @@
     els.approveAll.addEventListener("click", () => {
       if (!ledger) return;
       for (const observation of ledger.observations) {
+        if (observation.statement_kind === "data_quality") continue;
         reviewState[observation.id] = {
           ...defaultObservationState(observation),
           ...reviewState[observation.id],
@@ -397,6 +418,12 @@
   }
 
   function defaultObservationState(observation) {
+    if (observation?.statement_kind === "data_quality") {
+      return {
+        included: false,
+        directorBrief: false,
+      };
+    }
     return {
       included: true,
       directorBrief: Boolean(observation?.report_placement?.director_brief),
@@ -432,7 +459,9 @@
       review_generated_at: new Date().toISOString()
     };
     approved.observations = approved.observations
-      .filter((observation) => reviewState[observation.id]?.included !== false)
+      .filter((observation) => {
+        return observation.statement_kind !== "data_quality" && reviewState[observation.id]?.included !== false;
+      })
       .map((observation) => {
         const state = reviewState[observation.id] || defaultObservationState(observation);
         observation.report_placement = {
@@ -451,7 +480,6 @@
   function makeReportMarkdown(sourceLedger) {
     const lines = [];
     const observations = sourceLedger.observations || [];
-    const dataQuality = observations.filter((item) => item.statement_kind === "data_quality");
     const director = observations
       .filter((item) => item.report_placement?.director_brief && item.statement_kind !== "data_quality")
       .sort((a, b) => importanceRank(a.importance) - importanceRank(b.importance));
@@ -501,17 +529,6 @@
       }
     }
 
-    if (dataQuality.length) {
-      lines.push("## 데이터 검증 및 후속 참고");
-      lines.push("");
-      for (const observation of dataQuality) {
-        lines.push(`- ${observation.recommended_wording || observation.claim}`);
-        if (observation.caveat) lines.push(`  - 확인 필요: ${observation.caveat}`);
-        for (const item of observation.evidence || []) lines.push(`  - ${tools.evidenceText(item)}`);
-      }
-      lines.push("");
-    }
-
     lines.push("끝.");
     return lines.join("\n").trim();
   }
@@ -519,7 +536,6 @@
   function makeReportHtml(sourceLedger) {
     const report = sourceLedger.report || {};
     const observations = sourceLedger.observations || [];
-    const dataQuality = observations.filter((item) => item.statement_kind === "data_quality");
     const director = observations
       .filter((item) => item.report_placement?.director_brief && item.statement_kind !== "data_quality")
       .sort((a, b) => importanceRank(a.importance) - importanceRank(b.importance));
@@ -538,9 +554,6 @@
         return `<section class="report-section"><h2>${escapeHtml(heading)}</h2>${items.map(observationDetailHtml).join("")}</section>`;
       })
       .join("");
-    const dataQualityBlock = dataQuality.length
-      ? `<section class="report-section"><h2>데이터 검증 및 후속 참고</h2>${dataQuality.map(observationDetailHtml).join("")}</section>`
-      : "";
     const generatedAt = new Date().toLocaleString("ko-KR");
 
     return `<!doctype html>
@@ -618,7 +631,6 @@
     </section>
 
     ${sectionBlocks}
-    ${dataQualityBlock}
 
     <p class="footer">이 문서는 웹 검토 화면에서 포함 처리된 관찰을 기준으로 생성되었습니다. 생성 시각: ${escapeHtml(generatedAt)}</p>
   </main>

@@ -26,7 +26,6 @@ SECTION_TITLES = [
     ("III", "주요 관찰"),
     ("IV", "세부 관찰"),
     ("V", "관객 반응 기록"),
-    ("VI", "데이터 검증 및 후속 참고"),
 ]
 
 DETAIL_SECTION_MAP = {
@@ -89,7 +88,6 @@ def build_report_model(ledger: dict[str, Any]) -> dict[str, Any]:
     composition_observations = by_detail_section(observations, "III. 전시 구성")
     publicity_observations = by_detail_section(observations, "V. 홍보 방식 및 언론 보도")
     audience_observations = by_detail_section(observations, "VI. 종합 기록")
-    data_quality = [item for item in observations if item.get("statement_kind") == "data_quality"]
     director_observations = [
         item
         for item in observations
@@ -155,20 +153,6 @@ def build_report_model(ledger: dict[str, Any]) -> dict[str, Any]:
             "number": "V",
             "title": "관객 반응 기록",
             "blocks": observation_blocks(audience_observations),
-        },
-        {
-            "number": "VI",
-            "title": "데이터 검증 및 후속 참고",
-            "blocks": [
-                {
-                    "type": "paragraph",
-                    "text": narrative.get(
-                        "evaluation_note",
-                        "아래 내용은 자동 판정이 아니라 Analysis Ledger에서 도출한 관찰과 후속 참고사항입니다.",
-                    ),
-                },
-                *data_quality_blocks(data_quality),
-            ],
         },
     ]
 
