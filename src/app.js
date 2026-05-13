@@ -62,11 +62,16 @@
 
   function renderHealth() {
     const result = tools.validateLedger(ledger);
+    const hasIssues = result.errors.length > 0 || result.warnings.length > 0;
     const values = [
       ["관찰 항목", ledger.observations.length],
-      ["수치 지표", ledger.metrics.length],
-      ["오류", result.errors.length, result.errors.length > 0 ? "danger" : ""],
-      ["주의 항목", result.warnings.length, result.warnings.length > 0 ? "warn" : ""]
+      hasIssues
+        ? [
+            "검토 필요",
+            `오류 ${result.errors.length} / 주의 ${result.warnings.length}`,
+            result.errors.length > 0 ? "danger" : "warn"
+          ]
+        : ["검증 상태", "정상"]
     ];
 
     els.health.innerHTML = values
