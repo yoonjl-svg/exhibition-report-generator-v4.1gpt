@@ -1,31 +1,46 @@
 # Input Protocol
 
-v4.3 accepts exhibition data through Excel-editable CSV files.
+v4.7 accepts exhibition data through a single multi-sheet Excel file.
 
 ## Files
 
-Edit the files under `templates/sample-input/`.
+Download and edit:
 
-- `core.csv`: exhibition basics, audience, budget, programs, publicity, membership, and director brief metric ids
-- `reference-groups.csv`: comparison groups and reference averages
-- `selected-feedback.csv`: selected audience feedback, not statistical sentiment
-- `data-quality.csv`: conflicts or source issues that should remain visible before export
-
-These files can be opened and edited in Excel. Save them back as CSV UTF-8 when possible.
-
-## Convert CSV To JSON
-
-For normal operation, run the complete rebuild:
-
-```powershell
-python scripts/build_all.py
+```text
+templates/ilmin-report-input-template.xlsx
 ```
 
-This converts CSV input, rebuilds the Ledger, and regenerates report outputs.
+The workbook contains four sheets:
+
+- `core`: exhibition basics, audience, budget, programs, publicity, membership, and director brief metric ids
+- `reference-groups`: comparison groups and reference averages
+- `selected-feedback`: selected audience feedback, not statistical sentiment
+- `data-quality`: conflicts or source issues that should remain visible before export
+
+CSV fallback files still exist under `templates/sample-input/`, but the Excel workbook is the recommended input format because it avoids CSV encoding problems in Excel.
+
+## Convert Input To JSON
+
+For normal operation with an edited workbook, run the complete rebuild:
+
+```powershell
+python scripts/build_all.py --xlsx-input templates/ilmin-report-input-template.xlsx
+```
+
+This converts input data, rebuilds the Ledger, and regenerates report outputs.
+The script preserves the workbook passed through `--xlsx-input`.
+
+For repository maintenance, running `python scripts/build_all.py` without `--xlsx-input` uses the CSV fallback files and regenerates the downloadable Excel template from them.
+
+To convert an edited workbook directly, run:
+
+```powershell
+python scripts/csv_input_to_json.py templates/ilmin-report-input-template.xlsx --output data/sample-input.json
+```
 
 For step-by-step debugging, run the individual commands below.
 
-Run:
+Run the CSV fallback converter:
 
 ```powershell
 python scripts/csv_input_to_json.py templates/sample-input --output data/sample-input.json
@@ -59,10 +74,10 @@ This produces Markdown, print/PDF-ready HTML, DOCX, and the browser-readable cop
 The web app links to:
 
 ```text
-templates/ilmin-report-input-template.zip
+templates/ilmin-report-input-template.xlsx
 ```
 
-This ZIP contains the CSV files under `templates/sample-input/`.
+This workbook contains the four input sheets in one file.
 
 ## Validate
 

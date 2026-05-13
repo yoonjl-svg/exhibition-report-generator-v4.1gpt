@@ -25,8 +25,9 @@ The important shift is that every analytic sentence is backed by a traceable obs
 
 - A dependency-free web preview in `index.html`
 - A normalized exhibition input sample in `data/sample-input.json`
-- Excel-editable CSV input templates in `templates/sample-input/`
-- A CSV-to-JSON input converter in `scripts/csv_input_to_json.py`
+- A single multi-sheet Excel input template in `templates/ilmin-report-input-template.xlsx`
+- CSV fallback templates in `templates/sample-input/`
+- A CSV/XLSX-to-JSON input converter in `scripts/csv_input_to_json.py`
 - A draft input schema in `schemas/exhibition-input.schema.json`
 - A Python Ledger builder in `scripts/build_ledger.py`
 - A generated Analysis Ledger in `data/generated-ledger.json`
@@ -35,7 +36,7 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - A generated report draft in `output/report-draft.md`
 - A print/PDF-ready report layout in `output/report-draft.html`
 - A Word report draft in `output/report-draft.docx`
-- A downloadable CSV input template package in `templates/ilmin-report-input-template.zip`
+- A downloadable Excel input template in `templates/ilmin-report-input-template.xlsx`
 - A fallback sample Ledger in `data/sample-ledger.json`
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
@@ -75,19 +76,27 @@ To rebuild the Ledger from the normalized input:
 python scripts/build_ledger.py data/sample-input.json --json data/generated-ledger.json --js data/generated-ledger.js
 ```
 
-To rebuild the full CSV-input-to-report flow in one step:
+To rebuild the full input-to-report flow from an edited Excel workbook:
 
 ```powershell
-python scripts/build_all.py
+python scripts/build_all.py --xlsx-input templates/ilmin-report-input-template.xlsx
 ```
+
+To regenerate the sample files and downloadable workbook from the CSV fallback files, run `python scripts/build_all.py` without `--xlsx-input`.
 
 The expanded manual flow is:
 
 ```powershell
-python scripts/csv_input_to_json.py templates/sample-input --output data/sample-input.json
+python scripts/csv_input_to_json.py templates/ilmin-report-input-template.xlsx --output data/sample-input.json
 python scripts/build_ledger.py data/sample-input.json --json data/generated-ledger.json --js data/generated-ledger.js
 python scripts/render_report.py data/generated-ledger.json --markdown output/report-draft.md --html output/report-draft.html --js data/generated-report.js
 python scripts/render_docx.py data/generated-ledger.json --output output/report-draft.docx
+```
+
+For the CSV fallback templates, replace the first command with:
+
+```powershell
+python scripts/csv_input_to_json.py templates/sample-input --output data/sample-input.json
 ```
 
 The builder uses only the Python standard library. Python 3.10 or newer is recommended.
@@ -109,6 +118,6 @@ In the web app, use the review controls and then download:
 
 ## Current Scope
 
-This is a working v4.6 foundation. It proves CSV input, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
+This is a working v4.7 foundation. It proves single-workbook Excel input, CSV fallback input, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
 
-The next implementation step after v4.6 is not more report plumbing; it is qualitative refinement after real curator review: section wording, table density, and institutional style tuning.
+The next implementation step after v4.7 is not more report plumbing; it is qualitative refinement after real curator review: section wording, table density, and institutional style tuning.

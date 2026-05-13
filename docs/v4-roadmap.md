@@ -40,6 +40,11 @@
 
 ## Phase 6: Operating Protocol
 
-- Add a one-command CSV-to-report rebuild. Done in v4.6.
+- Add a one-command input-to-report rebuild. Done in v4.6.
 - Document the final curator workflow. Done in v4.6.
 - Keep future refinements focused on content quality and institutional style after real review.
+
+## Phase 7: Input Workbook
+
+- Replace the downloadable CSV ZIP with a single multi-sheet Excel workbook. Done in v4.7.
+- Allow the converter to read the workbook directly. Done in v4.7.

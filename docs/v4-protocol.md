@@ -6,13 +6,14 @@ This protocol defines how v4 should move from raw exhibition records to a direct
 
 Curator-authored input is stored as `data/sample-input.json` and validated against the draft shape in `schemas/exhibition-input.schema.json`.
 
-For practical entry, v4.3 adds Excel-editable CSV files under `templates/sample-input/`.
+For practical entry, v4.7 provides a single Excel workbook at `templates/ilmin-report-input-template.xlsx`.
 
 ```text
-templates/sample-input/core.csv
-templates/sample-input/reference-groups.csv
-templates/sample-input/selected-feedback.csv
-templates/sample-input/data-quality.csv
+templates/ilmin-report-input-template.xlsx
+  - core
+  - reference-groups
+  - selected-feedback
+  - data-quality
 -> scripts/csv_input_to_json.py
 -> data/sample-input.json
 ```
@@ -159,4 +160,12 @@ v4.6 adds a single local rebuild command:
 python scripts/build_all.py
 ```
 
-This regenerates normalized JSON, generated Ledger JSON/JS, Markdown, HTML, report JS, and the static sample `.docx` from the CSV template files.
+This regenerates normalized JSON, generated Ledger JSON/JS, Markdown, HTML, report JS, the static sample `.docx`, and the Excel input template.
+
+For an edited Excel workbook, use:
+
+```powershell
+python scripts/build_all.py --xlsx-input templates/ilmin-report-input-template.xlsx
+```
+
+When the workbook is supplied as input, the script preserves that workbook instead of regenerating it from the CSV fallback files.

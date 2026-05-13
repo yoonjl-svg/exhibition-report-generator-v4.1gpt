@@ -137,7 +137,7 @@ def build_report_model(ledger: dict[str, Any]) -> dict[str, Any]:
                     "type": "paragraph",
                     "text": narrative.get(
                         "composition_note",
-                        "전시 구성 세부 내용은 CSV 입력 템플릿의 narrative.composition_note 항목에 입력합니다.",
+                        "전시 구성 세부 내용은 입력 템플릿의 narrative.composition_note 항목에 입력합니다.",
                     ),
                 },
                 *observation_blocks(composition_observations),

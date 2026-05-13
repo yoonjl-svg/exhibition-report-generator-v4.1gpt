@@ -1,4 +1,4 @@
-# v4.6 Final Operating Protocol
+# v4.7 Final Operating Protocol
 
 This protocol describes the complete v4 flow after the planning spike.
 
@@ -10,14 +10,15 @@ This protocol describes the complete v4 flow after the planning spike.
 - v4.4: observation review controls and approval-gated report export
 - v4.5: browser-generated approved `.docx`
 - v4.6: one-command rebuild and final operating protocol
+- v4.7: single-workbook Excel template
 
 ## Operating Flow
 
-1. Edit the CSV files in `templates/sample-input/`.
+1. Edit `templates/ilmin-report-input-template.xlsx`.
 2. Run the full local rebuild:
 
 ```powershell
-python scripts/build_all.py
+python scripts/build_all.py --xlsx-input templates/ilmin-report-input-template.xlsx
 ```
 
 3. Commit and push the regenerated files.
@@ -48,7 +49,7 @@ No observation should appear in the final report unless it has:
 
 ## Boundary
 
-The current v4.6 system does not yet automate:
+The current v4.7 system does not yet automate:
 
 - automatic collection of audience feedback from the web
 - LLM rewriting inside the browser

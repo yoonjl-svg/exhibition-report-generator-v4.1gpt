@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from excel_template import read_xlsx_tables
+
 
 NUMERIC_FIELDS = {
     "total_visitors",
@@ -36,18 +38,18 @@ REFERENCE_METRIC_FIELDS = (
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Convert Excel-editable CSV templates into normalized exhibition input JSON.")
-    parser.add_argument("template_dir", type=Path, help="Directory containing core.csv and related CSV input files.")
+    parser = argparse.ArgumentParser(description="Convert CSV or multi-sheet Excel templates into normalized exhibition input JSON.")
+    parser.add_argument("input", type=Path, help="Directory containing CSV input files, or a multi-sheet .xlsx template.")
     parser.add_argument("--output", type=Path, default=Path("data/sample-input.json"))
     args = parser.parse_args()
 
-    source = build_input(args.template_dir)
+    source = build_input_path(args.input)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(source, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
         json.dumps(
             {
-                "template_dir": str(args.template_dir),
+                "input": str(args.input),
                 "output": str(args.output),
                 "feedback_items": len(source.get("selected_feedback", [])),
                 "reference_groups": len(source.get("reference_groups", [])),
@@ -59,7 +61,24 @@ def main() -> None:
     )
 
 
+def build_input_path(path: Path) -> dict[str, Any]:
+    if path.suffix.lower() == ".xlsx":
+        return build_input_from_tables(read_xlsx_tables(path))
+    return build_input(path)
+
+
 def build_input(template_dir: Path) -> dict[str, Any]:
+    return build_input_from_tables(
+        {
+            "core": read_rows(template_dir / "core.csv"),
+            "reference-groups": read_rows(template_dir / "reference-groups.csv"),
+            "selected-feedback": read_rows(template_dir / "selected-feedback.csv"),
+            "data-quality": read_rows(template_dir / "data-quality.csv"),
+        }
+    )
+
+
+def build_input_from_tables(tables: dict[str, list[dict[str, str]]]) -> dict[str, Any]:
     source: dict[str, Any] = {
         "schema_version": "0.2.0",
         "exhibition": {
@@ -76,16 +95,16 @@ def build_input(template_dir: Path) -> dict[str, Any]:
         "data_quality_checks": [],
     }
 
-    read_core(template_dir / "core.csv", source)
-    source["reference_groups"] = read_reference_groups(template_dir / "reference-groups.csv")
-    source["selected_feedback"] = read_feedback(template_dir / "selected-feedback.csv")
-    source["data_quality_checks"] = read_data_quality(template_dir / "data-quality.csv")
+    read_core(tables["core"], source)
+    source["reference_groups"] = read_reference_groups(tables["reference-groups"])
+    source["selected_feedback"] = read_feedback(tables.get("selected-feedback", []))
+    source["data_quality_checks"] = read_data_quality(tables.get("data-quality", []))
 
     return remove_empty_containers(source)
 
 
-def read_core(path: Path, source: dict[str, Any]) -> None:
-    for row in read_rows(path):
+def read_core(rows: list[dict[str, str]], source: dict[str, Any]) -> None:
+    for row in rows:
         section = row["section"].strip()
         key = row["key"].strip()
         value = row["value"].strip()
@@ -103,12 +122,12 @@ def read_core(path: Path, source: dict[str, Any]) -> None:
         elif section == "exhibition":
             source["exhibition"][key] = value
         else:
-            raise SystemExit(f"Unknown core.csv section/key: {section}.{key}")
+            raise SystemExit(f"Unknown core section/key: {section}.{key}")
 
 
-def read_reference_groups(path: Path) -> list[dict[str, Any]]:
+def read_reference_groups(rows: list[dict[str, str]]) -> list[dict[str, Any]]:
     groups = []
-    for row in read_rows(path):
+    for row in rows:
         if not row.get("id"):
             continue
         metrics = {}
@@ -128,11 +147,9 @@ def read_reference_groups(path: Path) -> list[dict[str, Any]]:
     return groups
 
 
-def read_feedback(path: Path) -> list[dict[str, Any]]:
+def read_feedback(rows: list[dict[str, str]]) -> list[dict[str, Any]]:
     feedback = []
-    if not path.exists():
-        return feedback
-    for row in read_rows(path):
+    for row in rows:
         if not row.get("id"):
             continue
         item = {
@@ -149,12 +166,9 @@ def read_feedback(path: Path) -> list[dict[str, Any]]:
     return feedback
 
 
-def read_data_quality(path: Path) -> list[dict[str, Any]]:
-    if not path.exists():
-        return []
-
+def read_data_quality(rows: list[dict[str, str]]) -> list[dict[str, Any]]:
     grouped: dict[str, dict[str, Any]] = {}
-    for row in read_rows(path):
+    for row in rows:
         check_id = row.get("id", "").strip()
         if not check_id:
             continue

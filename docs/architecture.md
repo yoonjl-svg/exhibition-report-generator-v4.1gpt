@@ -63,6 +63,7 @@ The local one-command rebuild path is:
 ```text
 templates/sample-input/*.csv
 -> scripts/build_all.py
+-> templates/ilmin-report-input-template.xlsx
 -> data/sample-input.json
 -> data/generated-ledger.json / data/generated-ledger.js
 -> output/report-draft.md / output/report-draft.html / output/report-draft.docx
