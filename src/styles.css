@@ -355,9 +355,10 @@ select {
 }
 
 .metric .value {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   line-height: 1.25;
+  white-space: nowrap;
 }
 
 .metric-info-wrap {

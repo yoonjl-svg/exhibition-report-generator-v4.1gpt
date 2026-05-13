@@ -43,6 +43,7 @@ BRIEF_METRIC_IDS = [
 UNIT_SUFFIX = {
     "people": "명",
     "count": "건",
+    "score": "점",
     "session_count": "회",
     "program_count": "개",
     "percent": "%",
@@ -268,7 +269,7 @@ def build_metrics(source: dict[str, Any], reference_group: dict[str, Any]) -> li
             "sns_feedback",
             "SNS 피드백",
             sns_feedback,
-            "count",
+            "score",
             ref.get("sns_feedback_avg"),
             reference_group,
         ),
@@ -789,7 +790,7 @@ def context_against_reference(
     if reference_value is None:
         return "비교 기준값 없음"
     diff = pct_diff(value, reference_value)
-    return f"{reference_group['label']} 평균 {format_value(reference_value, unit)} 대비 {direction_word(diff)}"
+    return f"{reference_group['label']} 평균 {format_context_value(reference_value, unit)} 대비 {direction_word(diff)}"
 
 
 def pct_diff(value: float, reference_value: float) -> float:
@@ -824,6 +825,22 @@ def format_value(value: Any, unit: str) -> str:
     if unit == "percent":
         return f"{format_number(value)}{suffix}"
     return f"{format_number(value)}{suffix}"
+
+
+def format_context_value(value: Any, unit: str) -> str:
+    if unit == "krw":
+        return format_krw_as_eok(value)
+    return format_value(value, unit)
+
+
+def format_krw_as_eok(value: Any) -> str:
+    if value is None:
+        return "-"
+    numeric = float(value)
+    eok = numeric / 100000000
+    if eok.is_integer():
+        return f"{int(eok):,}억"
+    return f"{eok:,.1f}억"
 
 
 def format_number(value: Any) -> str:

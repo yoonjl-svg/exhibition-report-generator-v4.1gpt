@@ -37,6 +37,7 @@
     if (unit === "krw") return formatKrwAsEok(value);
     if (unit === "people") return `${formatNumber(value)}명`;
     if (unit === "count") return `${formatNumber(value)}건`;
+    if (unit === "score") return `${formatNumber(value)}점`;
     if (unit === "session_count") return `${formatNumber(value)}회`;
     if (unit === "program_count") return `${formatNumber(value)}개`;
     if (unit === "percent") return `${formatNumber(value)}%`;

@@ -12,6 +12,7 @@ from build_ledger import write_text_lf
 UNIT_SUFFIX = {
     "people": "명",
     "count": "건",
+    "score": "점",
     "session_count": "회",
     "program_count": "개",
     "percent": "%",

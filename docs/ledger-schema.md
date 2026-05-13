@@ -71,6 +71,7 @@ Supported draft units:
 - `people`
 - `krw`
 - `count`
+- `score`
 - `session_count`
 - `program_count`
 - `percent`
