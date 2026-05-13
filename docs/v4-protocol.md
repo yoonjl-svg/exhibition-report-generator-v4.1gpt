@@ -11,6 +11,7 @@ For practical entry, v4.7 provides a single Excel workbook at `templates/ilmin-r
 ```text
 templates/ilmin-report-input-template.xlsx
   - core
+  - reference-exhibitions
   - reference-groups
   - selected-feedback
   - data-quality
@@ -26,7 +27,8 @@ The input should separate:
 - program data
 - publicity data
 - selected audience feedback
-- explicit reference groups
+- existing exhibition records for type-specific comparison baselines
+- optional explicit reference groups
 - data quality checks
 
 Selected audience feedback must remain selected feedback. It should not be treated as a statistical audience survey unless the collection method supports that.
@@ -46,6 +48,8 @@ Examples:
 - paid audience ratio
 
 Each metric carries a context string when a reference value exists.
+
+When the input includes `reference-exhibitions`, the converter calculates reference averages from existing exhibition records grouped by `type`. The current exhibition's `type` in the `core` sheet is used to choose the primary comparison group. Manual `reference-groups` remain available as fallback comparison groups.
 
 ## 3. Generate Observations
 
@@ -94,9 +98,9 @@ The UI is for reviewing observations before they become a polished report. A cur
 v4.4 adds browser-side approval controls:
 
 - `보고서 포함`: whether the observation is allowed into the generated report
-- `요약 포함`: whether the observation appears in the director-facing summary
+- `핵심 지표`: whether the observation appears in the director-facing summary
 
-The review state is saved in the browser's local storage for the current report id and schema version. The reviewed data download includes only included observations and records summary inclusion.
+The review state is saved in the browser's local storage for the current report id and schema version. Browser DOCX/PDF exports include only observations marked for report inclusion and record director-summary inclusion.
 
 ## 6. Render Report
 
@@ -123,9 +127,8 @@ data/generated-ledger.json
 
 Word export is a rendering target, not the source of truth.
 
-The web UI can also export review-aware report files directly from the browser:
+The web UI can export review-aware report files directly from the browser:
 
-- `reviewed-data.json`: included observations only
 - `PDF`: print-ready A4 report opened for saving as PDF
 - `approved-report.docx`: approved Word document generated as an OpenXML package in the browser
 

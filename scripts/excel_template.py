@@ -11,6 +11,7 @@ from xml.sax.saxutils import escape
 
 SHEET_FILES = [
     ("core", "core.csv"),
+    ("reference-exhibitions", "reference-exhibitions.csv"),
     ("reference-groups", "reference-groups.csv"),
     ("selected-feedback", "selected-feedback.csv"),
     ("data-quality", "data-quality.csv"),

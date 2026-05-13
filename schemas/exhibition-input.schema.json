@@ -28,6 +28,7 @@
         "title": { "type": "string", "minLength": 1 },
         "subtitle": { "type": "string" },
         "venue": { "type": "string", "minLength": 1 },
+        "type": { "type": "string" },
         "period": {
           "type": "object",
           "additionalProperties": false,

@@ -10,6 +10,7 @@
     "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
     "subtitle": "엑셀 입력 템플릿 샘플",
     "venue": "일민미술관",
+    "type": "정기 기획전",
     "scope_note": "엑셀 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다."
   },
   "narrative": {
@@ -42,6 +43,54 @@
     "note": "v4.3 샘플에서는 멤버십 분석을 생성하지 않습니다."
   },
   "reference_groups": [
+    {
+      "id": "regular_planned_exhibitions",
+      "label": "정기 기획전",
+      "selection_rule": "기존 전시 데이터 중 '정기 기획전' 유형 8건",
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+      "metrics": {
+        "total_visitors_avg": 9538,
+        "daily_visitors_avg": 158.4,
+        "total_budget_avg": 140000000,
+        "income_avg": 29375000,
+        "cost_per_visitor_avg": 14719,
+        "program_participants_avg": 806,
+        "press_mentions_avg": 29,
+        "paid_audience_ratio_avg": 86.2
+      }
+    },
+    {
+      "id": "special_exhibitions",
+      "label": "특별전",
+      "selection_rule": "기존 전시 데이터 중 '특별전' 유형 6건",
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+      "metrics": {
+        "total_visitors_avg": 19233,
+        "daily_visitors_avg": 259.2,
+        "total_budget_avg": 339166667,
+        "income_avg": 70000000,
+        "cost_per_visitor_avg": 17675,
+        "program_participants_avg": 1075,
+        "press_mentions_avg": 50,
+        "paid_audience_ratio_avg": 72.3
+      }
+    },
+    {
+      "id": "other_exhibitions",
+      "label": "기타",
+      "selection_rule": "기존 전시 데이터 중 '기타' 유형 4건",
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다.",
+      "metrics": {
+        "total_visitors_avg": 5750,
+        "daily_visitors_avg": 125.9,
+        "total_budget_avg": 77250000,
+        "income_avg": 10250000,
+        "cost_per_visitor_avg": 13613,
+        "program_participants_avg": 370,
+        "press_mentions_avg": 14,
+        "paid_audience_ratio_avg": 63.5
+      }
+    },
     {
       "id": "legacy_planned_exhibitions",
       "label": "기존 기획전",

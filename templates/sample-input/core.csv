@@ -3,6 +3,7 @@ exhibition,id,hyper-yellow-demo,internal slug
 exhibition,title,전시보고서 v4.3 - 《(가)하이퍼 옐로우》,report title
 exhibition,subtitle,엑셀 입력 템플릿 샘플,optional
 exhibition,venue,일민미술관,
+exhibition,type,정기 기획전,"정기 기획전, 특별전, 기타 중 선택"
 period,start,2025-06-13,YYYY-MM-DD
 period,end,2025-08-17,YYYY-MM-DD
 period,display,2025.06.13 - 2025.08.17,report display

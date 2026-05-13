@@ -5,7 +5,7 @@
     "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
     "period": "2025.06.13 - 2025.08.17",
     "venue": "일민미술관",
-    "generated_at": "2026-05-13T14:29:40+09:00",
+    "generated_at": "2026-05-13T20:40:56+09:00",
     "scope_note": "엑셀 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
     "narrative": {
       "theme_and_content": "이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.",
@@ -22,6 +22,24 @@
     ]
   },
   "reference_groups": [
+    {
+      "id": "regular_planned_exhibitions",
+      "label": "정기 기획전",
+      "selection_rule": "기존 전시 데이터 중 '정기 기획전' 유형 8건",
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다."
+    },
+    {
+      "id": "special_exhibitions",
+      "label": "특별전",
+      "selection_rule": "기존 전시 데이터 중 '특별전' 유형 6건",
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다."
+    },
+    {
+      "id": "other_exhibitions",
+      "label": "기타",
+      "selection_rule": "기존 전시 데이터 중 '기타' 유형 4건",
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다."
+    },
     {
       "id": "legacy_planned_exhibitions",
       "label": "기존 기획전",
@@ -41,21 +59,21 @@
       "label": "총 관객 수",
       "value": 15200,
       "unit": "people",
-      "context": "기존 기획전 평균 9,413명 대비 상회"
+      "context": "정기 기획전 평균 9,538명 대비 상회"
     },
     {
       "id": "daily_visitors",
       "label": "일평균 관객",
       "value": 230,
       "unit": "people",
-      "context": "기존 기획전 평균 159.7명 대비 상회"
+      "context": "정기 기획전 평균 158.4명 대비 상회"
     },
     {
       "id": "total_budget",
       "label": "총 사용 예산",
       "value": 210000000,
       "unit": "krw",
-      "context": "기존 기획전 평균 140,000,000원 대비 상회"
+      "context": "정기 기획전 평균 140,000,000원 대비 상회"
     },
     {
       "id": "cost_per_visitor",
@@ -69,21 +87,21 @@
       "label": "프로그램 참여 인원",
       "value": 548,
       "unit": "people",
-      "context": "기존 기획전 평균 807.6명 대비 하회"
+      "context": "정기 기획전 평균 806명 대비 하회"
     },
     {
       "id": "press_mentions",
       "label": "언론 보도 건수",
       "value": 32,
       "unit": "count",
-      "context": "기존 기획전 평균 28.9건 대비 상회"
+      "context": "정기 기획전 평균 29건 대비 상회"
     },
     {
       "id": "paid_audience_ratio",
       "label": "유료 관객 비율",
       "value": 58.6,
       "unit": "percent",
-      "context": "기존 기획전 평균 86.6% 대비 하회"
+      "context": "정기 기획전 평균 86.2% 대비 하회"
     }
   ],
   "observations": [
@@ -91,18 +109,18 @@
       "id": "obs-total-visitors-comparison",
       "type": "comparison",
       "section": "results",
-      "claim": "총 관객 수와 일평균 관객 수가 기존 기획전 평균을 상회함",
+      "claim": "총 관객 수와 일평균 관객 수가 정기 기획전 평균을 상회함",
       "metric": "total_visitors",
       "current_value": 15200,
       "unit": "people",
-      "reference_group": "legacy_planned_exhibitions",
-      "reference_avg": 9413,
-      "difference_pct": 61.5,
+      "reference_group": "regular_planned_exhibitions",
+      "reference_avg": 9538,
+      "difference_pct": 59.4,
       "importance": "high",
       "statement_kind": "comparative",
       "tone": "neutral",
-      "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다. 성과 판정이 아니라 수치상 특이점으로 기록합니다.",
-      "recommended_wording": "총 관객 수 15,200명, 일평균 230명으로 기존 기획전 평균 대비 높은 관객 규모가 확인됨.",
+      "caveat": "기존 전시 원자료의 유형 분류와 입력된 수치를 바탕으로 자동 산출한 비교군입니다. 성과 판정이 아니라 수치상 특이점으로 기록합니다.",
+      "recommended_wording": "총 관객 수 15,200명, 일평균 230명으로 정기 기획전 평균 대비 높은 관객 규모가 확인됨.",
       "evidence": [
         {
           "kind": "metric",
@@ -111,13 +129,13 @@
         },
         {
           "kind": "metric",
-          "label": "기존 기획전 평균",
-          "value": "9,413명"
+          "label": "정기 기획전 평균",
+          "value": "9,538명"
         },
         {
           "kind": "calculation",
           "label": "평균 대비 차이",
-          "value": "+61.5%"
+          "value": "+59.4%"
         },
         {
           "kind": "metric",
@@ -127,7 +145,7 @@
         {
           "kind": "metric",
           "label": "일평균 기준값",
-          "value": "159.7명"
+          "value": "158.4명"
         }
       ],
       "report_placement": {
@@ -143,14 +161,14 @@
       "metric": "cost_per_visitor",
       "current_value": 13816,
       "unit": "krw_per_person",
-      "reference_group": "legacy_planned_exhibitions",
-      "reference_avg": 20000,
-      "difference_pct": -30.9,
-      "importance": "high",
+      "reference_group": "regular_planned_exhibitions",
+      "reference_avg": 14719,
+      "difference_pct": -6.1,
+      "importance": "low",
       "statement_kind": "comparative",
       "tone": "neutral",
       "caveat": "관객당 비용은 예산 총액과 관객 수만 반영하므로 전시의 질적 완성도나 제작 난이도를 직접 평가하지 않습니다.",
-      "recommended_wording": "총 사용 예산은 높은 편이나, 관객당 비용은 13,816원/명으로 기존 기획전 기준값과 비교해 검토할 수 있음.",
+      "recommended_wording": "총 사용 예산은 높은 편이나, 관객당 비용은 13,816원/명으로 정기 기획전 기준값과 비교해 검토할 수 있음.",
       "evidence": [
         {
           "kind": "metric",
@@ -169,8 +187,8 @@
         },
         {
           "kind": "metric",
-          "label": "기존 기획전 기준값",
-          "value": "20,000원/명"
+          "label": "정기 기획전 기준값",
+          "value": "14,719원/명"
         }
       ],
       "report_placement": {
@@ -182,18 +200,18 @@
       "id": "obs-paid-audience-ratio",
       "type": "comparison",
       "section": "results",
-      "claim": "유료 관객 비율은 기존 기획전 평균보다 낮게 나타남",
+      "claim": "유료 관객 비율은 정기 기획전 평균보다 낮게 나타남",
       "metric": "paid_audience_ratio",
       "current_value": 58.6,
       "unit": "percent",
-      "reference_group": "legacy_planned_exhibitions",
-      "reference_avg": 86.6,
-      "difference_abs": -28.0,
+      "reference_group": "regular_planned_exhibitions",
+      "reference_avg": 86.2,
+      "difference_abs": -27.6,
       "importance": "high",
       "statement_kind": "comparative",
       "tone": "neutral",
       "caveat": "초대, 제휴, 패스, 단체 관람 정책의 영향을 함께 확인해야 하며 수입 성과와 단순히 동일시할 수 없습니다.",
-      "recommended_wording": "유료 관객 비율은 58.6%로 기존 기획전 평균과 차이를 보이며, 관객 확대와 수입 구조를 분리해 검토할 필요가 있음.",
+      "recommended_wording": "유료 관객 비율은 58.6%로 정기 기획전 평균과 차이를 보이며, 관객 확대와 수입 구조를 분리해 검토할 필요가 있음.",
       "evidence": [
         {
           "kind": "metric",
@@ -202,13 +220,13 @@
         },
         {
           "kind": "metric",
-          "label": "기존 기획전 평균",
-          "value": "86.6%"
+          "label": "정기 기획전 평균",
+          "value": "86.2%"
         },
         {
           "kind": "calculation",
           "label": "차이",
-          "value": "-28%p"
+          "value": "-27.6%p"
         },
         {
           "kind": "metric",
@@ -225,13 +243,13 @@
       "id": "obs-program-participation",
       "type": "comparison",
       "section": "composition",
-      "claim": "프로그램 참여 인원은 기존 기획전 평균을 하회함",
+      "claim": "프로그램 참여 인원은 정기 기획전 평균을 하회함",
       "metric": "program_participants",
       "current_value": 548,
       "unit": "people",
-      "reference_group": "legacy_planned_exhibitions",
-      "reference_avg": 807.6,
-      "difference_pct": -32.1,
+      "reference_group": "regular_planned_exhibitions",
+      "reference_avg": 806,
+      "difference_pct": -32.0,
       "importance": "high",
       "statement_kind": "comparative",
       "tone": "neutral",
@@ -245,8 +263,8 @@
         },
         {
           "kind": "metric",
-          "label": "기존 기획전 평균",
-          "value": "807.6명"
+          "label": "정기 기획전 평균",
+          "value": "806명"
         },
         {
           "kind": "metric",
@@ -256,7 +274,7 @@
         {
           "kind": "calculation",
           "label": "평균 대비 차이",
-          "value": "-32.1%"
+          "value": "-32%"
         }
       ],
       "report_placement": {
@@ -272,9 +290,9 @@
       "metric": "press_mentions",
       "current_value": 32,
       "unit": "count",
-      "reference_group": "legacy_planned_exhibitions",
-      "reference_avg": 28.9,
-      "difference_pct": 10.7,
+      "reference_group": "regular_planned_exhibitions",
+      "reference_avg": 29,
+      "difference_pct": 10.3,
       "importance": "medium",
       "statement_kind": "interpretive",
       "tone": "restrained",
@@ -293,8 +311,8 @@
         },
         {
           "kind": "metric",
-          "label": "기존 기획전 보도 평균",
-          "value": "28.9건"
+          "label": "정기 기획전 보도 평균",
+          "value": "29건"
         },
         {
           "kind": "calculation",

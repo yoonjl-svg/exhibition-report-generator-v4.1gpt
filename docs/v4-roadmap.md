@@ -48,3 +48,9 @@
 
 - Replace the downloadable CSV ZIP with a single multi-sheet Excel workbook. Done in v4.7.
 - Allow the converter to read the workbook directly. Done in v4.7.
+
+## Phase 8: Reference Baselines
+
+- Add existing exhibition records as workbook input. Done in v4.8.
+- Generate type-specific reference averages from `정기 기획전`, `특별전`, and `기타` classifications. Done in v4.8.
+- Keep manual reference groups as fallback inputs. Done in v4.8.

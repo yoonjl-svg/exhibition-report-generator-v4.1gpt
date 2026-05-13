@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from build_ledger import write_text_lf
+
 
 UNIT_SUFFIX = {
     "people": "명",
@@ -47,17 +49,17 @@ def main() -> None:
     html_text = render_html(model)
 
     args.markdown.parent.mkdir(parents=True, exist_ok=True)
-    args.markdown.write_text(markdown + "\n", encoding="utf-8")
+    write_text_lf(args.markdown, markdown + "\n")
 
     args.html_output.parent.mkdir(parents=True, exist_ok=True)
-    args.html_output.write_text(html_text + "\n", encoding="utf-8")
+    write_text_lf(args.html_output, html_text + "\n")
 
     args.js_output.parent.mkdir(parents=True, exist_ok=True)
-    args.js_output.write_text(
+    write_text_lf(
+        args.js_output,
         "window.GENERATED_REPORT = "
         + json.dumps({"title": model["title"], "markdown": markdown, "html": html_text}, ensure_ascii=False)
         + ";\nwindow.GENERATED_REPORT_MARKDOWN = window.GENERATED_REPORT.markdown;\n",
-        encoding="utf-8",
     )
 
     print(

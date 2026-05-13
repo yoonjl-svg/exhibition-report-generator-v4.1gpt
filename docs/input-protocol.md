@@ -1,6 +1,6 @@
 # Input Protocol
 
-v4.7 accepts exhibition data through a single multi-sheet Excel file.
+v4.8 accepts exhibition data through a single multi-sheet Excel file.
 
 ## Files
 
@@ -10,10 +10,11 @@ Download and edit:
 templates/ilmin-report-input-template.xlsx
 ```
 
-The workbook contains four sheets:
+The workbook contains five sheets:
 
 - `core`: exhibition basics, audience, budget, programs, publicity, membership, and director brief metric ids
-- `reference-groups`: comparison groups and reference averages
+- `reference-exhibitions`: existing exhibition records used to calculate type-specific reference averages
+- `reference-groups`: optional manual comparison groups and reference averages
 - `selected-feedback`: selected audience feedback, not statistical sentiment
 - `data-quality`: conflicts or source issues that should remain visible before export
 
@@ -77,7 +78,9 @@ The web app links to:
 templates/ilmin-report-input-template.xlsx
 ```
 
-This workbook contains the four input sheets in one file.
+This workbook contains the five input sheets in one file.
+
+The `reference-exhibitions` sheet is the preferred source for comparison baselines. Set `exhibition.type` in the `core` sheet, using values such as `정기 기획전`, `특별전`, or `기타`. The converter groups existing exhibitions by the same `type`, calculates averages, and places the matching type first in `reference_groups`. The `reference-groups` sheet remains available as a manual fallback or override.
 
 ## Validate
 

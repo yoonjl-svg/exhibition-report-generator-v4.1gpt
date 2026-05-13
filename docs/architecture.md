@@ -69,6 +69,8 @@ templates/sample-input/*.csv
 -> output/report-draft.md / output/report-draft.html / output/report-draft.docx
 ```
 
+The `reference-exhibitions` input sheet stores existing exhibition records with a `type` field. During conversion, those records are grouped by type and averaged to produce reference groups. The current exhibition's type is placed first, so the Ledger builder uses that type-specific baseline before any manual fallback group.
+
 The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback. It also loads `data/generated-report.js` when a rendered report draft exists. The report layout references the old Ilmin report's page and table style, but the content order follows the v4 analysis protocol.
 
 ## Core Objects

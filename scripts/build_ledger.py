@@ -64,7 +64,7 @@ def read_json(path: Path) -> dict[str, Any]:
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_text_lf(path, json.dumps(payload, ensure_ascii=False, indent=2) + "\n")
 
 
 def write_js(path: Path, payload: dict[str, Any]) -> None:
@@ -72,7 +72,12 @@ def write_js(path: Path, payload: dict[str, Any]) -> None:
     text = "window.GENERATED_LEDGER = "
     text += json.dumps(payload, ensure_ascii=False, indent=2)
     text += ";\n"
-    path.write_text(text, encoding="utf-8")
+    write_text_lf(path, text)
+
+
+def write_text_lf(path: Path, text: str) -> None:
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(text)
 
 
 def validate_minimum_input(source: dict[str, Any]) -> None:

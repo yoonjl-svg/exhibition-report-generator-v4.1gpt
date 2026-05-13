@@ -28,6 +28,7 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - A single multi-sheet Excel input template in `templates/ilmin-report-input-template.xlsx`
 - CSV fallback templates in `templates/sample-input/`
 - A CSV/XLSX-to-JSON input converter in `scripts/csv_input_to_json.py`
+- Type-specific reference baseline generation from existing exhibition records
 - A draft input schema in `schemas/exhibition-input.schema.json`
 - A Python Ledger builder in `scripts/build_ledger.py`
 - A generated Analysis Ledger in `data/generated-ledger.json`
@@ -41,7 +42,7 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
 - Approval controls for including/excluding observations from the browser-rendered report
-- Browser exports for reviewed data JSON, PDF print flow, and approved `.docx` output
+- Browser exports for PDF print flow and approved `.docx` output
 - A one-command rebuild script in `scripts/build_all.py`
 - A Node validation script in `scripts/validate-ledger.mjs`
 - Architecture and schema notes in `docs/`
@@ -103,7 +104,6 @@ The builder uses only the Python standard library. Python 3.10 or newer is recom
 
 In the web app, use the review controls and then download:
 
-- `검토 데이터` for the review-filtered source data
 - `PDF` to open the print-ready report and save as PDF
 - `DOCX` for the approved Word report generated directly in the browser
 
@@ -118,6 +118,6 @@ In the web app, use the review controls and then download:
 
 ## Current Scope
 
-This is a working v4.7 foundation. It proves single-workbook Excel input, CSV fallback input, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
+This is a working v4.8 foundation. It proves single-workbook Excel input, CSV fallback input, type-specific reference baseline generation, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
 
-The next implementation step after v4.7 is not more report plumbing; it is qualitative refinement after real curator review: section wording, table density, and institutional style tuning.
+The next implementation step after v4.8 is metric selection refinement: fixed core indicators plus one recommended indicator based on the strongest type-specific deviation.

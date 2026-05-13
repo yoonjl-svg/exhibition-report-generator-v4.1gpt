@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from build_ledger import build_ledger, validate_minimum_input, write_js, write_json
+from build_ledger import build_ledger, validate_minimum_input, write_js, write_json, write_text_lf
 from csv_input_to_json import build_input, build_input_path
 from render_docx import write_docx
 from render_report import build_report_model, render_html, render_markdown
@@ -27,7 +27,7 @@ def main() -> None:
 
     source = build_input(args.csv_dir) if args.xlsx_input is None else build_input_path(args.xlsx_input)
     args.input_json.parent.mkdir(parents=True, exist_ok=True)
-    args.input_json.write_text(json.dumps(source, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_text_lf(args.input_json, json.dumps(source, ensure_ascii=False, indent=2) + "\n")
 
     validate_minimum_input(source)
     ledger = build_ledger(source)
@@ -39,17 +39,17 @@ def main() -> None:
     html_text = render_html(model)
 
     args.markdown.parent.mkdir(parents=True, exist_ok=True)
-    args.markdown.write_text(markdown + "\n", encoding="utf-8")
+    write_text_lf(args.markdown, markdown + "\n")
 
     args.html.parent.mkdir(parents=True, exist_ok=True)
-    args.html.write_text(html_text + "\n", encoding="utf-8")
+    write_text_lf(args.html, html_text + "\n")
 
     args.report_js.parent.mkdir(parents=True, exist_ok=True)
-    args.report_js.write_text(
+    write_text_lf(
+        args.report_js,
         "window.GENERATED_REPORT = "
         + json.dumps({"title": model["title"], "markdown": markdown, "html": html_text}, ensure_ascii=False)
         + ";\nwindow.GENERATED_REPORT_MARKDOWN = window.GENERATED_REPORT.markdown;\n",
-        encoding="utf-8",
     )
 
     args.docx.parent.mkdir(parents=True, exist_ok=True)
