@@ -93,18 +93,78 @@
   }
 
   function renderMetrics() {
-    els.metricStrip.innerHTML = tools
-      .getBriefMetrics(ledger)
-      .map((metric) => {
-        return `
-          <article class="metric">
-            <p class="label">${metric.label}</p>
-            <div class="value">${tools.formatValue(metric.value, metric.unit)}</div>
-            <div class="context">${metric.context || ""}</div>
-          </article>
-        `;
-      })
+    els.metricStrip.innerHTML = buildMetricCards(tools.getBriefMetrics(ledger))
+      .map(renderMetricCard)
       .join("");
+  }
+
+  function buildMetricCards(metrics) {
+    const metricMap = new Map(metrics.map((metric) => [metric.id, metric]));
+    const used = new Set();
+    const cards = [];
+
+    addMetricPair(cards, used, metricMap, {
+      title: "관객 수",
+      primaryId: "total_visitors",
+      secondaryId: "daily_visitors"
+    });
+
+    addMetricPair(cards, used, metricMap, {
+      title: "예산/효율",
+      primaryId: "total_budget",
+      secondaryId: "cost_per_visitor"
+    });
+
+    for (const metric of metrics) {
+      if (!used.has(metric.id)) cards.push({ type: "single", metric });
+    }
+
+    return cards;
+  }
+
+  function addMetricPair(cards, used, metricMap, config) {
+    const primary = metricMap.get(config.primaryId);
+    const secondary = metricMap.get(config.secondaryId);
+    if (!primary || !secondary) return;
+    used.add(primary.id);
+    used.add(secondary.id);
+    cards.push({
+      type: "pair",
+      title: config.title,
+      primary,
+      secondary
+    });
+  }
+
+  function renderMetricCard(card) {
+    if (card.type === "pair") {
+      return `
+        <article class="metric metric-pair">
+          <p class="label">${escapeHtml(card.title)}</p>
+          <div class="metric-pair-row">
+            <div>
+              <div class="sub-label">${escapeHtml(card.primary.label)}</div>
+              <div class="value">${escapeHtml(tools.formatValue(card.primary.value, card.primary.unit))}</div>
+            </div>
+            <div>
+              <div class="sub-label">${escapeHtml(card.secondary.label)}</div>
+              <div class="value secondary-value">${escapeHtml(tools.formatValue(card.secondary.value, card.secondary.unit))}</div>
+            </div>
+          </div>
+          <div class="context">${escapeHtml(card.primary.context || "")}</div>
+          <div class="context">${escapeHtml(card.secondary.context || "")}</div>
+        </article>
+      `;
+    }
+
+    const metric = card.metric;
+    return `
+      <article class="metric">
+        <p class="label">${escapeHtml(metric.label)}</p>
+        <div class="value">${escapeHtml(tools.formatValue(metric.value, metric.unit))}</div>
+        <div class="context">${escapeHtml(metric.context || "")}</div>
+      </article>
+    `;
   }
 
   function renderBrief() {
