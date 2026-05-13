@@ -29,8 +29,7 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - CSV fallback templates in `templates/sample-input/`
 - A CSV/XLSX-to-JSON input converter in `scripts/csv_input_to_json.py`
 - Type-specific reference baseline generation from existing exhibition records
-- Five fixed director metrics plus one automatically recommended metric
-- Compact paired director metric cards
+- Six fixed paired director metric cards
 - A draft input schema in `schemas/exhibition-input.schema.json`
 - A Python Ledger builder in `scripts/build_ledger.py`
 - A generated Analysis Ledger in `data/generated-ledger.json`
@@ -120,6 +119,6 @@ In the web app, use the review controls and then download:
 
 ## Current Scope
 
-This is a working v4.10 foundation. It proves single-workbook Excel input, CSV fallback input, type-specific reference baseline generation, fixed-plus-recommended paired director metrics, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
+This is a working v4.11 foundation. It proves single-workbook Excel input, CSV fallback input, type-specific reference baseline generation, fixed paired director metrics, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
 
-The next implementation step after v4.10 is refining how the recommended metric and its related observation should be positioned in the director-facing report.
+The next implementation step after v4.11 is refining which paired metrics belong in the exported report summary versus the web-only director dashboard.

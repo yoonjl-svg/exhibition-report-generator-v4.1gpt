@@ -5,7 +5,7 @@
     "title": "전시보고서 v4.3 - 《(가)하이퍼 옐로우》",
     "period": "2025.06.13 - 2025.08.17",
     "venue": "일민미술관",
-    "generated_at": "2026-05-13T21:05:42+09:00",
+    "generated_at": "2026-05-13T21:30:45+09:00",
     "scope_note": "엑셀 입력 템플릿에서 변환한 v4.3 데모입니다. 관객 후기는 전체 여론이 아니라 선별 입력값입니다.",
     "narrative": {
       "theme_and_content": "이 전시는 색채 경험과 공간 몰입을 중심으로 관객의 전시 체류와 반응을 관찰하기 위한 v4.3 샘플입니다. 실제 보고서에서는 전시 기획 의도와 전시 주제에 관한 서술을 이 항목에 입력합니다.",
@@ -16,13 +16,15 @@
       "total_visitors",
       "daily_visitors",
       "total_budget",
+      "budget_execution_rate",
       "total_income",
-      "program_participants",
-      "program_participation_rate",
-      "press_mentions",
-      "sns_feedback",
       "cost_per_visitor",
-      "paid_audience_ratio"
+      "paid_audience_ratio",
+      "group_audience_ratio",
+      "program_sessions",
+      "program_participants",
+      "press_mentions",
+      "sns_feedback"
     ],
     "brief_metric_groups": [
       {
@@ -34,19 +36,35 @@
         ]
       },
       {
-        "id": "finance",
-        "label": "예산/수입",
+        "id": "budget",
+        "label": "예산",
         "metric_ids": [
           "total_budget",
-          "total_income"
+          "budget_execution_rate"
+        ]
+      },
+      {
+        "id": "income_cost",
+        "label": "수입/비용",
+        "metric_ids": [
+          "total_income",
+          "cost_per_visitor"
+        ]
+      },
+      {
+        "id": "paid_group",
+        "label": "관객 구성",
+        "metric_ids": [
+          "paid_audience_ratio",
+          "group_audience_ratio"
         ]
       },
       {
         "id": "program",
         "label": "프로그램",
         "metric_ids": [
-          "program_participants",
-          "program_participation_rate"
+          "program_sessions",
+          "program_participants"
         ]
       },
       {
@@ -56,21 +74,6 @@
           "press_mentions",
           "sns_feedback"
         ]
-      },
-      {
-        "id": "cost",
-        "label": "관객당 비용",
-        "metric_ids": [
-          "cost_per_visitor"
-        ]
-      },
-      {
-        "id": "recommended",
-        "label": "추천",
-        "role": "recommended",
-        "metric_ids": [
-          "paid_audience_ratio"
-        ]
       }
     ],
     "brief_metric_strategy": {
@@ -78,16 +81,19 @@
         "total_visitors",
         "daily_visitors",
         "total_budget",
+        "budget_execution_rate",
         "total_income",
+        "cost_per_visitor",
+        "paid_audience_ratio",
+        "group_audience_ratio",
+        "program_sessions",
         "program_participants",
-        "program_participation_rate",
         "press_mentions",
-        "sns_feedback",
-        "cost_per_visitor"
+        "sns_feedback"
       ],
-      "recommended_metric_id": "paid_audience_ratio",
-      "recommendation_basis": "type_specific_reference_deviation",
-      "recommendation_reason": "정기 기획전 기준값과 -27.6%p 차이를 보여 고정 지표 외 추가 확인 지표로 추천했습니다."
+      "recommended_metric_id": null,
+      "recommendation_basis": null,
+      "recommendation_reason": null
     }
   },
   "reference_groups": [
@@ -163,6 +169,15 @@
       "brief_role": "fixed"
     },
     {
+      "id": "budget_execution_rate",
+      "label": "예산 집행률",
+      "value": 92.4,
+      "unit": "percent",
+      "context": "엑셀 입력 예산 집행률",
+      "recommendation_score": 0,
+      "brief_role": "fixed"
+    },
+    {
       "id": "total_income",
       "label": "총 수입",
       "value": 35600000,
@@ -189,8 +204,17 @@
       "brief_role": "fixed"
     },
     {
+      "id": "program_sessions",
+      "label": "프로그램 회수",
+      "value": 65,
+      "unit": "session_count",
+      "context": "프로그램 총 회차",
+      "recommendation_score": 0,
+      "brief_role": "fixed"
+    },
+    {
       "id": "program_participants",
-      "label": "프로그램 참여",
+      "label": "프로그램 참여 수",
       "value": 548,
       "unit": "people",
       "context": "정기 기획전 평균 806명 대비 하회",
@@ -199,19 +223,6 @@
       "reference_value": 806,
       "difference_pct": -32.0,
       "recommendation_score": 32.0,
-      "brief_role": "fixed"
-    },
-    {
-      "id": "program_participation_rate",
-      "label": "프로그램 참여율",
-      "value": 3.6,
-      "unit": "percent",
-      "context": "정기 기획전 평균 8.4% 대비 하회",
-      "reference_group": "regular_planned_exhibitions",
-      "reference_label": "정기 기획전",
-      "reference_value": 8.4,
-      "difference_pct": -57.1,
-      "recommendation_score": 57.1,
       "brief_role": "fixed"
     },
     {
@@ -230,9 +241,9 @@
     {
       "id": "sns_feedback",
       "label": "SNS 피드백",
-      "value": 2,
+      "value": 186,
       "unit": "count",
-      "context": "선별 입력 SNS 후기 수",
+      "context": "엑셀 입력 SNS 피드백 합계",
       "recommendation_score": 0,
       "brief_role": "fixed"
     },
@@ -247,8 +258,16 @@
       "reference_value": 86.2,
       "difference_abs": -27.6,
       "recommendation_score": 27.6,
-      "brief_role": "recommended",
-      "recommendation_reason": "정기 기획전 기준값과 -27.6%p 차이를 보여 고정 지표 외 추가 확인 지표로 추천했습니다."
+      "brief_role": "fixed"
+    },
+    {
+      "id": "group_audience_ratio",
+      "label": "단체 관객 비율",
+      "value": 8,
+      "unit": "percent",
+      "context": "단체 관객 수 / 총 관객 수",
+      "recommendation_score": 0,
+      "brief_role": "fixed"
     }
   ],
   "observations": [

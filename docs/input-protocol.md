@@ -82,13 +82,13 @@ This workbook contains the five input sheets in one file.
 
 The `reference-exhibitions` sheet is the preferred source for comparison baselines. Set `exhibition.type` in the `core` sheet, using values such as `정기 기획전`, `특별전`, or `기타`. The converter groups existing exhibitions by the same `type`, calculates averages, and places the matching type first in `reference_groups`. The `reference-groups` sheet remains available as a manual fallback or override.
 
-The `brief_metrics.ids` row in the `core` sheet uses paired director-facing indicators plus one automatic slot:
+The `brief_metrics.ids` row in the `core` sheet uses six fixed paired director-facing cards:
 
 ```text
-total_visitors,daily_visitors,total_budget,total_income,program_participants,program_participation_rate,press_mentions,sns_feedback,cost_per_visitor,auto
+total_visitors,daily_visitors,total_budget,budget_execution_rate,total_income,cost_per_visitor,paid_audience_ratio,group_audience_ratio,program_sessions,program_participants,press_mentions,sns_feedback
 ```
 
-The `auto` token is replaced during Ledger generation with the non-fixed metric that has the largest deviation from the current type-specific reference baseline. In the web app, these ids are arranged as paired cards: audience, finance, program, publicity/feedback, cost per visitor, and recommendation.
+In the web app, these ids are arranged as paired cards: audience, budget, income/cost, paid/group audience ratio, program, and publicity/feedback. `SNS 피드백` means the `publicity.sns_feedback_total` value entered in the workbook, not the count of selected audience quotes.
 
 ## Validate
 

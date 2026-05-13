@@ -49,13 +49,15 @@
         "total_visitors",
         "daily_visitors",
         "total_budget",
+        "budget_execution_rate",
         "total_income",
-        "program_participants",
-        "program_participation_rate",
-        "press_mentions",
-        "sns_feedback",
         "cost_per_visitor",
-        "auto"
+        "paid_audience_ratio",
+        "group_audience_ratio",
+        "program_sessions",
+        "program_participants",
+        "press_mentions",
+        "sns_feedback"
       ]
     },
     "narrative": {
@@ -76,7 +78,9 @@
         "operating_days": { "type": "number", "exclusiveMinimum": 0 },
         "daily_visitors": { "type": "number", "minimum": 0 },
         "paid_visitors": { "type": "number", "minimum": 0 },
-        "free_visitors": { "type": "number", "minimum": 0 }
+        "free_visitors": { "type": "number", "minimum": 0 },
+        "group_visitors": { "type": "number", "minimum": 0 },
+        "group_audience_ratio": { "type": "number", "minimum": 0 }
       }
     },
     "budget": {
@@ -85,6 +89,8 @@
       "required": ["total_budget"],
       "properties": {
         "total_budget": { "type": "number", "minimum": 0 },
+        "allocated_budget": { "type": "number", "minimum": 0 },
+        "execution_rate": { "type": "number", "minimum": 0 },
         "income": { "type": "number", "minimum": 0 }
       }
     },
@@ -106,6 +112,7 @@
       "properties": {
         "press_mentions": { "type": "number", "minimum": 0 },
         "sns_posts": { "type": "number", "minimum": 0 },
+        "sns_feedback_total": { "type": "number", "minimum": 0 },
         "press_reach_note": { "type": "string" }
       }
     },

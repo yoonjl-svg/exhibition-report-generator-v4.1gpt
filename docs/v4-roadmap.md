@@ -65,4 +65,10 @@
 
 - Pair related director metrics inside compact cards. Done in v4.10.
 - Add program participation rate as a first-class metric. Done in v4.10.
-- Add selected SNS feedback count as a restrained feedback metric. Done in v4.10.
+- Add a temporary selected SNS feedback count. Superseded in v4.11 by workbook SNS feedback total.
+
+## Phase 11: Fixed Director Metric Set
+
+- Replace the recommendation card with six fixed paired cards. Done in v4.11.
+- Use workbook SNS feedback total rather than counting selected SNS quotes. Done in v4.11.
+- Add budget execution rate, group audience ratio, and program sessions to the director metric set. Done in v4.11.

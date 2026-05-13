@@ -52,7 +52,7 @@ Each metric carries a context string when a reference value exists.
 
 When the input includes `reference-exhibitions`, the converter calculates reference averages from existing exhibition records grouped by `type`. The current exhibition's `type` in the `core` sheet is used to choose the primary comparison group. Manual `reference-groups` remain available as fallback comparison groups.
 
-The director-facing metric strip is generated as five paired/single fixed cards plus one recommendation card. The fixed cards pair total visitors with daily visitors, total budget with total income, program participation with participation rate, press mentions with selected SNS feedback, and a single cost-per-visitor card. The final card is chosen automatically from the remaining metrics by the strongest deviation from the current type-specific reference baseline.
+The director-facing metric strip is generated as six fixed paired cards. The cards pair total visitors with daily visitors, total budget with budget execution rate, total income with cost per visitor, paid audience ratio with group audience ratio, program sessions with program participants, and press mentions with the workbook's SNS feedback total.
 
 ## 3. Generate Observations
 

@@ -17,7 +17,11 @@ NUMERIC_FIELDS = {
     "daily_visitors",
     "paid_visitors",
     "free_visitors",
+    "group_visitors",
+    "group_audience_ratio",
     "total_budget",
+    "allocated_budget",
+    "execution_rate",
     "income",
     "count",
     "sessions",
@@ -25,6 +29,7 @@ NUMERIC_FIELDS = {
     "participation_rate",
     "press_mentions",
     "sns_posts",
+    "sns_feedback_total",
     "memberships_sold",
 }
 

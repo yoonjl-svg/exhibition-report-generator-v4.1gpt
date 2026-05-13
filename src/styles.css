@@ -308,8 +308,8 @@ select {
 
 .metric-items {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
   align-items: start;
 }
 
@@ -322,8 +322,8 @@ select {
 }
 
 .metric-item + .metric-item {
-  border-left: 1px solid rgba(96, 105, 92, 0.18);
-  padding-left: 8px;
+  border-top: 1px solid rgba(96, 105, 92, 0.18);
+  padding-top: 6px;
 }
 
 .metric--single .metric-item + .metric-item {
@@ -690,8 +690,6 @@ select {
 
   .metric-item + .metric-item {
     border-top: 1px solid rgba(96, 105, 92, 0.18);
-    border-left: 0;
     padding-top: 6px;
-    padding-left: 0;
   }
 }

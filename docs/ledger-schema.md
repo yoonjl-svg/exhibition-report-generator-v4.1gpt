@@ -33,9 +33,9 @@ This is the draft schema used by `data/generated-ledger.json` and the fallback `
   ],
   "brief_metric_strategy": {
     "fixed_ids": ["total_visitors"],
-    "recommended_metric_id": "program_participants",
-    "recommendation_basis": "type_specific_reference_deviation",
-    "recommendation_reason": "비교 기준 대비 차이가 커 추천됨"
+    "recommended_metric_id": null,
+    "recommendation_basis": null,
+    "recommendation_reason": null
   }
 }
 ```
@@ -71,11 +71,12 @@ Supported draft units:
 - `people`
 - `krw`
 - `count`
+- `session_count`
 - `program_count`
 - `percent`
 - `krw_per_person`
 
-Director metric cards may include `brief_role: "fixed"` or `brief_role: "recommended"`. Recommended metrics may also carry `recommendation_reason`.
+Director metric cards may include `brief_role: "fixed"`. The current director dashboard uses fixed metric groups rather than a recommendation card.
 
 ## Observation
 

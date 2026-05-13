@@ -23,10 +23,12 @@
     "operating_days": 66,
     "daily_visitors": 230,
     "paid_visitors": 8907,
-    "free_visitors": 6293
+    "free_visitors": 6293,
+    "group_visitors": 1216
   },
   "budget": {
     "total_budget": 210000000,
+    "execution_rate": 92.4,
     "income": 35600000
   },
   "programs": {
@@ -37,7 +39,8 @@
   },
   "publicity": {
     "press_mentions": 32,
-    "sns_posts": 24
+    "sns_posts": 24,
+    "sns_feedback_total": 186
   },
   "membership": {
     "memberships_sold": 0,
@@ -169,12 +172,14 @@
     "total_visitors",
     "daily_visitors",
     "total_budget",
+    "budget_execution_rate",
     "total_income",
-    "program_participants",
-    "program_participation_rate",
-    "press_mentions",
-    "sns_feedback",
     "cost_per_visitor",
-    "auto"
+    "paid_audience_ratio",
+    "group_audience_ratio",
+    "program_sessions",
+    "program_participants",
+    "press_mentions",
+    "sns_feedback"
   ]
 }
