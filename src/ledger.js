@@ -23,9 +23,18 @@
     return new Intl.NumberFormat("ko-KR").format(value);
   }
 
+  function formatKrwAsEok(value) {
+    const eok = value / 100000000;
+    const hasDecimal = Math.abs(eok % 1) > 0.00001;
+    return `${new Intl.NumberFormat("ko-KR", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: hasDecimal ? 1 : 0
+    }).format(eok)}억`;
+  }
+
   function formatValue(value, unit) {
     if (value === null || value === undefined) return "-";
-    if (unit === "krw") return `${formatNumber(value)}원`;
+    if (unit === "krw") return formatKrwAsEok(value);
     if (unit === "people") return `${formatNumber(value)}명`;
     if (unit === "count") return `${formatNumber(value)}건`;
     if (unit === "program_count") return `${formatNumber(value)}개`;

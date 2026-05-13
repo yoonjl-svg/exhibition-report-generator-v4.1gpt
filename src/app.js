@@ -25,7 +25,6 @@
     toggleEvidence: document.querySelector("#toggle-evidence"),
     downloadReportDoc: document.querySelector("#download-report-doc"),
     printReportPdf: document.querySelector("#print-report-pdf"),
-    downloadApprovedLedger: document.querySelector("#download-approved-ledger"),
     approveAll: document.querySelector("#approve-all"),
     resetReview: document.querySelector("#reset-review"),
     toast: document.querySelector("#toast")
@@ -87,7 +86,7 @@
     const director = states.filter((item) => item.included && item.directorBrief).length;
     const values = [
       ["보고서 포함", `${included}/${states.length}`],
-      ["요약 포함", director]
+      ["핵심 지표", director]
     ];
 
     els.review.innerHTML = values.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("");
@@ -154,7 +153,7 @@
           </label>
           <label class="inline-control">
             <input type="checkbox" data-review-field="directorBrief" data-id="${escapeHtml(observation.id)}" ${state.directorBrief ? "checked" : ""} />
-            요약 포함
+            핵심 지표
           </label>
         </div>
         <p class="wording">${escapeHtml(wording)}</p>
@@ -200,11 +199,6 @@
 
     els.exportMenuButton.addEventListener("click", () => {
       setExportMenuOpen(els.exportMenu.hidden);
-    });
-
-    els.downloadApprovedLedger.addEventListener("click", () => {
-      const approvedLedger = makeApprovedLedger();
-      downloadText("reviewed-data.json", JSON.stringify(approvedLedger, null, 2), "application/json");
     });
 
     els.downloadReportDoc.addEventListener("click", () => {

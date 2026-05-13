@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>v4.1gpt Exhibition Report Data Review</title>
-    <link rel="stylesheet" href="src/styles.css?v=20260513-8" />
+    <link rel="stylesheet" href="src/styles.css?v=20260513-9" />
   </head>
   <body>
     <header class="topbar">
@@ -28,7 +28,7 @@
       <aside class="sidebar" aria-label="data filters">
         <section class="panel compact">
           <h2>관찰 데이터 필터</h2>
-          <p class="panel-note">아래 관찰 데이터 목록만 좁혀 봅니다. 보고서 출력 여부는 보고서 포함과 요약 포함 설정으로 결정됩니다.</p>
+          <p class="panel-note">아래 관찰 데이터 목록만 좁혀 봅니다. 보고서 출력 여부는 보고서 포함과 핵심 지표 설정으로 결정됩니다.</p>
           <p id="filter-summary" class="filter-summary"></p>
           <label>
             섹션
@@ -77,7 +77,7 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Director View</p>
-              <h2>핵심 수치 요약</h2>
+              <h2>핵심 지표 요약</h2>
             </div>
             <p id="scope-note" class="note"></p>
           </div>
@@ -95,7 +95,6 @@
               <p id="observation-count" class="note"></p>
               <div class="local-actions" aria-label="data tools">
                 <button id="toggle-evidence" type="button" aria-pressed="true">근거</button>
-                <button id="download-approved-ledger" type="button">검토 데이터</button>
               </div>
             </div>
           </div>
@@ -119,11 +118,11 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <script src="data/generated-ledger.js?v=20260513-8"></script>
-    <script src="data/generated-report.js?v=20260513-8"></script>
-    <script src="data/sample-ledger.js?v=20260513-8"></script>
-    <script src="src/ledger.js?v=20260513-8"></script>
-    <script src="src/docx-export.js?v=20260513-8"></script>
-    <script src="src/app.js?v=20260513-8"></script>
+    <script src="data/generated-ledger.js?v=20260513-9"></script>
+    <script src="data/generated-report.js?v=20260513-9"></script>
+    <script src="data/sample-ledger.js?v=20260513-9"></script>
+    <script src="src/ledger.js?v=20260513-9"></script>
+    <script src="src/docx-export.js?v=20260513-9"></script>
+    <script src="src/app.js?v=20260513-9"></script>
   </body>
 </html>
