@@ -655,18 +655,18 @@ select {
 }
 
 .observation.is-data-quality {
-  border-color: #d4d4cf;
-  background: #f2f2ef;
+  border-color: var(--line);
+  background: var(--soft);
 }
 
 .observation.is-data-quality .chip {
-  background: #e3e3df;
-  color: #62625d;
+  background: rgba(37, 92, 74, 0.08);
+  color: var(--accent);
 }
 
 .observation.is-data-quality .caveat {
-  border-left-color: #a8a8a1;
-  color: #5f5f59;
+  border-left-color: var(--accent);
+  color: var(--accent);
 }
 
 .observation-header {
@@ -702,18 +702,33 @@ select {
 }
 
 .chip.high {
-  background: #e7f1eb;
-  color: var(--accent);
+  background: #ffe4e1;
+  color: #b42318;
 }
 
 .chip.medium {
-  background: #f5eee8;
-  color: var(--accent-2);
+  background: #ffedd5;
+  color: #c2410c;
 }
 
 .chip.low {
-  background: #eef1f6;
-  color: var(--accent-3);
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.observation.is-data-quality .chip.high {
+  background: #ffe4e1;
+  color: #b42318;
+}
+
+.observation.is-data-quality .chip.medium {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.observation.is-data-quality .chip.low {
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .review-controls {
