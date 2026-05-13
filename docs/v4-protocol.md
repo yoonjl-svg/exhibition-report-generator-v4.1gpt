@@ -127,9 +127,9 @@ The web UI can also export review-aware report files directly from the browser:
 
 - `approved-ledger.json`: included observations only
 - `approved-report.html`: print/PDF-ready A4 report
-- `approved-report.doc`: Word-readable HTML document
+- `approved-report.docx`: approved Word document generated as an OpenXML package in the browser
 
-The static `output/report-draft.docx` remains a sample generated from the full Ledger. The next export step is to render `approved-ledger.json` into a true `.docx` file through a local script or a small backend.
+The static `output/report-draft.docx` remains a sample generated from the full Ledger. The browser `DOCX` button is the review-aware final export path.
 
 The approved Ledger should render into:
 
@@ -151,3 +151,13 @@ The accumulated Ledgers can later support:
 - dashboard metrics
 - comparison across exhibition types
 - reusable caveat and evidence patterns
+
+## 8. Rebuild Protocol
+
+v4.6 adds a single local rebuild command:
+
+```powershell
+python scripts/build_all.py
+```
+
+This regenerates normalized JSON, generated Ledger JSON/JS, Markdown, HTML, report JS, and the static sample `.docx` from the CSV template files.

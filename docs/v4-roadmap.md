@@ -26,10 +26,10 @@
 
 ## Phase 4: Word Export
 
-- Render approved sections into `.docx`.
+- Render approved sections into `.docx`. Done in v4.5 browser export.
 - Preserve existing report structure where useful.
 - Add a concise "핵심 관찰 요약" or "종합 기록" section without turning it into a success/failure judgment.
-- Current bridge: browser export creates `approved-report.doc`, a Word-readable HTML document reflecting review state.
+- Current final export: browser export creates `approved-report.docx`, a review-aware OpenXML Word document.
 
 ## Phase 5: Institutional Memory
 
@@ -37,3 +37,9 @@
 - Compare exhibitions by explicit reference group.
 - Build dashboards from metrics and observations.
 - Use accumulated ledgers to improve future comparison groups.
+
+## Phase 6: Operating Protocol
+
+- Add a one-command CSV-to-report rebuild. Done in v4.6.
+- Document the final curator workflow. Done in v4.6.
+- Keep future refinements focused on content quality and institutional style after real review.

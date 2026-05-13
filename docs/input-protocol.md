@@ -15,6 +15,16 @@ These files can be opened and edited in Excel. Save them back as CSV UTF-8 when 
 
 ## Convert CSV To JSON
 
+For normal operation, run the complete rebuild:
+
+```powershell
+python scripts/build_all.py
+```
+
+This converts CSV input, rebuilds the Ledger, and regenerates report outputs.
+
+For step-by-step debugging, run the individual commands below.
+
 Run:
 
 ```powershell

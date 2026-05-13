@@ -48,13 +48,13 @@
       "selection_rule": "샘플 데이터에 포함된 이전 기획전 전체",
       "caveat": "샘플 데이터 기반 비교군이며 실제 전시군 분류는 운영 목적에 맞게 재정의해야 합니다.",
       "metrics": {
-        "press_mentions_avg": 28.9,
-        "paid_audience_ratio_avg": 86.6,
-        "program_participants_avg": 807.6,
+        "total_visitors_avg": 9413,
         "daily_visitors_avg": 159.7,
-        "cost_per_visitor_avg": 20000,
         "total_budget_avg": 140000000,
-        "total_visitors_avg": 9413
+        "cost_per_visitor_avg": 20000,
+        "program_participants_avg": 807.6,
+        "press_mentions_avg": 28.9,
+        "paid_audience_ratio_avg": 86.6
       }
     },
     {

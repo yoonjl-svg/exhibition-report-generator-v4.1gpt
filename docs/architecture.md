@@ -49,6 +49,25 @@ data/generated-ledger.json
 -> output/report-draft.docx
 ```
 
+The review-aware browser export path is:
+
+```text
+web review state
+-> approved Analysis Ledger
+-> src/docx-export.js
+-> approved-report.docx
+```
+
+The local one-command rebuild path is:
+
+```text
+templates/sample-input/*.csv
+-> scripts/build_all.py
+-> data/sample-input.json
+-> data/generated-ledger.json / data/generated-ledger.js
+-> output/report-draft.md / output/report-draft.html / output/report-draft.docx
+```
+
 The browser app loads `data/generated-ledger.js` first and keeps `data/sample-ledger.js` as a fallback. It also loads `data/generated-report.js` when a rendered report draft exists. The report layout references the old Ilmin report's page and table style, but the content order follows the v4 analysis protocol.
 
 ## Core Objects

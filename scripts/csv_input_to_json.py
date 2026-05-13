@@ -24,7 +24,7 @@ NUMERIC_FIELDS = {
     "memberships_sold",
 }
 
-REFERENCE_METRIC_FIELDS = {
+REFERENCE_METRIC_FIELDS = (
     "total_visitors_avg",
     "daily_visitors_avg",
     "total_budget_avg",
@@ -32,7 +32,7 @@ REFERENCE_METRIC_FIELDS = {
     "program_participants_avg",
     "press_mentions_avg",
     "paid_audience_ratio_avg",
-}
+)
 
 
 def main() -> None:

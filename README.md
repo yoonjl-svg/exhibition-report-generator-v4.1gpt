@@ -40,7 +40,8 @@ The important shift is that every analytic sentence is backed by a traceable obs
 - Ledger helpers in `src/ledger.js`
 - Web review UI in `src/app.js`
 - Approval controls for including/excluding observations from the browser-rendered report
-- Browser downloads for approved Ledger JSON, print-ready HTML, and Word-readable `.doc` output
+- Browser downloads for approved Ledger JSON, print-ready HTML, and approved `.docx` output
+- A one-command rebuild script in `scripts/build_all.py`
 - A Node validation script in `scripts/validate-ledger.mjs`
 - Architecture and schema notes in `docs/`
 
@@ -74,7 +75,13 @@ To rebuild the Ledger from the normalized input:
 python scripts/build_ledger.py data/sample-input.json --json data/generated-ledger.json --js data/generated-ledger.js
 ```
 
-To rebuild the full CSV-input-to-report flow:
+To rebuild the full CSV-input-to-report flow in one step:
+
+```powershell
+python scripts/build_all.py
+```
+
+The expanded manual flow is:
 
 ```powershell
 python scripts/csv_input_to_json.py templates/sample-input --output data/sample-input.json
@@ -84,6 +91,12 @@ python scripts/render_docx.py data/generated-ledger.json --output output/report-
 ```
 
 The builder uses only the Python standard library. Python 3.10 or newer is recommended.
+
+In the web app, use the review controls and then download:
+
+- `Approved Ledger` for the review-filtered source data
+- `HTML` for print/PDF output
+- `DOCX` for the approved Word report generated directly in the browser
 
 ## v4 Design Principles
 
@@ -96,6 +109,6 @@ The builder uses only the Python standard library. Python 3.10 or newer is recom
 
 ## Current Scope
 
-This is a working foundation for v4.4 planning. It proves CSV input, the new internal model, the review experience, the first input-to-Ledger generation path, print-ready HTML report rendering, `.docx` draft generation, and browser-side approval gating.
+This is a working v4.6 foundation. It proves CSV input, the new internal model, the review experience, the input-to-Ledger generation path, print-ready HTML report rendering, static `.docx` draft generation, browser-side approval gating, approved browser `.docx` export, and a one-command rebuild protocol.
 
-The next implementation step is to turn the approved browser Ledger into a server-side or local-script `.docx` export, so the final Word file reflects the curator's review state rather than only the static sample Ledger.
+The next implementation step after v4.6 is not more report plumbing; it is qualitative refinement after real curator review: section wording, table density, and institutional style tuning.

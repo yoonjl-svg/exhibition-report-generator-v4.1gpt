@@ -205,7 +205,14 @@
     });
 
     els.downloadReportDoc.addEventListener("click", () => {
-      downloadText("approved-report.doc", makeReportHtml(makeApprovedLedger()), "application/msword");
+      if (!window.DocxExport) {
+        downloadText("approved-report.doc", makeReportHtml(makeApprovedLedger()), "application/msword");
+        showToast("DOCX exporter unavailable. Word-readable .doc downloaded.");
+        return;
+      }
+      const blob = window.DocxExport.createDocxBlob(makeApprovedLedger(), tools);
+      downloadBlob("approved-report.docx", blob);
+      showToast("Approved DOCX downloaded.");
     });
 
     els.approveAll.addEventListener("click", () => {
@@ -538,6 +545,10 @@
 
   function downloadText(filename, text, mimeType) {
     const blob = new Blob([text], { type: `${mimeType};charset=utf-8` });
+    downloadBlob(filename, blob);
+  }
+
+  function downloadBlob(filename, blob) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
